@@ -1,0 +1,187 @@
+---
+title: "{{{full_name}}}'s CV"
+author: {{{full_name}}}
+date: "`r Sys.Date()`"
+output:
+  pagedown::html_resume:
+    css: ['dd_cv.css', 'resume']
+    # set it to true for a self-contained HTML page but it'll take longer to render
+    self_contained: true
+---
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(
+  results='asis', 
+  echo = FALSE
+)
+
+# ======================================================================
+cv_printer <- datadrivencv::CV_Printer$new(
+  data_loc = "{{{data_loc}}}",  
+  pdf_location = "{{{pdf_loc}}}",
+  html_location = "{{{html_loc}}}")
+```
+
+```{r}
+# This toggles if output is rendered in PDF format or HTML
+cv_printer$set_pdf_mode(FALSE)
+```
+
+
+```{r}
+cv_printer$set_style()
+```
+
+
+Aside
+================================================================================
+
+
+![logo]({{{logo_loc}}}){width=100%}
+
+```{r}
+cv_printer$print_link_to_other_format()
+```
+
+Contact {#contact}
+--------------------------------------------------------------------------------
+
+```{r}
+cv_printer$print_contact_info()
+```
+
+
+
+Language Skills {#skills}
+--------------------------------------------------------------------------------
+
+```{r}
+cv_printer$print_skill_bars()
+```
+
+
+
+Disclaimer {#disclaimer}
+--------------------------------------------------------------------------------
+
+Made with the R package [**pagedown**](https://github.com/rstudio/pagedown). 
+
+The source code is available [on github.com/nstrayer/cv]({{{source_loc}}}).
+
+Last updated on `r Sys.Date()`.
+
+
+
+Main
+================================================================================
+
+{{{full_name}}} {#title}
+--------------------------------------------------------------------------------
+
+```{r}
+cv_printer$print_text_block("intro")
+```
+
+
+
+Education {data-icon=graduation-cap data-concise=true}
+--------------------------------------------------------------------------------
+
+```{r}
+cv_printer$print_section('education')
+```
+
+
+
+Research Experience {data-icon=laptop}
+--------------------------------------------------------------------------------
+
+```{r}
+cv_printer$print_section('research_positions')
+```
+
+
+
+Industry Experience {data-icon=suitcase}
+--------------------------------------------------------------------------------
+
+::: aside
+```{r}
+cv_printer$print_text_block('industy_experience_aside')
+```
+:::
+
+```{r}
+cv_printer$print_section('industry_positions')
+```
+
+<!-- These breaks just force a new page so section doesnt get cut off -->
+<br>
+<br>
+<br>
+
+Teaching Experience {data-icon=chalkboard-teacher}
+--------------------------------------------------------------------------------
+
+::: aside
+```{r}
+cv_printer$print_text_block('teaching_experience_aside')
+```
+:::
+
+```{r}
+cv_printer$print_section('teaching_positions')
+```
+
+
+
+Selected Data Science Writing {data-icon=chart-line}
+--------------------------------------------------------------------------------
+
+::: aside
+```{r}
+cv_printer$print_text_block('data_science_writing_aside')
+```
+:::
+
+```{r}
+cv_printer$print_section('data_science_writings')
+```
+
+
+
+Selected Press (About)  {data-icon=newspaper}
+--------------------------------------------------------------------------------
+
+```{r}
+cv_printer$print_section('about_me_press')
+```
+
+
+<br>
+<br>
+
+
+Selected Press (By)  {data-icon=newspaper}
+--------------------------------------------------------------------------------
+
+```{r}
+cv_printer$print_section('by_me_press')
+```
+
+
+
+Selected Publications, Posters, and Talks {data-icon=book}
+--------------------------------------------------------------------------------
+
+```{r}
+cv_printer$print_section('academic_articles')
+```
+
+
+
+```{r}
+cv_printer$print_links()
+```
+
+

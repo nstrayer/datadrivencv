@@ -2,4 +2,5 @@
 
 export("%>%")
 export(CV_Printer)
+export(use_datadriven_cv)
 importFrom(magrittr,"%>%")

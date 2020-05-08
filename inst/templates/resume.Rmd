@@ -1,0 +1,163 @@
+---
+title: Nick Strayer's Resume"
+author: Nick Strayer
+date: "`r Sys.Date()`"
+output:
+  pagedown::html_resume:
+    css: ['css/custom_resume.css', 'css/styles.css', 'resume']
+    # set it to true for a self-contained HTML page but it'll take longer to render
+    self_contained: true
+---
+
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(
+  results='asis', 
+  echo = FALSE
+)
+library(tidyverse)
+library(glue)
+
+# ======================================================================
+# These variables determine how the the data is loaded and how the exports are
+# done.
+
+# Is data stored in google sheets? If no data will be gather from the csvs/
+# folder in project
+using_googlesheets <- TRUE
+
+# Just the copied URL from the sheet
+positions_sheet_loc <- "https://docs.google.com/spreadsheets/d/14MQICF2F8-vf8CKPF1m4lyGKO6_thG-4aSwat1e2TWc"
+
+# Is this sheet available for anyone to read? If you're using a private sheet
+# set this to false and go to gather_data.R and run the data loading manually
+# once to cache authentication
+sheet_is_publicly_readable <- TRUE
+
+# Is the goal of this knit to build a document that is exported to PDF? If so
+# set this to true to have links turned into footnotes at the end of the
+# document
+PDF_EXPORT <- FALSE
+
+
+# A global (gasp) variable that holds all the links that were inserted for
+# placement at the end
+links <- c()
+
+# ======================================================================
+# Now we source two external scripts. One contains functions for building the
+# text output and the other loads up our data from either googlesheets or csvs
+
+# Functions for building sections from CSV data
+source('parsing_functions.R') 
+
+# Load data for CV/Resume
+source('gather_data.R')
+
+# Now we just need to filter down the position data to include less verbose
+# categories and only the entries we have designated for the resume
+position_data <- position_data %>% 
+  filter(in_resume) %>% 
+  mutate(
+    # Build some custom sections by collapsing others
+    section = case_when(
+      section %in% c('research_positions', 'industry_positions') ~ 'positions', 
+      section %in% c('data_science_writings', 'by_me_press') ~ 'writings',
+      TRUE ~ section
+    )
+  ) 
+```
+
+
+
+Aside
+================================================================================
+
+
+![logo](logo.png){width=100%}
+
+Contact {#contact}
+--------------------------------------------------------------------------------
+
+```{r}
+contact_info %>% 
+  glue_data("- <i class='fa fa-{icon}'></i> {contact}")
+```
+
+
+
+Language Skills {#skills}
+--------------------------------------------------------------------------------
+
+```{r}
+build_skill_bars(skills)
+```
+
+
+
+Open Source Contributions {#open-source}
+--------------------------------------------------------------------------------
+
+All projects available at `github.com/nstrayer/<name>`
+
+
+- `shinysense`: R package to use sensor data in Shiny apps
+- `tuftesque`: Hugo theme (behind LiveFreeOrDichotomize.com)
+- `sbmR`: R package for fitting stochasitic block models
+
+
+More info {#more-info}
+--------------------------------------------------------------------------------
+
+See full CV at nickstrayer.me/cv for more complete list of positions and publications.
+
+
+Disclaimer {#disclaimer}
+--------------------------------------------------------------------------------
+
+Made w/ [**pagedown**](https://github.com/rstudio/pagedown). 
+
+Source code: [github.com/nstrayer/cv](https://github.com/nstrayer/cv).
+
+Last updated on `r Sys.Date()`.
+
+
+
+Main
+================================================================================
+
+Nick Strayer {#title}
+--------------------------------------------------------------------------------
+
+```{r}
+print_text_block(text_blocks, 'intro')
+```
+
+
+
+Education {data-icon=graduation-cap data-concise=true}
+--------------------------------------------------------------------------------
+
+```{r}
+position_data %>% print_section('education')
+```
+
+
+
+Selected Positions {data-icon=suitcase}
+--------------------------------------------------------------------------------
+
+```{r}
+position_data %>% print_section('positions')
+```
+
+
+
+Selected Writing {data-icon=newspaper}
+--------------------------------------------------------------------------------
+
+```{r}
+position_data %>% print_section('writings')
+```
+
+

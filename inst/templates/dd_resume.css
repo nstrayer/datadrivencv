@@ -1,0 +1,62 @@
+
+* {
+  /* Override default right margin for sidebar*/
+  --pagedjs-margin-right: 0.2in !important;
+  --pagedjs-margin-left: 0;
+  --pagedjs-margin-top: 0.2in;
+  --pagedjs-margin-bottom: 0.2in;
+}
+
+[data-id="main"] { 
+  padding: 0 0.05in 0 0.05in;
+}
+
+[data-id="title"] {
+  margin: 0 0.5in 0.08in -0.5in;
+}
+
+.main-block {
+  margin-top: 0;
+  margin-left: -0.1in;
+}
+
+/* Customize some of the sizing variables */
+:root {
+  --sidebar-width: 12rem !important; /* Shrink sidebar width  */
+  --sidebar-horizontal-padding: 0.02in; /* Reduce sidebar padding */
+}
+
+[data-id="main"]{
+  width: calc(var(--main-width) + 0.2in);
+}
+
+.aside {
+  height: 100%;
+  width: var(--sidebar-width) !important;
+  padding-left: 0.75rem;
+  padding-right: 0;
+  padding-top: 2rem;
+}
+
+.aside .level2 {
+  margin-top: 0.315in;
+}
+
+.aside p {
+  margin-block-start: 0.75em;
+  margin-block-end: 0;
+}
+
+[data-id="skills"] ul {
+  margin: 0.05in 0 0.05in;
+}
+
+[data-id="contact"] ul {
+  padding-left: 0 !important;
+  margin-top: 0.75rem;
+}
+
+[data-id="disclaimer"] p {
+  margin-block-start: 0.15em;
+  margin-block-end: 0.15em;
+}
