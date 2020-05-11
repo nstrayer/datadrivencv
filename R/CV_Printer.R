@@ -109,7 +109,7 @@ CV_Printer <- R6::R6Class("CV_Printer", public = list(
     self$pdf_mode <- pdf_mode
     self$html_location <- html_location
     self$pdf_location <- pdf_location
-    self$position_entry_template = position_entry_template
+    private$position_entry_template = position_entry_template
 
     is_google_sheets_location <- stringr::str_detect(data_location, "docs\\.google\\.com")
     if(is_google_sheets_location){
