@@ -17,9 +17,9 @@ knitr::opts_chunk$set(
 
 # ======================================================================
 cv_printer <- datadrivencv::CV_Printer$new(
-  data_loc = "{{{data_loc}}}",  
-  pdf_location = "{{{pdf_loc}}}",
-  html_location = "{{{html_loc}}}")
+  data_location = "{{{data_location}}}",  
+  pdf_location = "{{{pdf_location}}}",
+  html_location = "{{{html_location}}}")
 ```
 
 ```{r}
@@ -37,7 +37,7 @@ Aside
 ================================================================================
 
 
-![logo]({{{logo_loc}}}){width=100%}
+![logo]({{{logo_location}}}){width=100%}
 
 ```{r}
 cv_printer$print_link_to_other_format()
@@ -66,7 +66,7 @@ Disclaimer {#disclaimer}
 
 Made with the R package [**pagedown**](https://github.com/rstudio/pagedown). 
 
-The source code is available [on github.com/nstrayer/cv]({{{source_loc}}}).
+The source code is available [on github.com/nstrayer/cv]({{{source_location}}}).
 
 Last updated on `r Sys.Date()`.
 
