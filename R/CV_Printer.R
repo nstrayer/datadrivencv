@@ -52,24 +52,20 @@ process_position_data <- function(position_data){
       names_to = 'description_num',
       values_to = 'description'
     ) %>%
-    dplyr::filter(!is.na(description) | description_num == 'description_1') %>%
-    dplyr::group_by(id) %>%
+    dplyr::select(-description_num) %>%
+    tidyr::nest(data = c(description)) %>%
     dplyr::mutate(
-      descriptions = list(description),
-      no_descriptions = is.na(dplyr::first(description))
-    ) %>%
-    dplyr::ungroup() %>%
-    dplyr::filter(description_num == 'description_1') %>%
-    dplyr::mutate(
+      description_bullets = purrr::map_chr(data, function(descriptions_df){
+        all_descriptions <- descriptions_df %>%
+          dplyr::filter(!is.na(description)) %>%
+          dplyr::pull(description)
+
+        paste('-', all_descriptions, collapse = '\n')
+      }),
       timeline = ifelse(
         is.na(start) | start == end,
         end,
         glue::glue('{end} - {start}')
-      ),
-      description_bullets = ifelse(
-        no_descriptions,
-        ' ',
-        purrr::map_chr(descriptions, ~paste('-', ., collapse = '\n'))
       )
     ) %>%
     dplyr::mutate_all(~ifelse(is.na(.), 'N/A', .))
@@ -234,7 +230,6 @@ private = list(
 
   #' `glue` template for building position entries
   position_entry_template = default_position_entry_template,
-
 
   #' Internal array holding all the links that have been stripped in the order they were stripped.
   links = c(),
