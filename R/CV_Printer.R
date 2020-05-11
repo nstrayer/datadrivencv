@@ -43,6 +43,9 @@ future_year <- lubridate::year(lubridate::ymd(Sys.Date())) + 10
 #'
 #' This class is initiated at the head of your CV or Resume Rmarkdown file and
 #' then through various `print_*` methods, builds the various components.
+#'
+#' @inheritParams use_datadriven_cv
+#'
 #' @export
 CV_Printer <- R6::R6Class("CV_Printer", list(
   #' @field position_data dataframe of positions by row
@@ -62,18 +65,21 @@ CV_Printer <- R6::R6Class("CV_Printer", list(
   #' @field links Internal array holding all the links that have been stripped in the order they were stripped.
   links = c(),
 
-  #' @description
-  #' Create a CV_Printer object.
-  #' @inheritParams use_datadriven_cv
+  #' @description Create a CV_Printer object.
+  #'
   #' @param data_location Path of the spreadsheets holding all your data. This can be
   #'   either a URL to a google sheet with multiple sheets containing the four
   #'   data types or a path to a folder containing four `.csv`s with the neccesary
   #'   data.
   #' @param pdf_location What location will the PDF of this CV be hosted at?
   #' @param html_location What location will the HTML version of this CV be hosted at?
-  #' @param pdf_mode Is the output being rendered into a pdf? Aka do links need to be stripped?
-  #' @param position_entry_template A `glue` template for building position entries.
-  #' @param sheet_is_publicly_readable If you're using google sheets for data, is the sheet publicly available? (Makes authorization easier.)
+  #' @param source_location Where is the code to build your CV hosted?
+  #' @param pdf_mode Is the output being rendered into a pdf? Aka do links need
+  #'   to be stripped?
+  #' @param position_entry_template A `glue` template for building position
+  #'   entries.
+  #' @param sheet_is_publicly_readable If you're using google sheets for data,
+  #'   is the sheet publicly available? (Makes authorization easier.)
   #' @return A new `CV_Printer` object.
   initialize = function(data_location,
                         pdf_mode = FALSE,
@@ -113,10 +119,16 @@ CV_Printer <- R6::R6Class("CV_Printer", list(
     }
 
   },
+  #' @description Turn on pdf mode for class. Useful for when the class is cached to avoid redownloading data.
+  #'
+  #' @param pdf_mode Are we turning PDF mode on?
   set_pdf_mode = function(pdf_mode = TRUE){
     self$pdf_mode <- pdf_mode
     invisible(self)
   },
+  #' @description Remove links from a text block and add to internal list
+  #'
+  #' @param text Character string with markdown style links that will be replaced if in PDF mode.
   sanitize_links = function(text){
     out_text <- text
     if(self$pdf_mode){
@@ -135,9 +147,12 @@ CV_Printer <- R6::R6Class("CV_Printer", list(
     }
     out_text
   },
-  # Take entire positions dataframe and removes the links
-  # in descending order so links for the same position are
-  # right next to eachother in number.
+  #' @description Take entire positions data frame and removes the links in descending order so links for the same position are right next to each other in number.  #' @description Take entire positions dataframe and removes the links in
+  #'   descending order so links for the same position are right next to
+  #'   each other in number.
+  #'
+  #' @param data Data frame with columns containing links
+  #' @param cols_to_strip Which columns should have links stripped from them (order is respected.)
   strip_links_from_cols = function(data, cols_to_strip){
     for(i in 1:nrow(data)){
       for(col in cols_to_strip){
@@ -146,8 +161,8 @@ CV_Printer <- R6::R6Class("CV_Printer", list(
     }
     data
   },
-  # Take a position dataframe and the section id desired
-  # and prints the section to markdown.
+  #' @description Take a position data frame and the section id desired and prints the section to markdown.
+  #' @param section_id ID of the positions section to be printed as encoded by the `section` column of the `positions` table
   print_section = function(section_id){
     self$position_data %>%
       # Google sheets loves to turn columns into list ones if there are different types
@@ -188,13 +203,15 @@ CV_Printer <- R6::R6Class("CV_Printer", list(
       dplyr::mutate_all(~ifelse(is.na(.), 'N/A', .)) %>%
       glue::glue_data(self$position_entry_template)
   },
+  #' @description Prints out text block identified by a given label.
+  #' @param label ID of the text block to print as encoded in `label` column of `text_blocks` table.
   print_text_block = function(label){
     dplyr::filter(self$text_blocks, loc == label) %>%
       dplyr::pull(text) %>%
       self$sanitize_links() %>%
       cat()
   },
-  # Construct a bar chart of skills
+  #' @description Construct a bar chart of skills
   print_skill_bars = function(out_of = 5){
     bar_color <- "#969696"
     bar_background <- "#d9d9d9"
@@ -209,6 +226,7 @@ CV_Printer <- R6::R6Class("CV_Printer", list(
         "</div>"
       )
   },
+  #' @description List of all links in document labeled by their superscript integer.
   print_links = function() {
     n_links <- length(self$links)
     if (n_links > 0) {
@@ -219,10 +237,12 @@ CV_Printer <- R6::R6Class("CV_Printer", list(
       })
     }
   },
+  #' @description Contact information section with icons
   print_contact_info = function(){
     self$contact_info %>%
       glue::glue_data("- <i class='fa fa-{icon}'></i> {contact}")
   },
+  #' @description Small addendum that links to pdf version of CV if currently HTML and HTML if currently PDF.
   print_link_to_other_format = function(){
     # When in export mode the little dots are unaligned, so fix that.
     if(self$pdf_mode){
@@ -231,6 +251,7 @@ CV_Printer <- R6::R6Class("CV_Printer", list(
       glue::glue("[<i class='fas fa-download'></i> Download a PDF of this CV]({self$pdf_location})")
     }
   },
+  #' @description Appends some styles specific to PDF output.
   set_style = function(){
     # When in export mode the little dots are unaligned, so fix that.
     if(self$pdf_mode) {
