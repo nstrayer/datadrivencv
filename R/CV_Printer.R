@@ -44,26 +44,45 @@ future_year <- lubridate::year(lubridate::ymd(Sys.Date())) + 10
 #' This class is initiated at the head of your CV or Resume Rmarkdown file and
 #' then through various `print_*` methods, builds the various components.
 #'
-#' @inheritParams use_datadriven_cv
 #'
 #' @export
-CV_Printer <- R6::R6Class("CV_Printer", list(
-  #' @field position_data dataframe of positions by row
+CV_Printer <- R6::R6Class("CV_Printer", public = list(
+  #' @field position_data data frame of positions by row with columns:
+  #' * `section` What type of position entry,
+  #' * `title` Title of entry,
+  #' * `loc` Where the position took place,
+  #' * `institution` Institution the position was associated with,
+  #' * `start` Start year of position
+  #' * `end` End year of position,
+  #' * `in_resume` Logical to filter what entries should be included in a resume (Not used for CV mode),
+  #' * `description_{1,2,...}` Free form text fields to be added as description bullets.	description_2	description_3
   position_data = dplyr::tibble(),
-  #' @field position_data dataframe of positions by row
-  skills        = dplyr::tibble(),
+
+  #' @field skills data frame with two columns:
+  #'  * `skill` ID of skill
+  #'  * `level` Relative numeric level for skill
+  skills = dplyr::tibble(),
+
+  #' @field text_blocks data frame with two columns:
+  #' * `loc` Where this text lock is going in CV
+  #' * `text` Actual text to be placed.
   text_blocks   = dplyr::tibble(),
+
+  #' @field contact_info data frame with three columns:
+  #' * `loc` What the contact point is for (e.g. email)
+  #' * `icon` Font-awesome 4 icon id for this contact point (e.g. "envelope")
+  #' * `contact` Actual contact info such as `nick@test.com`.
   contact_info  = dplyr::tibble(),
-  #' @field position_entry_template `glue` template for building position entries
-  position_entry_template = default_position_entry_template,
+
   #' @field pdf_mode Is the output being rendered into a pdf? Aka do links need to be stripped?
   pdf_mode = FALSE,
+
   #' @field html_location Where will the html version of your CV be hosted?
   html_location = "",
+
   #' @field pdf_location Where will the pdf version of your CV be hosted?
   pdf_location = "",
-  #' @field links Internal array holding all the links that have been stripped in the order they were stripped.
-  links = c(),
+
 
   #' @description Create a CV_Printer object.
   #'
@@ -126,41 +145,7 @@ CV_Printer <- R6::R6Class("CV_Printer", list(
     self$pdf_mode <- pdf_mode
     invisible(self)
   },
-  #' @description Remove links from a text block and add to internal list
-  #'
-  #' @param text Character string with markdown style links that will be replaced if in PDF mode.
-  sanitize_links = function(text){
-    out_text <- text
-    if(self$pdf_mode){
-      link_titles <- stringr::str_extract_all(text, '(?<=\\[).+?(?=\\])')[[1]]
-      link_destinations <- stringr::str_extract_all(text, '(?<=\\().+?(?=\\))')[[1]]
-      n_links <- length(link_titles)
-      if(n_links > 0){
-        # add links to links array
-        self$links <- c(self$links, link_destinations)
 
-        out_text <- text %>%
-          stringr::str_replace_all(purrr::set_names(paste0("<sup>", 1:n_links, "</sup>"),
-                                                    paste0("\\(", link_destinations, "\\)"))) %>%
-          stringr::str_replace_all(purrr::set_names(link_titles, paste0("\\[", link_titles, "\\]")))
-      }
-    }
-    out_text
-  },
-  #' @description Take entire positions data frame and removes the links in descending order so links for the same position are right next to each other in number.  #' @description Take entire positions dataframe and removes the links in
-  #'   descending order so links for the same position are right next to
-  #'   each other in number.
-  #'
-  #' @param data Data frame with columns containing links
-  #' @param cols_to_strip Which columns should have links stripped from them (order is respected.)
-  strip_links_from_cols = function(data, cols_to_strip){
-    for(i in 1:nrow(data)){
-      for(col in cols_to_strip){
-        data[i, col] <- self$sanitize_links(data[i, col])
-      }
-    }
-    data
-  },
   #' @description Take a position data frame and the section id desired and prints the section to markdown.
   #' @param section_id ID of the positions section to be printed as encoded by the `section` column of the `positions` table
   print_section = function(section_id){
@@ -199,19 +184,20 @@ CV_Printer <- R6::R6Class("CV_Printer", list(
           purrr::map_chr(descriptions, ~paste('-', ., collapse = '\n'))
         )
       ) %>%
-      self$strip_links_from_cols(c('title', 'description_bullets')) %>%
+      private$strip_links_from_cols(c('title', 'description_bullets')) %>%
       dplyr::mutate_all(~ifelse(is.na(.), 'N/A', .)) %>%
-      glue::glue_data(self$position_entry_template)
+      glue::glue_data(private$position_entry_template)
   },
   #' @description Prints out text block identified by a given label.
   #' @param label ID of the text block to print as encoded in `label` column of `text_blocks` table.
   print_text_block = function(label){
     dplyr::filter(self$text_blocks, loc == label) %>%
       dplyr::pull(text) %>%
-      self$sanitize_links() %>%
+      private$sanitize_links() %>%
       cat()
   },
   #' @description Construct a bar chart of skills
+  #' @param out_of The relative maximum for skills. Used to set what a fully filled in skill bar is.
   print_skill_bars = function(out_of = 5){
     bar_color <- "#969696"
     bar_background <- "#d9d9d9"
@@ -258,5 +244,47 @@ CV_Printer <- R6::R6Class("CV_Printer", list(
       cat(pdf_style)
     }
   }
+),
+private = list(
+
+  #' `glue` template for building position entries
+  position_entry_template = default_position_entry_template,
+
+
+  #' Internal array holding all the links that have been stripped in the order they were stripped.
+  links = c(),
+
+  # Remove links from a text block and add to internal list
+  sanitize_links = function(text){
+    out_text <- text
+    if(self$pdf_mode){
+      link_titles <- stringr::str_extract_all(text, '(?<=\\[).+?(?=\\])')[[1]]
+      link_destinations <- stringr::str_extract_all(text, '(?<=\\().+?(?=\\))')[[1]]
+      n_links <- length(link_titles)
+      if(n_links > 0){
+        # add links to links array
+        private$links <- c(private$links, link_destinations)
+
+        out_text <- text %>%
+          stringr::str_replace_all(purrr::set_names(paste0("<sup>", 1:n_links, "</sup>"),
+                                                    paste0("\\(", link_destinations, "\\)"))) %>%
+          stringr::str_replace_all(purrr::set_names(link_titles, paste0("\\[", link_titles, "\\]")))
+      }
+    }
+    out_text
+  },
+  # Take entire positions data frame and removes the links in descending order so links for the same position are right next to each other in number.  #' @description Take entire positions dataframe and removes the links in
+  #   descending order so links for the same position are right next to
+  #   each other in number.
+  strip_links_from_cols = function(data, cols_to_strip){
+    for(i in 1:nrow(data)){
+      for(col in cols_to_strip){
+        data[i, col] <- private$sanitize_links(data[i, col])
+      }
+    }
+    data
+  }
+
+
 ))
 

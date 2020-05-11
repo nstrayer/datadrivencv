@@ -15,19 +15,42 @@ then through various \verb{print_*} methods, builds the various components.
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
-\item{\code{position_data}}{dataframe of positions by row}
+\item{\code{position_data}}{data frame of positions by row with columns:
+\itemize{
+\item \code{section} What type of position entry,
+\item \code{title} Title of entry,
+\item \code{loc} Where the position took place,
+\item \code{institution} Institution the position was associated with,
+\item \code{start} Start year of position
+\item \code{end} End year of position,
+\item \code{in_resume} Logical to filter what entries should be included in a resume (Not used for CV mode),
+\item \verb{description_\{1,2,...\}} Free form text fields to be added as description bullets.    description_2    description_3
+}}
 
-\item{\code{position_data}}{dataframe of positions by row}
+\item{\code{skills}}{data frame with two columns:
+\itemize{
+\item \code{skill} ID of skill
+\item \code{level} Relative numeric level for skill
+}}
 
-\item{\code{position_entry_template}}{\code{glue} template for building position entries}
+\item{\code{text_blocks}}{data frame with two columns:
+\itemize{
+\item \code{loc} Where this text lock is going in CV
+\item \code{text} Actual text to be placed.
+}}
+
+\item{\code{contact_info}}{data frame with three columns:
+\itemize{
+\item \code{loc} What the contact point is for (e.g. email)
+\item \code{icon} Font-awesome 4 icon id for this contact point (e.g. "envelope")
+\item \code{contact} Actual contact info such as \code{nick@test.com}.
+}}
 
 \item{\code{pdf_mode}}{Is the output being rendered into a pdf? Aka do links need to be stripped?}
 
 \item{\code{html_location}}{Where will the html version of your CV be hosted?}
 
 \item{\code{pdf_location}}{Where will the pdf version of your CV be hosted?}
-
-\item{\code{links}}{Internal array holding all the links that have been stripped in the order they were stripped.}
 }
 \if{html}{\out{</div>}}
 }
@@ -36,8 +59,6 @@ then through various \verb{print_*} methods, builds the various components.
 \itemize{
 \item \href{#method-new}{\code{CV_Printer$new()}}
 \item \href{#method-set_pdf_mode}{\code{CV_Printer$set_pdf_mode()}}
-\item \href{#method-sanitize_links}{\code{CV_Printer$sanitize_links()}}
-\item \href{#method-strip_links_from_cols}{\code{CV_Printer$strip_links_from_cols()}}
 \item \href{#method-print_section}{\code{CV_Printer$print_section()}}
 \item \href{#method-print_text_block}{\code{CV_Printer$print_text_block()}}
 \item \href{#method-print_skill_bars}{\code{CV_Printer$print_skill_bars()}}
@@ -71,15 +92,20 @@ either a URL to a google sheet with multiple sheets containing the four
 data types or a path to a folder containing four \code{.csv}s with the neccesary
 data.}
 
-\item{\code{pdf_mode}}{Is the output being rendered into a pdf? Aka do links need to be stripped?}
+\item{\code{pdf_mode}}{Is the output being rendered into a pdf? Aka do links need
+to be stripped?}
 
 \item{\code{html_location}}{What location will the HTML version of this CV be hosted at?}
 
 \item{\code{pdf_location}}{What location will the PDF of this CV be hosted at?}
 
-\item{\code{position_entry_template}}{A \code{glue} template for building position entries.}
+\item{\code{position_entry_template}}{A \code{glue} template for building position
+entries.}
 
-\item{\code{sheet_is_publicly_readable}}{If you're using google sheets for data, is the sheet publicly available? (Makes authorization easier.)}
+\item{\code{sheet_is_publicly_readable}}{If you're using google sheets for data,
+is the sheet publicly available? (Makes authorization easier.)}
+
+\item{\code{source_location}}{Where is the code to build your CV hosted?}
 }
 \if{html}{\out{</div>}}
 }
@@ -90,54 +116,71 @@ A new \code{CV_Printer} object.
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-set_pdf_mode"></a>}}
 \subsection{Method \code{set_pdf_mode()}}{
+Turn on pdf mode for class. Useful for when the class is cached to avoid redownloading data.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{CV_Printer$set_pdf_mode(pdf_mode = TRUE)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{pdf_mode}}{Are we turning PDF mode on?}
 }
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-sanitize_links"></a>}}
-\subsection{Method \code{sanitize_links()}}{
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{CV_Printer$sanitize_links(text)}\if{html}{\out{</div>}}
+\if{html}{\out{</div>}}
 }
-
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-strip_links_from_cols"></a>}}
-\subsection{Method \code{strip_links_from_cols()}}{
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{CV_Printer$strip_links_from_cols(data, cols_to_strip)}\if{html}{\out{</div>}}
-}
-
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-print_section"></a>}}
 \subsection{Method \code{print_section()}}{
+Take a position data frame and the section id desired and prints the section to markdown.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{CV_Printer$print_section(section_id)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{section_id}}{ID of the positions section to be printed as encoded by the \code{section} column of the \code{positions} table}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-print_text_block"></a>}}
 \subsection{Method \code{print_text_block()}}{
+Prints out text block identified by a given label.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{CV_Printer$print_text_block(label)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{label}}{ID of the text block to print as encoded in \code{label} column of \code{text_blocks} table.}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-print_skill_bars"></a>}}
 \subsection{Method \code{print_skill_bars()}}{
+Construct a bar chart of skills
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{CV_Printer$print_skill_bars(out_of = 5)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{out_of}}{The relative maximum for skills. Used to set what a fully filled in skill bar is.}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-print_links"></a>}}
 \subsection{Method \code{print_links()}}{
+List of all links in document labeled by their superscript integer.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{CV_Printer$print_links()}\if{html}{\out{</div>}}
 }
@@ -146,6 +189,7 @@ A new \code{CV_Printer} object.
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-print_contact_info"></a>}}
 \subsection{Method \code{print_contact_info()}}{
+Contact information section with icons
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{CV_Printer$print_contact_info()}\if{html}{\out{</div>}}
 }
@@ -154,6 +198,7 @@ A new \code{CV_Printer} object.
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-print_link_to_other_format"></a>}}
 \subsection{Method \code{print_link_to_other_format()}}{
+Small addendum that links to pdf version of CV if currently HTML and HTML if currently PDF.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{CV_Printer$print_link_to_other_format()}\if{html}{\out{</div>}}
 }
@@ -162,6 +207,9 @@ A new \code{CV_Printer} object.
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-set_style"></a>}}
 \subsection{Method \code{set_style()}}{
+Appends some styles specific to PDF output.
+\code{glue} template for building position entries
+Internal array holding all the links that have been stripped in the order they were stripped.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{CV_Printer$set_style()}\if{html}{\out{</div>}}
 }
