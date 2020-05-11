@@ -154,7 +154,8 @@ CV_Printer <- R6::R6Class("CV_Printer", public = list(
     # Clean up positions dataframe to format we need it for printing
     self$position_data <- process_position_data(self$position_data)
   },
-  #' @description Turn on pdf mode for class. Useful for when the class is cached to avoid redownloading data.
+
+  #' @description Turn on pdf mode for class. Useful for when the class is cached to avoid re-downloading data.
   #'
   #' @param pdf_mode Are we turning PDF mode on?
   set_pdf_mode = function(pdf_mode = TRUE){
@@ -169,6 +170,7 @@ CV_Printer <- R6::R6Class("CV_Printer", public = list(
       private$strip_links_from_cols(c('title', 'description_bullets')) %>%
       glue::glue_data(private$position_entry_template)
   },
+
   #' @description Prints out text block identified by a given label.
   #' @param label ID of the text block to print as encoded in `label` column of `text_blocks` table.
   print_text_block = function(label){
@@ -177,6 +179,7 @@ CV_Printer <- R6::R6Class("CV_Printer", public = list(
       private$sanitize_links() %>%
       cat()
   },
+
   #' @description Construct a bar chart of skills
   #' @param out_of The relative maximum for skills. Used to set what a fully filled in skill bar is.
   print_skill_bars = function(out_of = 5){
@@ -193,6 +196,7 @@ CV_Printer <- R6::R6Class("CV_Printer", public = list(
         "</div>"
       )
   },
+
   #' @description List of all links in document labeled by their superscript integer.
   print_links = function() {
     n_links <- length(self$links)
@@ -204,11 +208,15 @@ CV_Printer <- R6::R6Class("CV_Printer", public = list(
       })
     }
   },
+
   #' @description Contact information section with icons
   print_contact_info = function(){
-    self$contact_info %>%
-      glue::glue_data("- <i class='fa fa-{icon}'></i> {contact}")
+    glue::glue_data(
+      self$contact_info,
+      "- <i class='fa fa-{icon}'></i> {contact}"
+    )
   },
+
   #' @description Small addendum that links to pdf version of CV if currently HTML and HTML if currently PDF.
   print_link_to_other_format = function(){
     # When in export mode the little dots are unaligned, so fix that.
@@ -218,6 +226,7 @@ CV_Printer <- R6::R6Class("CV_Printer", public = list(
       glue::glue("[<i class='fas fa-download'></i> Download a PDF of this CV]({self$pdf_location})")
     }
   },
+
   #' @description Appends some styles specific to PDF output.
   set_style = function(){
     # When in export mode the little dots are unaligned, so fix that.
@@ -226,8 +235,8 @@ CV_Printer <- R6::R6Class("CV_Printer", public = list(
     }
   }
 ),
-private = list(
 
+private = list(
   #' `glue` template for building position entries
   position_entry_template = default_position_entry_template,
 
@@ -253,9 +262,9 @@ private = list(
     }
     out_text
   },
-  # Take entire positions data frame and removes the links in descending order so links for the same position are right next to each other in number.  #' @description Take entire positions dataframe and removes the links in
-  #   descending order so links for the same position are right next to
-  #   each other in number.
+
+  # Take entire positions data frame and removes the links in descending order
+  # so links for the same position are right next to each other in number.
   strip_links_from_cols = function(data, cols_to_strip){
     for(i in 1:nrow(data)){
       for(col in cols_to_strip){
@@ -293,7 +302,5 @@ private = list(
     self$text_blocks   <- readr::read_csv(paste0(data_location, "text_blocks.csv"))
     self$contact_info  <- readr::read_csv(paste0(data_location, "contact_info.csv"), skip = 1)
   }
-
-
 ))
 
