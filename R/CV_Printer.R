@@ -38,6 +38,42 @@ date_is_current <- function(date){
 # This year is assigned to the end date of "current" events to make sure they get sorted later.
 future_year <- lubridate::year(lubridate::ymd(Sys.Date())) + 10
 
+# Cleans up positions data to easily printable format
+process_position_data <- function(position_data){
+  position_data %>%
+    dplyr::mutate(
+      end = ifelse(is.na(end), "Current", end),
+      end_num = as.integer(ifelse(date_is_current(end), future_year, end))
+    ) %>%
+    dplyr::arrange(desc(end_num)) %>%
+    dplyr::mutate(id = dplyr::row_number()) %>%
+    tidyr::pivot_longer(
+      tidyr::starts_with('description'),
+      names_to = 'description_num',
+      values_to = 'description'
+    ) %>%
+    dplyr::filter(!is.na(description) | description_num == 'description_1') %>%
+    dplyr::group_by(id) %>%
+    dplyr::mutate(
+      descriptions = list(description),
+      no_descriptions = is.na(dplyr::first(description))
+    ) %>%
+    dplyr::ungroup() %>%
+    dplyr::filter(description_num == 'description_1') %>%
+    dplyr::mutate(
+      timeline = ifelse(
+        is.na(start) | start == end,
+        end,
+        glue::glue('{end} - {start}')
+      ),
+      description_bullets = ifelse(
+        no_descriptions,
+        ' ',
+        purrr::map_chr(descriptions, ~paste('-', ., collapse = '\n'))
+      )
+    ) %>%
+    dplyr::mutate_all(~ifelse(is.na(.), 'N/A', .))
+}
 
 #' R6 Class to print components of CV from data
 #'
@@ -113,30 +149,14 @@ CV_Printer <- R6::R6Class("CV_Printer", public = list(
 
     is_google_sheets_location <- stringr::str_detect(data_location, "docs\\.google\\.com")
     if(is_google_sheets_location){
-
-      if(sheet_is_publicly_readable){
-        # This tells google sheets to not try and authenticate. Note that this will only
-        # work if your sheet has sharing set to "anyone with link can view"
-        googlesheets4::sheets_deauth()
-      } else {
-        # My info is in a public sheet so there's no need to do authentication but if you want
-        # to use a private sheet, then this is the way you need to do it.
-        # designate project-specific cache so we can render Rmd without problems
-        options(gargle_oauth_cache = ".secrets")
-      }
-
-      self$position_data <- googlesheets4::read_sheet(data_location, sheet = "positions")
-      self$skills        <- googlesheets4::read_sheet(data_location, sheet = "language_skills")
-      self$text_blocks   <- googlesheets4::read_sheet(data_location, sheet = "text_blocks")
-      self$contact_info  <- googlesheets4::read_sheet(data_location, sheet = "contact_info", skip = 1)
+      private$load_data_from_googlesheets(data_location, sheet_is_publicly_readable)
     } else {
       # Want to go oldschool with just a csv?
-      self$position_data <- readr::read_csv(paste0(data_location, "positions.csv"))
-      self$skills        <- readr::read_csv(paste0(data_location, "language_skills.csv"))
-      self$text_blocks   <- readr::read_csv(paste0(data_location, "text_blocks.csv"))
-      self$contact_info  <- readr::read_csv(paste0(data_location, "contact_info.csv"), skip = 1)
+      private$load_data_from_csvs(data_location)
     }
 
+    # Clean up positions dataframe to format we need it for printing
+    self$position_data <- process_position_data(self$position_data)
   },
   #' @description Turn on pdf mode for class. Useful for when the class is cached to avoid redownloading data.
   #'
@@ -149,43 +169,8 @@ CV_Printer <- R6::R6Class("CV_Printer", public = list(
   #' @description Take a position data frame and the section id desired and prints the section to markdown.
   #' @param section_id ID of the positions section to be printed as encoded by the `section` column of the `positions` table
   print_section = function(section_id){
-    self$position_data %>%
-      # Google sheets loves to turn columns into list ones if there are different types
-      dplyr::mutate_if(is.list, purrr::map_chr, as.character) %>%
-      dplyr::filter(section == section_id) %>%
-      dplyr::mutate(
-        end = ifelse(is.na(end), "Current", end),
-        end_num = as.integer(ifelse(date_is_current(end), future_year, end))
-      ) %>%
-      dplyr::arrange(desc(end_num)) %>%
-      dplyr::mutate(id = dplyr::row_number()) %>%
-      tidyr::pivot_longer(
-        tidyr::starts_with('description'),
-        names_to = 'description_num',
-        values_to = 'description'
-      ) %>%
-      dplyr::filter(!is.na(description) | description_num == 'description_1') %>%
-      dplyr::group_by(id) %>%
-      dplyr::mutate(
-        descriptions = list(description),
-        no_descriptions = is.na(dplyr::first(description))
-      ) %>%
-      dplyr::ungroup() %>%
-      dplyr::filter(description_num == 'description_1') %>%
-      dplyr::mutate(
-        timeline = ifelse(
-          is.na(start) | start == end,
-          end,
-          glue::glue('{end} - {start}')
-        ),
-        description_bullets = ifelse(
-          no_descriptions,
-          ' ',
-          purrr::map_chr(descriptions, ~paste('-', ., collapse = '\n'))
-        )
-      ) %>%
+    dplyr::filter(self$position_data, section == section_id) %>%
       private$strip_links_from_cols(c('title', 'description_bullets')) %>%
-      dplyr::mutate_all(~ifelse(is.na(.), 'N/A', .)) %>%
       glue::glue_data(private$position_entry_template)
   },
   #' @description Prints out text block identified by a given label.
@@ -283,6 +268,35 @@ private = list(
       }
     }
     data
+  },
+
+  load_data_from_googlesheets = function(data_location, sheet_is_publicly_readable){
+
+    if(sheet_is_publicly_readable){
+      # This tells google sheets to not try and authenticate. Note that this will only
+      # work if your sheet has sharing set to "anyone with link can view"
+      googlesheets4::sheets_deauth()
+    } else {
+      # My info is in a public sheet so there's no need to do authentication but if you want
+      # to use a private sheet, then this is the way you need to do it.
+      # designate project-specific cache so we can render Rmd without problems
+      options(gargle_oauth_cache = ".secrets")
+    }
+
+    self$position_data <- googlesheets4::read_sheet(data_location, sheet = "positions") %>%
+      # Google sheets loves to turn columns into list ones if there are different types
+      dplyr::mutate_if(is.list, purrr::map_chr, as.character)
+
+    self$skills        <- googlesheets4::read_sheet(data_location, sheet = "language_skills")
+    self$text_blocks   <- googlesheets4::read_sheet(data_location, sheet = "text_blocks")
+    self$contact_info  <- googlesheets4::read_sheet(data_location, sheet = "contact_info", skip = 1)
+  },
+
+  load_data_from_csvs = function(data_location){
+    self$position_data <- readr::read_csv(paste0(data_location, "positions.csv"))
+    self$skills        <- readr::read_csv(paste0(data_location, "language_skills.csv"))
+    self$text_blocks   <- readr::read_csv(paste0(data_location, "text_blocks.csv"))
+    self$contact_info  <- readr::read_csv(paste0(data_location, "contact_info.csv"), skip = 1)
   }
 
 
