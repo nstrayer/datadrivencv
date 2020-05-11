@@ -6,34 +6,34 @@
 \usage{
 use_datadriven_cv(
   full_name = "Sarah Arcos",
-  data_loc = system.file("sample_data/", package = "datadrivencv"),
-  pdf_loc = "https://github.com/nstrayer/cv/raw/master/strayer_cv.pdf",
-  html_loc = "nickstrayer.me/datadrivencv/",
-  source_loc = "https://github.com/nstrayer/datadrivencv",
-  logo_loc = system.file("figs/logo.png", package = "datadrivencv")
+  data_location = system.file("sample_data/", package = "datadrivencv"),
+  pdf_location = "https://github.com/nstrayer/cv/raw/master/strayer_cv.pdf",
+  html_location = "nickstrayer.me/datadrivencv/",
+  source_location = "https://github.com/nstrayer/datadrivencv",
+  logo_location = system.file("figs/logo.png", package = "datadrivencv")
 )
 }
 \arguments{
 \item{full_name}{Your full name, used in title of document and header}
 
-\item{data_loc}{Path of the spreadsheets holding all your data. This can be
+\item{data_location}{Path of the spreadsheets holding all your data. This can be
 either a URL to a google sheet with multiple sheets containing the four
-data types or a path to a folder containing four `.csv`s with the neccesary
+data types or a path to a folder containing four \code{.csv}s with the neccesary
 data.}
 
-\item{pdf_loc}{What location will the PDF of this CV be hosted at?}
+\item{pdf_location}{What location will the PDF of this CV be hosted at?}
 
-\item{html_loc}{What location will the HTML version of this CV be hosted at?}
+\item{html_location}{What location will the HTML version of this CV be hosted at?}
 
-\item{source_loc}{Where is the code to build your CV hosted?}
+\item{source_location}{Where is the code to build your CV hosted?}
 
-\item{logo_loc}{Link (local or remote) to the logo image for the upper right corner of your CV.}
+\item{logo_location}{Link (local or remote) to the logo image for the upper right corner of your CV.}
 }
 \value{
-`cv.Rmd` and `dd_cv.css` written to the current working directory.
+\code{cv.Rmd} and \code{dd_cv.css} written to the current working directory.
 }
 \description{
-Sets up the `.Rmd` file for a data-driven cv in current working directory.
+Sets up the \code{.Rmd} file for a data-driven cv in current working directory.
 Also adds css file for current CV so style can be custommized.
 }
 \examples{
@@ -41,11 +41,11 @@ Also adds css file for current CV so style can be custommized.
 \dontrun{
   use_datadriven_cv(
     full_name = "Nick Strayer",
-    data_loc = "https://docs.google.com/spreadsheets/d/14MQICF2F8-vf8CKPF1m4lyGKO6_thG-4aSwat1e2TWc",
-    pdf_loc = "https://github.com/nstrayer/cv/raw/master/strayer_cv.pdf",
-    html_loc = "nickstrayer.me/cv/",
-    source_loc = "https://github.com/nstrayer/cv",
-    logo_loc = "https://www.r-project.org/logo/Rlogo.png"
+    data_location = "https://docs.google.com/spreadsheets/d/14MQICF2F8-vf8CKPF1m4lyGKO6_thG-4aSwat1e2TWc",
+    pdf_location = "https://github.com/nstrayer/cv/raw/master/strayer_cv.pdf",
+    html_location = "nickstrayer.me/cv/",
+    source_location = "https://github.com/nstrayer/cv",
+    logo_location = "https://www.r-project.org/logo/Rlogo.png"
   )
 }
 

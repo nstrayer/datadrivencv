@@ -39,31 +39,55 @@ date_is_current <- function(date){
 future_year <- lubridate::year(lubridate::ymd(Sys.Date())) + 10
 
 
-
+#' R6 Class to print components of CV from data
+#'
+#' This class is initiated at the head of your CV or Resume Rmarkdown file and
+#' then through various `print_*` methods, builds the various components.
 #' @export
 CV_Printer <- R6::R6Class("CV_Printer", list(
+  #' @field position_data dataframe of positions by row
   position_data = dplyr::tibble(),
+  #' @field position_data dataframe of positions by row
   skills        = dplyr::tibble(),
   text_blocks   = dplyr::tibble(),
   contact_info  = dplyr::tibble(),
+  #' @field position_entry_template `glue` template for building position entries
   position_entry_template = default_position_entry_template,
+  #' @field pdf_mode Is the output being rendered into a pdf? Aka do links need to be stripped?
   pdf_mode = FALSE,
+  #' @field html_location Where will the html version of your CV be hosted?
   html_location = "",
+  #' @field pdf_location Where will the pdf version of your CV be hosted?
   pdf_location = "",
+  #' @field links Internal array holding all the links that have been stripped in the order they were stripped.
   links = c(),
-  initialize = function(data_loc,
-                        pdf = FALSE,
+
+  #' @description
+  #' Create a CV_Printer object.
+  #' @inheritParams use_datadriven_cv
+  #' @param data_location Path of the spreadsheets holding all your data. This can be
+  #'   either a URL to a google sheet with multiple sheets containing the four
+  #'   data types or a path to a folder containing four `.csv`s with the neccesary
+  #'   data.
+  #' @param pdf_location What location will the PDF of this CV be hosted at?
+  #' @param html_location What location will the HTML version of this CV be hosted at?
+  #' @param pdf_mode Is the output being rendered into a pdf? Aka do links need to be stripped?
+  #' @param position_entry_template A `glue` template for building position entries.
+  #' @param sheet_is_publicly_readable If you're using google sheets for data, is the sheet publicly available? (Makes authorization easier.)
+  #' @return A new `CV_Printer` object.
+  initialize = function(data_location,
+                        pdf_mode = FALSE,
                         html_location,
                         pdf_location,
                         position_entry_template = default_position_entry_template,
                         sheet_is_publicly_readable = TRUE) {
-    self$pdf_mode <- pdf
+    self$pdf_mode <- pdf_mode
     self$html_location <- html_location
     self$pdf_location <- pdf_location
     self$position_entry_template = position_entry_template
 
-    is_google_sheets_loc <- stringr::str_detect(data_loc, "docs\\.google\\.com")
-    if(is_google_sheets_loc){
+    is_google_sheets_location <- stringr::str_detect(data_location, "docs\\.google\\.com")
+    if(is_google_sheets_location){
 
       if(sheet_is_publicly_readable){
         # This tells google sheets to not try and authenticate. Note that this will only
@@ -76,16 +100,16 @@ CV_Printer <- R6::R6Class("CV_Printer", list(
         options(gargle_oauth_cache = ".secrets")
       }
 
-      self$position_data <- googlesheets4::read_sheet(data_loc, sheet = "positions")
-      self$skills        <- googlesheets4::read_sheet(data_loc, sheet = "language_skills")
-      self$text_blocks   <- googlesheets4::read_sheet(data_loc, sheet = "text_blocks")
-      self$contact_info  <- googlesheets4::read_sheet(data_loc, sheet = "contact_info", skip = 1)
+      self$position_data <- googlesheets4::read_sheet(data_location, sheet = "positions")
+      self$skills        <- googlesheets4::read_sheet(data_location, sheet = "language_skills")
+      self$text_blocks   <- googlesheets4::read_sheet(data_location, sheet = "text_blocks")
+      self$contact_info  <- googlesheets4::read_sheet(data_location, sheet = "contact_info", skip = 1)
     } else {
       # Want to go oldschool with just a csv?
-      self$position_data <- readr::read_csv(paste0(data_loc, "positions.csv"))
-      self$skills        <- readr::read_csv(paste0(data_loc, "language_skills.csv"))
-      self$text_blocks   <- readr::read_csv(paste0(data_loc, "text_blocks.csv"))
-      self$contact_info  <- readr::read_csv(paste0(data_loc, "contact_info.csv"), skip = 1)
+      self$position_data <- readr::read_csv(paste0(data_location, "positions.csv"))
+      self$skills        <- readr::read_csv(paste0(data_location, "language_skills.csv"))
+      self$text_blocks   <- readr::read_csv(paste0(data_location, "text_blocks.csv"))
+      self$contact_info  <- readr::read_csv(paste0(data_location, "contact_info.csv"), skip = 1)
     }
 
   },
