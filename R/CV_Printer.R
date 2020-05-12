@@ -39,36 +39,23 @@ date_is_current <- function(date){
 future_year <- lubridate::year(lubridate::ymd(Sys.Date())) + 10
 
 # Cleans up positions data to easily printable format
-process_position_data <- function(position_data){
+process_position_data <- function(position_data) {
   position_data %>%
-    dplyr::mutate(
-      end = ifelse(is.na(end), "Current", end),
-      end_num = as.integer(ifelse(date_is_current(end), future_year, end))
-    ) %>%
-    dplyr::arrange(desc(end_num)) %>%
-    dplyr::mutate(id = dplyr::row_number()) %>%
-    tidyr::pivot_longer(
+    tidyr::unite(
       tidyr::starts_with('description'),
-      names_to = 'description_num',
-      values_to = 'description'
+      col = "description_bullets",
+      sep = "\n- ",
+      na.rm = TRUE
     ) %>%
-    dplyr::select(-description_num) %>%
-    tidyr::nest(data = c(description)) %>%
     dplyr::mutate(
-      description_bullets = purrr::map_chr(data, function(descriptions_df){
-        all_descriptions <- descriptions_df %>%
-          dplyr::filter(!is.na(description)) %>%
-          dplyr::pull(description)
-
-        paste('-', all_descriptions, collapse = '\n')
-      }),
-      timeline = ifelse(
-        is.na(start) | start == end,
-        end,
-        glue::glue('{end} - {start}')
-      )
+      description_bullets = paste0("- ", description_bullets),
+      end = ifelse(is.na(end), "Current", end),
+      timeline = ifelse(is.na(start) | start == end,
+                        end,
+                        glue::glue('{end} - {start}'))
     ) %>%
-    dplyr::mutate_all(~ifelse(is.na(.), 'N/A', .))
+    dplyr::arrange(desc(ifelse(date_is_current(end), future_year, end))) %>%
+    dplyr::mutate_all(~ ifelse(is.na(.), 'N/A', .))
 }
 
 #' R6 Class to print components of CV from data
