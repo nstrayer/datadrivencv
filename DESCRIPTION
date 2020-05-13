@@ -20,6 +20,7 @@ Imports:
     purrr,
     stringr,
     magrittr,
-    usethis
+    usethis,
+    pagedown
 RoxygenNote: 7.0.2
 Roxygen: list(markdown = TRUE)
