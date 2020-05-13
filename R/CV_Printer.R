@@ -186,12 +186,12 @@ CV_Printer <- R6::R6Class("CV_Printer", public = list(
 
   #' @description List of all links in document labeled by their superscript integer.
   print_links = function() {
-    n_links <- length(self$links)
+    n_links <- length(private$links)
     if (n_links > 0) {
       cat(link_header)
 
-      purrr::walk2(self$links, 1:n_links, function(link, index) {
-        print(glue('{index}. {link}'))
+      purrr::walk2(private$links, 1:n_links, function(link, index) {
+        print(glue::glue('{index}. {link}'))
       })
     }
   },
