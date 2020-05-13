@@ -232,22 +232,29 @@ private = list(
 
   # Remove links from a text block and add to internal list
   sanitize_links = function(text){
-    out_text <- text
     if(self$pdf_mode){
       link_titles <- stringr::str_extract_all(text, '(?<=\\[).+?(?=\\])')[[1]]
       link_destinations <- stringr::str_extract_all(text, '(?<=\\().+?(?=\\))')[[1]]
-      n_links <- length(link_titles)
-      if(n_links > 0){
+      n_links <- length(private$links)
+      n_new_links <- length(link_titles)
+      if(n_new_links > 0){
         # add links to links array
         private$links <- c(private$links, link_destinations)
 
-        out_text <- text %>%
-          stringr::str_replace_all(purrr::set_names(paste0("<sup>", 1:n_links, "</sup>"),
-                                                    paste0("\\(", link_destinations, "\\)"))) %>%
-          stringr::str_replace_all(purrr::set_names(link_titles, paste0("\\[", link_titles, "\\]")))
+        text <- text %>%
+          stringr::str_replace_all(
+            paste0("<sup>", (1:n_new_links) + n_links, "</sup>") %>%
+              purrr::set_names(paste0("(", link_destinations, ")")) %>%
+              stringr::fixed()
+          ) %>%
+          stringr::str_replace_all(
+            link_titles %>%
+              purrr::set_names(paste0("[", link_titles, "]")) %>%
+              stringr::fixed()
+          )
       }
     }
-    out_text
+    text
   },
 
   # Take entire positions data frame and removes the links in descending order
