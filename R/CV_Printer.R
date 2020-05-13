@@ -235,23 +235,24 @@ private = list(
     if(self$pdf_mode){
       link_titles <- stringr::str_extract_all(text, '(?<=\\[).+?(?=\\])')[[1]]
       link_destinations <- stringr::str_extract_all(text, '(?<=\\().+?(?=\\))')[[1]]
+
       n_links <- length(private$links)
       n_new_links <- length(link_titles)
+
       if(n_new_links > 0){
         # add links to links array
         private$links <- c(private$links, link_destinations)
 
+        # Build map of link destination to superscript
+        link_superscript_mappings <- purrr::set_names(
+          paste0("<sup>", (1:n_new_links) + n_links, "</sup>"),
+          paste0("(", link_destinations, ")")
+        )
+
+        # Replace the link destination and remove square brackets for title
         text <- text %>%
-          stringr::str_replace_all(
-            paste0("<sup>", (1:n_new_links) + n_links, "</sup>") %>%
-              purrr::set_names(paste0("(", link_destinations, ")")) %>%
-              stringr::fixed()
-          ) %>%
-          stringr::str_replace_all(
-            link_titles %>%
-              purrr::set_names(paste0("[", link_titles, "]")) %>%
-              stringr::fixed()
-          )
+          stringr::str_replace_all(stringr::fixed(link_superscript_mappings)) %>%
+          stringr::str_replace_all('\\[(.+?)\\]', "\\1")
       }
     }
     text
