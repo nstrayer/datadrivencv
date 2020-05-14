@@ -14,8 +14,9 @@
 #' @param html_location What location will the HTML version of this CV be hosted at?
 #' @param source_location Where is the code to build your CV hosted?
 #' @param logo_location Link (local or remote) to the logo image for the upper right corner of your CV.
+#' @param open_files Should the added files be opened after creation?
 #'
-#' @return `cv.Rmd` and `dd_cv.css` written to the current working directory.
+#' @return `cv.Rmd`, `dd_cv.css`, and `render_cv.R` written to the current working directory.
 #'
 #' @examples
 #'
@@ -36,7 +37,8 @@ use_datadriven_cv <- function(full_name = "Sarah Arcos",
                               pdf_location = "https://github.com/nstrayer/cv/raw/master/strayer_cv.pdf",
                               html_location = "nickstrayer.me/datadrivencv/",
                               source_location = "https://github.com/nstrayer/datadrivencv",
-                              logo_location = system.file("figs/logo.png", package = "datadrivencv")){
+                              logo_location = system.file("figs/logo.png", package = "datadrivencv"),
+                              open_files = TRUE){
 
   # Sets the main Rmd template
   usethis::use_template(
@@ -49,12 +51,20 @@ use_datadriven_cv <- function(full_name = "Sarah Arcos",
       html_location = html_location,
       source_location = source_location,
       logo_location = logo_location
-    )
+    ),
+    open = open_files
   )
 
-  # Places the css as well
+  # Place the css as well
   usethis::use_template(
     template = "dd_cv.css",
-    package = "datadrivencv"
+    package = "datadrivencv",
+    open = open_files
+  )
+
+  usethis::use_template(
+    template = "render_cv.R",
+    package = "datadrivencv",
+    open = open_files
   )
 }
