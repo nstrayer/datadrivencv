@@ -2,10 +2,12 @@
 title: "{{{full_name}}}'s CV"
 author: {{{full_name}}}
 date: "`r Sys.Date()`"
+params:
+  pdf_mode:
+    value: true
 output:
   pagedown::html_resume:
     css: ['dd_cv.css', 'resume']
-    # set it to true for a self-contained HTML page but it'll take longer to render
     self_contained: true
 ---
 
@@ -15,20 +17,19 @@ knitr::opts_chunk$set(
   echo = FALSE
 )
 
-# ======================================================================
+# Read in all data and initialize a CV printer object
 cv_printer <- datadrivencv::CV_Printer$new(
   data_location = "{{{data_location}}}",  
   pdf_location = "{{{pdf_location}}}",
   html_location = "{{{html_location}}}")
-```
 
-```{r}
 # This toggles if output is rendered in PDF format or HTML
-cv_printer$set_pdf_mode(FALSE)
+cv_printer$set_pdf_mode(params$pdf_mode)
 ```
 
 
 ```{r}
+# Add some conditional CSS if in PDF mode needed due to quirks in chrome print rendering
 cv_printer$set_style()
 ```
 
