@@ -10,7 +10,8 @@ use_datadriven_cv(
   pdf_location = "https://github.com/nstrayer/cv/raw/master/strayer_cv.pdf",
   html_location = "nickstrayer.me/datadrivencv/",
   source_location = "https://github.com/nstrayer/datadrivencv",
-  logo_location = system.file("figs/logo.png", package = "datadrivencv")
+  logo_location = system.file("figs/logo.png", package = "datadrivencv"),
+  open_files = TRUE
 )
 }
 \arguments{
@@ -28,9 +29,11 @@ data.}
 \item{source_location}{Where is the code to build your CV hosted?}
 
 \item{logo_location}{Link (local or remote) to the logo image for the upper right corner of your CV.}
+
+\item{open_files}{Should the added files be opened after creation?}
 }
 \value{
-\code{cv.Rmd} and \code{dd_cv.css} written to the current working directory.
+\code{cv.Rmd}, \code{dd_cv.css}, and \code{render_cv.R} written to the current working directory.
 }
 \description{
 Sets up the \code{.Rmd} file for a data-driven cv in current working directory.

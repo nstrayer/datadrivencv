@@ -116,7 +116,7 @@ A new \code{CV_Printer} object.
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-set_pdf_mode"></a>}}
 \subsection{Method \code{set_pdf_mode()}}{
-Turn on pdf mode for class. Useful for when the class is cached to avoid redownloading data.
+Turn on pdf mode for class. Useful for when the class is cached to avoid re-downloading data.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{CV_Printer$set_pdf_mode(pdf_mode = TRUE)}\if{html}{\out{</div>}}
 }
