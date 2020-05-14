@@ -21,6 +21,7 @@ Imports:
     stringr,
     magrittr,
     usethis,
-    pagedown
+    pagedown,
+    fs
 RoxygenNote: 7.0.2
 Roxygen: list(markdown = TRUE)
