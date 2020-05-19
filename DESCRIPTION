@@ -1,12 +1,11 @@
 Package: datadrivencv
 Type: Package
-Title: What the Package Does (Title Case)
+Title: Templates and helper functions for building a CV with spreadsheets
 Version: 0.1.0
-Author: Who wrote it
-Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
-License: What license is it under?
+Author: Nick Strayer
+Maintainer: Nick Strayer <nick.strayer@gmail.com>
+Description: Separates the CV format from the content using spreadsheets, RMarkdown, and Pagedown. Built to allow easy out-of-the-box behavior, but also to allow you to go beyond the defaults with customization and lack of lock-in to a given format. 
+License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Imports: 
