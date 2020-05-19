@@ -10,7 +10,6 @@ use_datadriven_cv(
   pdf_location = "https://github.com/nstrayer/cv/raw/master/strayer_cv.pdf",
   html_location = "nickstrayer.me/datadrivencv/",
   source_location = "https://github.com/nstrayer/datadrivencv",
-  logo_location = system.file("figs/logo.png", package = "datadrivencv"),
   open_files = TRUE
 )
 }
@@ -27,8 +26,6 @@ data.}
 \item{html_location}{What location will the HTML version of this CV be hosted at?}
 
 \item{source_location}{Where is the code to build your CV hosted?}
-
-\item{logo_location}{Link (local or remote) to the logo image for the upper right corner of your CV.}
 
 \item{open_files}{Should the added files be opened after creation?}
 }
@@ -47,8 +44,7 @@ Also adds css file for current CV so style can be custommized.
     data_location = "https://docs.google.com/spreadsheets/d/14MQICF2F8-vf8CKPF1m4lyGKO6_thG-4aSwat1e2TWc",
     pdf_location = "https://github.com/nstrayer/cv/raw/master/strayer_cv.pdf",
     html_location = "nickstrayer.me/cv/",
-    source_location = "https://github.com/nstrayer/cv",
-    logo_location = "https://www.r-project.org/logo/Rlogo.png"
+    source_location = "https://github.com/nstrayer/cv"
   )
 }
 
