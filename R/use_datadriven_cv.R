@@ -6,16 +6,22 @@
 #'
 #'
 #' @param full_name Your full name, used in title of document and header
-#' @param data_location Path of the spreadsheets holding all your data. This can be
-#'   either a URL to a google sheet with multiple sheets containing the four
+#' @param data_location Path of the spreadsheets holding all your data. This can
+#'   be either a URL to a google sheet with multiple sheets containing the four
 #'   data types or a path to a folder containing four `.csv`s with the neccesary
 #'   data.
 #' @param pdf_location What location will the PDF of this CV be hosted at?
-#' @param html_location What location will the HTML version of this CV be hosted at?
+#' @param html_location What location will the HTML version of this CV be hosted
+#'   at?
 #' @param source_location Where is the code to build your CV hosted?
 #' @param open_files Should the added files be opened after creation?
+#' @param use_network_logo Should logo be an interactive network based on your
+#'   CV data? Note that this uses the function
+#'   \code{\link{build_network_logo()}} so will introduce a dependency on this
+#'   package.
 #'
-#' @return `cv.Rmd`, `dd_cv.css`, and `render_cv.R` written to the current working directory.
+#' @return `cv.Rmd`, `dd_cv.css`, and `render_cv.R` written to the current
+#'   working directory.
 #'
 #' @examples
 #'
@@ -35,6 +41,7 @@ use_datadriven_cv <- function(full_name = "Sarah Arcos",
                               pdf_location = "https://github.com/nstrayer/cv/raw/master/strayer_cv.pdf",
                               html_location = "nickstrayer.me/datadrivencv/",
                               source_location = "https://github.com/nstrayer/datadrivencv",
+                              use_network_logo = TRUE,
                               open_files = TRUE){
 
   # Sets the main Rmd template
@@ -46,7 +53,8 @@ use_datadriven_cv <- function(full_name = "Sarah Arcos",
       data_location = data_location,
       pdf_location = pdf_location,
       html_location = html_location,
-      source_location = source_location
+      source_location = source_location,
+      use_network_logo = use_network_logo
     ),
     open = open_files
   )
@@ -63,4 +71,10 @@ use_datadriven_cv <- function(full_name = "Sarah Arcos",
     package = "datadrivencv",
     open = open_files
   )
+
+  usethis::use_template(
+    template = "CV_Printer_Class.R",
+    package = "datadrivencv"
+  )
+
 }

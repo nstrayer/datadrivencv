@@ -16,7 +16,8 @@ pdf_style <- "
 </style>"
 
 
-default_position_entry_template <-"
+# A `glue` template for building markdown for a given position entry
+position_entry_template <-"
 ### {title}
 
 {loc}
@@ -28,6 +29,14 @@ default_position_entry_template <-"
 {description_bullets}
 \n\n\n"
 
+# Template for markdown for skill bars
+skill_bars_template <- "
+<div
+  class = 'skill-bar'
+  style = \"background:linear-gradient(to right,
+                                      {bar_color} {width_percent}%,
+                                      {bar_background} {width_percent}% 100%)\"
+>{skill}</div>"
 
 # Tests if the end date is set as current, via values in the current_names vector
 date_is_current <- function(date){
@@ -64,8 +73,6 @@ process_position_data <- function(position_data) {
 #' This class is initiated at the head of your CV or Resume Rmarkdown file and
 #' then through various `print_*` methods, builds the various components.
 #'
-#'
-#' @export
 CV_Printer <- R6::R6Class("CV_Printer", public = list(
   #' @field position_data data frame of positions by row with columns:
   #' * `section` What type of position entry,
@@ -115,8 +122,6 @@ CV_Printer <- R6::R6Class("CV_Printer", public = list(
   #' @param source_location Where is the code to build your CV hosted?
   #' @param pdf_mode Is the output being rendered into a pdf? Aka do links need
   #'   to be stripped?
-  #' @param position_entry_template A `glue` template for building position
-  #'   entries.
   #' @param sheet_is_publicly_readable If you're using google sheets for data,
   #'   is the sheet publicly available? (Makes authorization easier.)
   #' @return A new `CV_Printer` object.
@@ -124,21 +129,14 @@ CV_Printer <- R6::R6Class("CV_Printer", public = list(
                         pdf_mode = FALSE,
                         html_location,
                         pdf_location,
-                        position_entry_template = default_position_entry_template,
                         sheet_is_publicly_readable = TRUE) {
     self$pdf_mode <- pdf_mode
     self$html_location <- html_location
     self$pdf_location <- pdf_location
-    private$position_entry_template = position_entry_template
 
     is_google_sheets_location <- stringr::str_detect(data_location, "docs\\.google\\.com")
     if(is_google_sheets_location){
-      data <- load_data_from_googlesheets(data_location, sheet_is_publicly_readable)
-
-      self$skills        = data$skills
-      self$text_blocks   = data$text_blocks
-      self$contact_info  = data$contact_info
-      self$position_data = data$position_data
+      private$load_data_from_googlesheets(data_location, sheet_is_publicly_readable)
     } else {
       # Want to go oldschool with just a csv?
       private$load_data_from_csvs(data_location)
@@ -161,7 +159,7 @@ CV_Printer <- R6::R6Class("CV_Printer", public = list(
   print_section = function(section_id){
     dplyr::filter(self$position_data, section == section_id) %>%
       private$strip_links_from_cols(c('title', 'description_bullets')) %>%
-      glue::glue_data(private$position_entry_template)
+      glue::glue_data(position_entry_template)
   },
 
   #' @description Prints out text block identified by a given label.
@@ -180,14 +178,7 @@ CV_Printer <- R6::R6Class("CV_Printer", public = list(
     bar_background <- "#d9d9d9"
     self$skills %>%
       dplyr::mutate(width_percent = round(100*level/out_of)) %>%
-      glue::glue_data(
-        "<div class = 'skill-bar'",
-        "style = \"background:linear-gradient(to right,",
-        "{bar_color} {width_percent}%,",
-        "{bar_background} {width_percent}% 100%)\" >",
-        "{skill}",
-        "</div>"
-      )
+      glue::glue_data(skill_bars_template)
   },
 
   #' @description List of all links in document labeled by their superscript integer.
@@ -230,9 +221,6 @@ CV_Printer <- R6::R6Class("CV_Printer", public = list(
 ),
 
 private = list(
-  #' `glue` template for building position entries
-  position_entry_template = default_position_entry_template,
-
   #' Internal array holding all the links that have been stripped in the order they were stripped.
   links = c(),
 

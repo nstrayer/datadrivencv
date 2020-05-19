@@ -1,7 +1,8 @@
 #' Build interactive network logo
 #'
 #' Constructs a network based on your position data to be used as a logo.
-#' Interactive in HTML version and static in the PDF version.
+#' Interactive in HTML version and static in the PDF version. Notes are entries,
+#' colored by section and connected if they occurred in the same year
 #'
 #' @param position_data position data from your `CV_Printer` class.
 #'

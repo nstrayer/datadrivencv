@@ -10,27 +10,35 @@ use_datadriven_cv(
   pdf_location = "https://github.com/nstrayer/cv/raw/master/strayer_cv.pdf",
   html_location = "nickstrayer.me/datadrivencv/",
   source_location = "https://github.com/nstrayer/datadrivencv",
+  use_network_logo = TRUE,
   open_files = TRUE
 )
 }
 \arguments{
 \item{full_name}{Your full name, used in title of document and header}
 
-\item{data_location}{Path of the spreadsheets holding all your data. This can be
-either a URL to a google sheet with multiple sheets containing the four
+\item{data_location}{Path of the spreadsheets holding all your data. This can
+be either a URL to a google sheet with multiple sheets containing the four
 data types or a path to a folder containing four \code{.csv}s with the neccesary
 data.}
 
 \item{pdf_location}{What location will the PDF of this CV be hosted at?}
 
-\item{html_location}{What location will the HTML version of this CV be hosted at?}
+\item{html_location}{What location will the HTML version of this CV be hosted
+at?}
 
 \item{source_location}{Where is the code to build your CV hosted?}
+
+\item{use_network_logo}{Should logo be an interactive network based on your
+CV data? Note that this uses the function
+\code{\link{build_network_logo()}} so will introduce a dependency on this
+package.}
 
 \item{open_files}{Should the added files be opened after creation?}
 }
 \value{
-\code{cv.Rmd}, \code{dd_cv.css}, and \code{render_cv.R} written to the current working directory.
+\code{cv.Rmd}, \code{dd_cv.css}, and \code{render_cv.R} written to the current
+working directory.
 }
 \description{
 Sets up the \code{.Rmd} file for a data-driven cv in current working directory.

@@ -17,11 +17,16 @@ knitr::opts_chunk$set(
   echo = FALSE
 )
 
+library(magrittr) # For the pipe
+source("CV_Printer_Class.R")
+
+
 # Read in all data and initialize a CV printer object
-cv_printer <- datadrivencv::CV_Printer$new(
+cv_printer <- CV_Printer$new(
   data_location = "{{{data_location}}}",  
   pdf_location = "{{{pdf_location}}}",
   html_location = "{{{html_location}}}")
+
 
 # This toggles if output is rendered in PDF format or HTML
 cv_printer$set_pdf_mode(params$pdf_mode)
@@ -37,13 +42,18 @@ cv_printer$set_style()
 Aside
 ================================================================================
 
-
+{{#use_network_logo}}
 ```{r}
+# Build interactive network of positions colored by section
+# and connected if they occurred in the same year
 datadrivencv::build_network_logo(cv_printer$position_data)
 ```
-<!-- If you want to use a static image as a logo, remove the chunk above -->
-<!-- and uncomment the line below -->
-<!-- ![logo](my_logo_location.png){width=100%} -->
+{{/use_network_logo}}
+{{^use_network_logo}}
+<!-- Swap image with your preferred logo -->
+![logo](https://cran.r-project.org/Rlogo.svg){width=100%}
+{{/use_network_logo}}
+
 
 ```{r}
 cv_printer$print_link_to_other_format()
