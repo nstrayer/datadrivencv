@@ -14,3 +14,6 @@ cv.html
 cv_files/
 
 cv.pdf
+
+*_cache/
+render_cv.R
