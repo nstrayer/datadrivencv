@@ -50,11 +50,12 @@ process_position_data <- function(position_data) {
     dplyr::mutate(
       description_bullets = paste0("- ", description_bullets),
       end = ifelse(is.na(end), "Current", end),
+      end_num = ifelse(date_is_current(end), future_year, end),
       timeline = ifelse(is.na(start) | start == end,
                         end,
                         glue::glue('{end} - {start}'))
     ) %>%
-    dplyr::arrange(desc(ifelse(date_is_current(end), future_year, end))) %>%
+    dplyr::arrange(desc(end_num)) %>%
     dplyr::mutate_all(~ ifelse(is.na(.), 'N/A', .))
 }
 
@@ -132,7 +133,12 @@ CV_Printer <- R6::R6Class("CV_Printer", public = list(
 
     is_google_sheets_location <- stringr::str_detect(data_location, "docs\\.google\\.com")
     if(is_google_sheets_location){
-      private$load_data_from_googlesheets(data_location, sheet_is_publicly_readable)
+      data <- load_data_from_googlesheets(data_location, sheet_is_publicly_readable)
+
+      self$skills        = data$skills
+      self$text_blocks   = data$text_blocks
+      self$contact_info  = data$contact_info
+      self$position_data = data$position_data
     } else {
       # Want to go oldschool with just a csv?
       private$load_data_from_csvs(data_location)
