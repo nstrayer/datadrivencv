@@ -13,7 +13,6 @@
 #' @param pdf_location What location will the PDF of this CV be hosted at?
 #' @param html_location What location will the HTML version of this CV be hosted at?
 #' @param source_location Where is the code to build your CV hosted?
-#' @param logo_location Link (local or remote) to the logo image for the upper right corner of your CV.
 #' @param open_files Should the added files be opened after creation?
 #'
 #' @return `cv.Rmd`, `dd_cv.css`, and `render_cv.R` written to the current working directory.
@@ -26,8 +25,7 @@
 #'     data_location = "https://docs.google.com/spreadsheets/d/14MQICF2F8-vf8CKPF1m4lyGKO6_thG-4aSwat1e2TWc",
 #'     pdf_location = "https://github.com/nstrayer/cv/raw/master/strayer_cv.pdf",
 #'     html_location = "nickstrayer.me/cv/",
-#'     source_location = "https://github.com/nstrayer/cv",
-#'     logo_location = "https://www.r-project.org/logo/Rlogo.png"
+#'     source_location = "https://github.com/nstrayer/cv"
 #'   )
 #' }
 #'
@@ -37,7 +35,6 @@ use_datadriven_cv <- function(full_name = "Sarah Arcos",
                               pdf_location = "https://github.com/nstrayer/cv/raw/master/strayer_cv.pdf",
                               html_location = "nickstrayer.me/datadrivencv/",
                               source_location = "https://github.com/nstrayer/datadrivencv",
-                              logo_location = system.file("figs/logo.png", package = "datadrivencv"),
                               open_files = TRUE){
 
   # Sets the main Rmd template
@@ -49,8 +46,7 @@ use_datadriven_cv <- function(full_name = "Sarah Arcos",
       data_location = data_location,
       pdf_location = pdf_location,
       html_location = html_location,
-      source_location = source_location,
-      logo_location = logo_location
+      source_location = source_location
     ),
     open = open_files
   )

@@ -38,7 +38,12 @@ Aside
 ================================================================================
 
 
-![logo]({{{logo_location}}}){width=100%}
+```{r}
+datadrivencv::build_network_logo(cv_printer$position_data)
+```
+<!-- If you want to use a static image as a logo, remove the chunk above -->
+<!-- and uncomment the line below -->
+<!-- ![logo](my_logo_location.png){width=100%} -->
 
 ```{r}
 cv_printer$print_link_to_other_format()

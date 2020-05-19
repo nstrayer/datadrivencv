@@ -2,5 +2,6 @@
 
 export("%>%")
 export(CV_Printer)
+export(build_network_logo)
 export(use_datadriven_cv)
 importFrom(magrittr,"%>%")
