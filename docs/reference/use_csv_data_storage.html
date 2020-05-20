@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Build interactive network logo — build_network_logo • datadrivencv</title>
+<title>Use CSVs for storing data — use_csv_data_storage • datadrivencv</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -42,10 +42,8 @@
 
 
 
-<meta property="og:title" content="Build interactive network logo — build_network_logo" />
-<meta property="og:description" content="Constructs a network based on your position data to be used as a logo.
-Interactive in HTML version and static in the PDF version. Notes are entries,
-colored by section and connected if they occurred in the same year" />
+<meta property="og:title" content="Use CSVs for storing data — use_csv_data_storage" />
+<meta property="og:description" content="Sets up examples of the four CSVs needed for building CV" />
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
 
@@ -110,38 +108,43 @@ colored by section and connected if they occurred in the same year" />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Build interactive network logo</h1>
+    <h1>Use CSVs for storing data</h1>
     
-    <div class="hidden name"><code>build_network_logo.Rd</code></div>
+    <div class="hidden name"><code>use_csv_data_storage.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Constructs a network based on your position data to be used as a logo.
-Interactive in HTML version and static in the PDF version. Notes are entries,
-colored by section and connected if they occurred in the same year</p>
+    <p>Sets up examples of the four CSVs needed for building CV</p>
     </div>
 
-    <pre class="usage"><span class='fu'>build_network_logo</span>(<span class='no'>position_data</span>)</pre>
+    <pre class="usage"><span class='fu'>use_csv_data_storage</span>(<span class='kw'>folder_name</span> <span class='kw'>=</span> <span class='st'>"data"</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>position_data</th>
-      <td><p>position data from your <code>CV_Printer</code> class.</p></td>
+      <th>folder_name</th>
+      <td><p>Name of the folder you want csvs stored in</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Interactive force-directed layout network of your CV data</p>
+    <p>A new folder <code>&lt;folder_name&gt;/</code> with <code>entries.csv</code>, <code>text_blocks.csv</code>, <code>language_skills.csv</code>, and <code>contact_info.csv</code> in it.
+working directory.</p>
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'>
+<span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+  <span class='fu'>use_csv_data_storage</span>(<span class='kw'>folder_name</span> <span class='kw'>=</span> <span class='st'>"my_data"</span>)
+}</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       <li><a href="#value">Value</a></li>
+      <li><a href="#examples">Examples</a></li>
     </ul>
 
   </div>

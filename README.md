@@ -41,7 +41,7 @@ embed_png("csv_to_cv.png")
 
 <div style="text-align: center; padding: 2rem 0;">
 
-<img src="inst/figs/csv_to_cv.png" width=100% />
+<img src="man/figures/csv_to_cv.png" width=100% />
 
 </div>
 
@@ -112,7 +112,7 @@ embed_png("how_to_copy_data.png", width = "50%")
 
 <div style="text-align: center; padding: 2rem 0;">
 
-<img src="inst/figs/how_to_copy_data.png" width=50% />
+<img src="man/figures/how_to_copy_data.png" width=50% />
 
 </div>
 
@@ -127,7 +127,7 @@ embed_png("sub_sheets.png", width = "80%")
 
 <div style="text-align: center; padding: 2rem 0;">
 
-<img src="inst/figs/sub_sheets.png" width=80% />
+<img src="man/figures/sub_sheets.png" width=80% />
 
 </div>
 
@@ -211,7 +211,7 @@ embed_png("html_vs_pdf_output.png")
 
 <div style="text-align: center; padding: 2rem 0;">
 
-<img src="inst/figs/html_vs_pdf_output.png" width=100% />
+<img src="man/figures/html_vs_pdf_output.png" width=100% />
 
 </div>
 

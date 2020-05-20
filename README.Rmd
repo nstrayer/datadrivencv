@@ -15,7 +15,7 @@ knitr::opts_chunk$set(
 embed_png <- function(image_title, width = "100%") {
   knitr::asis_output(
     glue::glue("<div style=\"text-align: center; padding: 2rem 0;\">",
-                 "<img src=\"inst/figs/{image_title}\" width={width} />",
+                 "<img src=\"man/figures/{image_title}\" width={width} />",
                "</div>")
   )
 }
