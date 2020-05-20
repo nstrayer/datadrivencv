@@ -14,5 +14,6 @@ Interactive force-directed layout network of your CV data
 }
 \description{
 Constructs a network based on your position data to be used as a logo.
-Interactive in HTML version and static in the PDF version.
+Interactive in HTML version and static in the PDF version. Notes are entries,
+colored by section and connected if they occurred in the same year
 }
