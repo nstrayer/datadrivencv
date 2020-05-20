@@ -4,3 +4,4 @@
 ^docs$
 ^pkgdown$
 ^LICENSE\.md$
+^README\.Rmd$
