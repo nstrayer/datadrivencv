@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# datadrivencv
+# datadrivencv <img src="man/figures/logo.svg" width="185px" align="right">
 
 <!-- badges: start -->
 

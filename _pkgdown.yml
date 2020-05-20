@@ -4,9 +4,6 @@ home:
   description: Templates and helper functions for building a CV with spreadsheets
 template:
   opengraph:
-    image:
-      src: man/figures/csv_to_cv.png
-      alt: "Build your CV with data"
     twitter:
       creator: "@nicholasstrayer"
-      card: summary_large_image
+      card: summary

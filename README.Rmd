@@ -2,6 +2,7 @@
 output: github_document
 ---
 
+
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
 ```{r, include = FALSE}
@@ -22,7 +23,8 @@ embed_png <- function(image_title, width = "100%") {
 }
 ```
 
-# datadrivencv
+
+# datadrivencv <img src="man/figures/logo.svg" width="185px" align="right">
 
 <!-- badges: start -->
 <!-- badges: end -->
