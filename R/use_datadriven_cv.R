@@ -9,7 +9,7 @@
 #' @param data_location Path of the spreadsheets holding all your data. This can
 #'   be either a URL to a google sheet with multiple sheets containing the four
 #'   data types or a path to a folder containing four `.csv`s with the neccesary
-#'   data.
+#'   data. See \code{\link{use_csv_data_storage()}} for help setting up these `.csv`s.
 #' @param pdf_location What location will the PDF of this CV be hosted at?
 #' @param html_location What location will the HTML version of this CV be hosted
 #'   at?

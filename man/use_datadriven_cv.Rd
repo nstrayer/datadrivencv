@@ -20,7 +20,7 @@ use_datadriven_cv(
 \item{data_location}{Path of the spreadsheets holding all your data. This can
 be either a URL to a google sheet with multiple sheets containing the four
 data types or a path to a folder containing four \code{.csv}s with the neccesary
-data.}
+data. See \code{\link{use_csv_data_storage()}} for help setting up these \code{.csv}s.}
 
 \item{pdf_location}{What location will the PDF of this CV be hosted at?}
 
@@ -37,7 +37,7 @@ package.}
 \item{open_files}{Should the added files be opened after creation?}
 }
 \value{
-\code{cv.Rmd}, \code{dd_cv.css}, and \code{render_cv.R} written to the current
+\code{cv.Rmd}, \code{dd_cv.css}, \code{render_cv.R}, and \code{CV_printing_functions.R} written to the current
 working directory.
 }
 \description{
