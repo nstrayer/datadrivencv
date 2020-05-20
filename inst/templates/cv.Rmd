@@ -18,24 +18,22 @@ knitr::opts_chunk$set(
 )
 
 library(magrittr) # For the pipe
-source("CV_Printer_Class.R")
-
+source("CV_printing_functions.R")
 
 # Read in all data and initialize a CV printer object
-cv_printer <- CV_Printer$new(
+CV <- create_CV_object(
   data_location = "{{{data_location}}}",  
   pdf_location = "{{{pdf_location}}}",
-  html_location = "{{{html_location}}}")
+  html_location = "{{{html_location}}}",
+  pdf_mode = params$pdf_mode
+)
 
-
-# This toggles if output is rendered in PDF format or HTML
-cv_printer$set_pdf_mode(params$pdf_mode)
 ```
 
 
 ```{r}
 # Add some conditional CSS if in PDF mode needed due to quirks in chrome print rendering
-cv_printer$set_style()
+CV %>% set_style()
 ```
 
 
@@ -46,7 +44,7 @@ Aside
 ```{r}
 # Build interactive network of positions colored by section
 # and connected if they occurred in the same year
-datadrivencv::build_network_logo(cv_printer$position_data)
+datadrivencv::build_network_logo(CV$entries_data)
 ```
 {{/use_network_logo}}
 {{^use_network_logo}}
@@ -56,14 +54,14 @@ datadrivencv::build_network_logo(cv_printer$position_data)
 
 
 ```{r}
-cv_printer$print_link_to_other_format()
+CV %>% print_link_to_other_format()
 ```
 
 Contact {#contact}
 --------------------------------------------------------------------------------
 
 ```{r}
-cv_printer$print_contact_info()
+CV %>% print_contact_info()
 ```
 
 
@@ -72,7 +70,7 @@ Language Skills {#skills}
 --------------------------------------------------------------------------------
 
 ```{r}
-cv_printer$print_skill_bars()
+CV %>% print_skill_bars()
 ```
 
 
@@ -95,7 +93,8 @@ Main
 --------------------------------------------------------------------------------
 
 ```{r}
-cv_printer$print_text_block("intro")
+# Note the special double pipe so we modify the CV object in place
+CV %<>% print_text_block("intro") 
 ```
 
 
@@ -104,7 +103,7 @@ Education {data-icon=graduation-cap data-concise=true}
 --------------------------------------------------------------------------------
 
 ```{r}
-cv_printer$print_section('education')
+CV %<>% print_section('education')
 ```
 
 
@@ -113,7 +112,7 @@ Research Experience {data-icon=laptop}
 --------------------------------------------------------------------------------
 
 ```{r}
-cv_printer$print_section('research_positions')
+CV %<>% print_section('research_positions')
 ```
 
 
@@ -123,12 +122,12 @@ Industry Experience {data-icon=suitcase}
 
 ::: aside
 ```{r}
-cv_printer$print_text_block('industy_experience_aside')
+CV %<>% print_text_block('industy_experience_aside')
 ```
 :::
 
 ```{r}
-cv_printer$print_section('industry_positions')
+CV %<>% print_section('industry_positions')
 ```
 
 <!-- These breaks just force a new page so section doesnt get cut off -->
@@ -141,12 +140,12 @@ Teaching Experience {data-icon=chalkboard-teacher}
 
 ::: aside
 ```{r}
-cv_printer$print_text_block('teaching_experience_aside')
+CV %<>% print_text_block('teaching_experience_aside')
 ```
 :::
 
 ```{r}
-cv_printer$print_section('teaching_positions')
+CV %<>% print_section('teaching_positions')
 ```
 
 
@@ -156,12 +155,12 @@ Selected Data Science Writing {data-icon=chart-line}
 
 ::: aside
 ```{r}
-cv_printer$print_text_block('data_science_writing_aside')
+CV %<>% print_text_block('data_science_writing_aside')
 ```
 :::
 
 ```{r}
-cv_printer$print_section('data_science_writings')
+CV %<>% print_section('data_science_writings')
 ```
 
 
@@ -170,7 +169,7 @@ Selected Press (About)  {data-icon=newspaper}
 --------------------------------------------------------------------------------
 
 ```{r}
-cv_printer$print_section('about_me_press')
+CV %<>% print_section('about_me_press')
 ```
 
 
@@ -182,7 +181,7 @@ Selected Press (By)  {data-icon=newspaper}
 --------------------------------------------------------------------------------
 
 ```{r}
-cv_printer$print_section('by_me_press')
+CV %<>% print_section('by_me_press')
 ```
 
 
@@ -191,13 +190,12 @@ Selected Publications, Posters, and Talks {data-icon=book}
 --------------------------------------------------------------------------------
 
 ```{r}
-cv_printer$print_section('academic_articles')
+CV %<>% print_section('academic_articles')
 ```
 
 
 
 ```{r}
-cv_printer$print_links()
+CV %<>% print_links()
 ```
-
 

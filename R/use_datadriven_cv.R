@@ -20,7 +20,7 @@
 #'   \code{\link{build_network_logo()}} so will introduce a dependency on this
 #'   package.
 #'
-#' @return `cv.Rmd`, `dd_cv.css`, and `render_cv.R` written to the current
+#' @return `cv.Rmd`, `dd_cv.css`, `render_cv.R`, and `CV_printing_functions.R` written to the current
 #'   working directory.
 #'
 #' @examples
@@ -73,7 +73,7 @@ use_datadriven_cv <- function(full_name = "Sarah Arcos",
   )
 
   usethis::use_template(
-    template = "CV_Printer_Class.R",
+    template = "CV_printing_functions.R",
     package = "datadrivencv"
   )
 
