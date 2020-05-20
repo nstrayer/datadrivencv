@@ -35,10 +35,6 @@ Pagedown made this even easier. Meaning that the same CV could be
 rendered with interactive HTML and PDF without changing the underlying
 rendering engine like was done with kniting to pdf vs knitting to html.
 
-``` r
-embed_png("csv_to_cv.png")
-```
-
 <div style="text-align: center; padding: 2rem 0;">
 
 <img src="man/figures/csv_to_cv.png" width=100% />
@@ -106,10 +102,6 @@ copying [my
 data](https://docs.google.com/spreadsheets/d/14MQICF2F8-vf8CKPF1m4lyGKO6_thG-4aSwat1e2TWc/edit#gid=917338460),
 removing all the rows, and filling in with your data.
 
-``` r
-embed_png("how_to_copy_data.png", width = "50%")
-```
-
 <div style="text-align: center; padding: 2rem 0;">
 
 <img src="man/figures/how_to_copy_data.png" width=50% />
@@ -120,10 +112,6 @@ embed_png("how_to_copy_data.png", width = "50%")
 
 There are four spreadsheets of “data” that are used. These take the form
 of separate sub-sheets within a google sheet.
-
-``` r
-embed_png("sub_sheets.png", width = "80%")
-```
 
 <div style="text-align: center; padding: 2rem 0;">
 
@@ -203,10 +191,6 @@ rmarkdown::render("cv.Rmd",
 # Convert to PDF using Pagedown
 pagedown::chrome_print(input = tmp_html_cv_loc,
                        output = "cv.pdf")
-```
-
-``` r
-embed_png("html_vs_pdf_output.png")
 ```
 
 <div style="text-align: center; padding: 2rem 0;">

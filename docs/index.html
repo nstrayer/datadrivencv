@@ -89,7 +89,6 @@
 <a href="#updating-a-cv-is-not-fun" class="anchor"></a>Updating a CV is not fun</h2>
 <p>Anytime I would go to add something to my CV I ended up wanting to change the format a tiny bit. This usually meant the entire word document completely falling apart and needing to have each entry copied and pasted into a new version.</p>
 <p>Ultimately this process felt formulaic and repetitive, prime indicators they could be done better with code. Using a spreadsheet to store each entry in the CV and R to write markdown seemed like the way to go. Pagedown made this even easier. Meaning that the same CV could be rendered with interactive HTML and PDF without changing the underlying rendering engine like was done with kniting to pdf vs knitting to html.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="kw">embed_png</span>(<span class="st">"csv_to_cv.png"</span>)</span></code></pre></div>
 <div style="text-align: center; padding: 2rem 0;">
 
 <img src="reference/figures/csv_to_cv.png" width="100%">
@@ -106,14 +105,14 @@
 <h1 class="hasAnchor">
 <a href="#using-it" class="anchor"></a>Using it</h1>
 <p>The first step to using the package is the <code>use_data_driven_cv()</code> function. This function takes a few input parameters and when when run, sets up a series of files in your current working directory. E.g.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="co"># run ?datadrivencv::use_datadriven_cv to see more details</span></span>
-<span id="cb3-2"><a href="#cb3-2"></a>datadrivencv<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/datadrivencv/man/use_datadriven_cv.html">use_datadriven_cv</a></span>(</span>
-<span id="cb3-3"><a href="#cb3-3"></a>  <span class="dt">full_name =</span> <span class="st">"Nick Strayer"</span>,</span>
-<span id="cb3-4"><a href="#cb3-4"></a>  <span class="dt">data_location =</span> <span class="st">"https://docs.google.com/spreadsheets/d/14MQICF2F8-vf8CKPF1m4lyGKO6_thG-4aSwat1e2TWc"</span>,</span>
-<span id="cb3-5"><a href="#cb3-5"></a>  <span class="dt">pdf_location =</span> <span class="st">"https://github.com/nstrayer/cv/raw/master/strayer_cv.pdf"</span>,</span>
-<span id="cb3-6"><a href="#cb3-6"></a>  <span class="dt">html_location =</span> <span class="st">"nickstrayer.me/cv/"</span>,</span>
-<span id="cb3-7"><a href="#cb3-7"></a>  <span class="dt">source_location =</span> <span class="st">"https://github.com/nstrayer/cv"</span></span>
-<span id="cb3-8"><a href="#cb3-8"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="co"># run ?datadrivencv::use_datadriven_cv to see more details</span></span>
+<span id="cb2-2"><a href="#cb2-2"></a>datadrivencv<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/datadrivencv/man/use_datadriven_cv.html">use_datadriven_cv</a></span>(</span>
+<span id="cb2-3"><a href="#cb2-3"></a>  <span class="dt">full_name =</span> <span class="st">"Nick Strayer"</span>,</span>
+<span id="cb2-4"><a href="#cb2-4"></a>  <span class="dt">data_location =</span> <span class="st">"https://docs.google.com/spreadsheets/d/14MQICF2F8-vf8CKPF1m4lyGKO6_thG-4aSwat1e2TWc"</span>,</span>
+<span id="cb2-5"><a href="#cb2-5"></a>  <span class="dt">pdf_location =</span> <span class="st">"https://github.com/nstrayer/cv/raw/master/strayer_cv.pdf"</span>,</span>
+<span id="cb2-6"><a href="#cb2-6"></a>  <span class="dt">html_location =</span> <span class="st">"nickstrayer.me/cv/"</span>,</span>
+<span id="cb2-7"><a href="#cb2-7"></a>  <span class="dt">source_location =</span> <span class="st">"https://github.com/nstrayer/cv"</span></span>
+<span id="cb2-8"><a href="#cb2-8"></a>)</span></code></pre></div>
 <p>The available arguments are:</p>
 <table class="table">
 <colgroup>
@@ -189,7 +188,6 @@
 <h1 class="hasAnchor">
 <a href="#storing-your-data-in-spreadsheets" class="anchor"></a>Storing your data in spreadsheets</h1>
 <p>By default the <code>googlesheets4</code> package is used to get a Google Sheet with all necessary data. To build your own version I suggest simply copying <a href="https://docs.google.com/spreadsheets/d/14MQICF2F8-vf8CKPF1m4lyGKO6_thG-4aSwat1e2TWc/edit#gid=917338460">my data</a>, removing all the rows, and filling in with your data.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="kw">embed_png</span>(<span class="st">"how_to_copy_data.png"</span>, <span class="dt">width =</span> <span class="st">"50%"</span>)</span></code></pre></div>
 <div style="text-align: center; padding: 2rem 0;">
 
 <img src="reference/figures/how_to_copy_data.png" width="50%">
@@ -198,7 +196,6 @@
 <h2 class="hasAnchor">
 <a href="#format-of-spreadsheets" class="anchor"></a>Format of spreadsheets:</h2>
 <p>There are four spreadsheets of “data” that are used. These take the form of separate sub-sheets within a google sheet.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="kw">embed_png</span>(<span class="st">"sub_sheets.png"</span>, <span class="dt">width =</span> <span class="st">"80%"</span>)</span></code></pre></div>
 <div style="text-align: center; padding: 2rem 0;">
 
 <img src="reference/figures/sub_sheets.png" width="80%">
@@ -332,21 +329,20 @@
 <h3 class="hasAnchor">
 <a href="#render_cvr" class="anchor"></a><code>render_cv.R</code>
 </h3>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="co"># Knit the HTML version</span></span>
-<span id="cb6-2"><a href="#cb6-2"></a>rmarkdown<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/rmarkdown/man/render.html">render</a></span>(<span class="st">"cv.Rmd"</span>,</span>
-<span id="cb6-3"><a href="#cb6-3"></a>                  <span class="dt">params =</span> <span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="dt">pdf_mode =</span> <span class="ot">FALSE</span>),</span>
-<span id="cb6-4"><a href="#cb6-4"></a>                  <span class="dt">output_file =</span> <span class="st">"cv.html"</span>)</span>
-<span id="cb6-5"><a href="#cb6-5"></a></span>
-<span id="cb6-6"><a href="#cb6-6"></a><span class="co"># Knit the PDF version to temporary html location</span></span>
-<span id="cb6-7"><a href="#cb6-7"></a>tmp_html_cv_loc &lt;-<span class="st"> </span>fs<span class="op">::</span><span class="kw"><a href="http://fs.r-lib.org/reference/file_temp.html">file_temp</a></span>(<span class="dt">ext =</span> <span class="st">".html"</span>)</span>
-<span id="cb6-8"><a href="#cb6-8"></a>rmarkdown<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/rmarkdown/man/render.html">render</a></span>(<span class="st">"cv.Rmd"</span>,</span>
-<span id="cb6-9"><a href="#cb6-9"></a>                  <span class="dt">params =</span> <span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="dt">pdf_mode =</span> <span class="ot">TRUE</span>),</span>
-<span id="cb6-10"><a href="#cb6-10"></a>                  <span class="dt">output_file =</span> tmp_html_cv_loc)</span>
-<span id="cb6-11"><a href="#cb6-11"></a></span>
-<span id="cb6-12"><a href="#cb6-12"></a><span class="co"># Convert to PDF using Pagedown</span></span>
-<span id="cb6-13"><a href="#cb6-13"></a>pagedown<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/pagedown/man/chrome_print.html">chrome_print</a></span>(<span class="dt">input =</span> tmp_html_cv_loc,</span>
-<span id="cb6-14"><a href="#cb6-14"></a>                       <span class="dt">output =</span> <span class="st">"cv.pdf"</span>)</span></code></pre></div>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="kw">embed_png</span>(<span class="st">"html_vs_pdf_output.png"</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="co"># Knit the HTML version</span></span>
+<span id="cb3-2"><a href="#cb3-2"></a>rmarkdown<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/rmarkdown/man/render.html">render</a></span>(<span class="st">"cv.Rmd"</span>,</span>
+<span id="cb3-3"><a href="#cb3-3"></a>                  <span class="dt">params =</span> <span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="dt">pdf_mode =</span> <span class="ot">FALSE</span>),</span>
+<span id="cb3-4"><a href="#cb3-4"></a>                  <span class="dt">output_file =</span> <span class="st">"cv.html"</span>)</span>
+<span id="cb3-5"><a href="#cb3-5"></a></span>
+<span id="cb3-6"><a href="#cb3-6"></a><span class="co"># Knit the PDF version to temporary html location</span></span>
+<span id="cb3-7"><a href="#cb3-7"></a>tmp_html_cv_loc &lt;-<span class="st"> </span>fs<span class="op">::</span><span class="kw"><a href="http://fs.r-lib.org/reference/file_temp.html">file_temp</a></span>(<span class="dt">ext =</span> <span class="st">".html"</span>)</span>
+<span id="cb3-8"><a href="#cb3-8"></a>rmarkdown<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/rmarkdown/man/render.html">render</a></span>(<span class="st">"cv.Rmd"</span>,</span>
+<span id="cb3-9"><a href="#cb3-9"></a>                  <span class="dt">params =</span> <span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="dt">pdf_mode =</span> <span class="ot">TRUE</span>),</span>
+<span id="cb3-10"><a href="#cb3-10"></a>                  <span class="dt">output_file =</span> tmp_html_cv_loc)</span>
+<span id="cb3-11"><a href="#cb3-11"></a></span>
+<span id="cb3-12"><a href="#cb3-12"></a><span class="co"># Convert to PDF using Pagedown</span></span>
+<span id="cb3-13"><a href="#cb3-13"></a>pagedown<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/pagedown/man/chrome_print.html">chrome_print</a></span>(<span class="dt">input =</span> tmp_html_cv_loc,</span>
+<span id="cb3-14"><a href="#cb3-14"></a>                       <span class="dt">output =</span> <span class="st">"cv.pdf"</span>)</span></code></pre></div>
 <div style="text-align: center; padding: 2rem 0;">
 
 <img src="reference/figures/html_vs_pdf_output.png" width="100%">
