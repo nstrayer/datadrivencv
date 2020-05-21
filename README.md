@@ -1,6 +1,4 @@
 
-<!-- README.md is generated from README.Rmd. Please edit that file -->
-
 # datadrivencv <img src="man/figures/logo.svg" width="185px" align="right" style="border:1px solid black;">
 
 <!-- badges: start -->
@@ -12,7 +10,7 @@ separating the content from the output by treating entries as data.
 
 ## Installation
 
-The development version from [GitHub](https://github.com/nstrayer/datadrivencv) with:
+The development version from [GitHub](https://github.com/) with:
 
 ``` r
 # install.packages("devtools")
