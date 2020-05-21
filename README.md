@@ -12,7 +12,7 @@ separating the content from the output by treating entries as data.
 
 ## Installation
 
-The development version from [GitHub](https://github.com/) with:
+The development version from [GitHub](https://github.com/nstrayer/datadrivencv) with:
 
 ``` r
 # install.packages("devtools")
