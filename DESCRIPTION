@@ -10,7 +10,6 @@ License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Imports: 
-    R6,
     dplyr,
     tidyr,
     glue,
