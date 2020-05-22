@@ -8,8 +8,6 @@
 #'   either a URL to a google sheet with multiple sheets containing the four
 #'   data types or a path to a folder containing four `.csv`s with the neccesary
 #'   data.
-#' @param pdf_location What location will the PDF of this CV be hosted at?
-#' @param html_location What location will the HTML version of this CV be hosted at?
 #' @param source_location Where is the code to build your CV hosted?
 #' @param pdf_mode Is the output being rendered into a pdf? Aka do links need
 #'   to be stripped?
@@ -18,14 +16,10 @@
 #' @return A new `CV_Printer` object.
 create_CV_object <-  function(data_location,
                               pdf_mode = FALSE,
-                              html_location,
-                              pdf_location,
                               sheet_is_publicly_readable = TRUE) {
 
   cv <- list(
     pdf_mode = pdf_mode,
-    html_location = html_location,
-    pdf_location = pdf_location,
     links = c()
   )
 
@@ -219,20 +213,6 @@ print_contact_info <- function(cv){
     cv$contact_info,
     "- <i class='fa fa-{icon}'></i> {contact}"
   ) %>% print()
-
-  invisible(cv)
-}
-
-
-
-#' @description Small addendum that links to pdf version of CV if currently HTML and HTML if currently PDF.
-print_link_to_other_format <- function(cv){
-  # When in export mode the little dots are unaligned, so fix that.
-  if(cv$pdf_mode){
-    print(glue::glue("View this CV online with links at _{cv$html_location}_"))
-  } else {
-    print(glue::glue("[<i class='fas fa-download'></i> Download a PDF of this CV]({cv$pdf_location})"))
-  }
 
   invisible(cv)
 }
