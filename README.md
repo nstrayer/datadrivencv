@@ -212,3 +212,19 @@ Confused by anything (there’s a lot to be confused by)? [Open an issue
 on github](https://github.com/nstrayer/datadrivencv/issues/new) and let
 me know. Not comfortable with github issues? Tweet the question at me on
 Twitter: [@nicholasstrayer](https://twitter.com/NicholasStrayer).
+
+<!-- Twitter Card data -->
+
+<meta name="twitter:card" content="summary">
+
+<meta name="twitter:site" content="@nicholasstrayer">
+
+<meta name="twitter:title" content="datadrivencv">
+
+<meta name="twitter:description" content="n R package for building your CV with data">
+
+<meta name="twitter:creator" content="@nicholasstrayer">
+
+<!-- Twitter Summary card images must be at least 120x120px -->
+
+<meta name="twitter:image" content="https://github.com/nstrayer/datadrivencv/blob/master/man/figures/logo.svg">
