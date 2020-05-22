@@ -217,20 +217,3 @@ print_contact_info <- function(cv){
   invisible(cv)
 }
 
-
-
-#' @description Appends some styles specific to PDF output.
-set_style <- function(cv){
-  # When in export mode the little dots are unaligned, so fix that.
-  if(cv$pdf_mode) {
-    cat("
-<style>
-:root{
-  --decorator-outer-offset-left: -6.5px;
-}
-</style>")
-  }
-
-invisible(cv)
-}
-

@@ -30,8 +30,15 @@ CV <- create_CV_object(
 
 
 ```{r}
-# Add some conditional CSS if in PDF mode needed due to quirks in chrome print rendering
-CV %>% set_style()
+# When in pdf export mode the little dots are unaligned, so fix that with some conditional CSS.
+if(params$pdf_mode) {
+    cat("
+<style>
+:root{
+  --decorator-outer-offset-left: -6.5px;
+}
+</style>")
+}
 ```
 
 
