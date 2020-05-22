@@ -21,7 +21,8 @@ Imports:
     magrittr,
     usethis,
     pagedown,
-    fs
+    fs,
+    icon
 RoxygenNote: 7.0.2
 Roxygen: list(markdown = TRUE)
 Suggests: 
