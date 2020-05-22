@@ -23,8 +23,6 @@ source("CV_printing_functions.R")
 # Read in all data and initialize a CV printer object
 CV <- create_CV_object(
   data_location = "{{{data_location}}}",  
-  pdf_location = "{{{pdf_location}}}",
-  html_location = "{{{html_location}}}",
   pdf_mode = params$pdf_mode
 )
 
@@ -32,8 +30,15 @@ CV <- create_CV_object(
 
 
 ```{r}
-# Add some conditional CSS if in PDF mode needed due to quirks in chrome print rendering
-CV %>% set_style()
+# When in pdf export mode the little dots are unaligned, so fix that with some conditional CSS.
+if(params$pdf_mode) {
+    cat("
+<style>
+:root{
+  --decorator-outer-offset-left: -6.5px;
+}
+</style>")
+}
 ```
 
 
@@ -54,7 +59,11 @@ datadrivencv::build_network_logo(CV$entries_data)
 
 
 ```{r}
-CV %>% print_link_to_other_format()
+if(params$pdf_mode){
+  cat("View this CV online with links at _{{{html_location}}}_")
+} else {
+  cat("[<i class='fas fa-download'></i> Download a PDF of this CV]({{pdf_location}})")
+}
 ```
 
 Contact {#contact}
