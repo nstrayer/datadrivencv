@@ -22,10 +22,12 @@ Imports:
     usethis,
     pagedown,
     fs,
-    icon
+    icon (>= 0.1.0)
 RoxygenNote: 7.0.2
 Roxygen: list(markdown = TRUE)
 Suggests: 
     knitr,
     rmarkdown
 VignetteBuilder: knitr
+Remotes:  
+    ropenscilabs/icon
