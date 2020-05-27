@@ -66,12 +66,20 @@ create_CV_object <-  function(data_location,
     ) %>%
     dplyr::mutate(
       description_bullets = paste0("- ", description_bullets),
-      end = ifelse(is.na(end), "Current", end),
-      end_num = ifelse(tolower(end) %in% c("current", "now", ""), future_year, end),
-      timeline = ifelse(is.na(start) | start == end,
-                        end,
-                        glue::glue('{end} - {start}'))
+      no_start = is.na(start),
+      has_start = !no_start,
+      no_end = is.na(end),
+      has_end = !no_end,
+      cur_end = tolower(end) %in% c("current", "now", ""),
+      end_num = ifelse (cur_end | no_end, future_year, end),
+      timeline = dplyr::case_when(
+        no_start  & no_end  ~ "N/A",
+        no_start  & has_end ~ as.character(end),
+        has_start & no_end  ~ paste(start, "-", "Current"),
+        TRUE                ~ paste(end, "-", start)
+      )
     ) %>%
+    dplyr::select(-no_start, -has_start, -no_end, -has_end, -cur_end) %>%
     dplyr::arrange(desc(end_num)) %>%
     dplyr::mutate_all(~ ifelse(is.na(.), 'N/A', .))
 
@@ -216,4 +224,3 @@ print_contact_info <- function(cv){
 
   invisible(cv)
 }
-
