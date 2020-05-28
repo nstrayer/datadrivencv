@@ -1,12 +1,7 @@
-
-
-
 test_that("Addition of all files works", {
 
   # Make a temp directory for placing files
-  # and make sure it's empty
-  temp_dir <- fs::dir_create(tempdir())
-  fs::dir_walk(temp_dir, fs::file_delete)
+  temp_dir <- fs::dir_create(fs::path(tempdir(), "test_dir"))
 
   datadrivencv::use_datadriven_cv(
     full_name = "Testing McTester",
@@ -18,15 +13,15 @@ test_that("Addition of all files works", {
     all(c("cv.rmd", "dd_cv.css", "render_cv.r", "cv_printing_functions.r") %in% list.files(temp_dir))
   )
 
+  # Clean up temp dir
+  fs::dir_walk(temp_dir, fs::file_delete)
 })
 
 
 test_that("Addition of subset of files", {
 
   # Make a temp directory for placing files
-  # and make sure it's empty
-  temp_dir <- fs::dir_create(tempdir())
-  fs::dir_walk(temp_dir, fs::file_delete)
+  temp_dir <- fs::dir_create(fs::path(tempdir(), "test_dir"))
 
   datadrivencv::use_datadriven_cv(
     full_name = "Testing McTester",
@@ -42,15 +37,16 @@ test_that("Addition of subset of files", {
 
   expect_false("cv.rmd" %in% list.files(temp_dir))
   expect_false("dd_cv.css" %in% list.files(temp_dir))
+  # Clean up temp dir
+  fs::dir_walk(temp_dir, fs::file_delete)
 })
 
 
 test_that("Warns when trying to update a file with no change", {
 
   # Make a temp directory for placing files
-  # and make sure it's empty
-  temp_dir <- fs::dir_create(tempdir())
-  fs::dir_walk(temp_dir, fs::file_delete)
+  temp_dir <- fs::dir_create(fs::path(tempdir(), "test_dir"))
+
 
   # First dump all files into directory
   datadrivencv::use_datadriven_cv(
@@ -84,15 +80,16 @@ test_that("Warns when trying to update a file with no change", {
       open_files = FALSE
     )
   )
+
+  # Clean up temp dir
+  fs::dir_walk(temp_dir, fs::file_delete)
 })
 
 
 test_that("Addition of all data csvs works", {
 
   # Make a temp directory for placing files
-  # and make sure it's empty
-  temp_dir <- fs::dir_create(tempdir())
-  fs::dir_walk(temp_dir, fs::file_delete)
+  temp_dir <- fs::dir_create(fs::path(tempdir(), "test_dir"))
 
   # Wont make a new directory for you if you dont want it to
   expect_error(
@@ -117,4 +114,8 @@ test_that("Addition of all data csvs works", {
   expect_true(
     all(c("entries.csv", "text_blocks.csv", "language_skills.csv","contact_info.csv" ) %in% list.files(fs::path(temp_dir, "csv_data")))
   )
+
+  # Clean up temp dir
+  fs::dir_walk(temp_dir, fs::file_delete)
 })
+

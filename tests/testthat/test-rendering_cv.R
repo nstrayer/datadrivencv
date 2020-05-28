@@ -2,7 +2,6 @@ test_that("Rendering to HTML works", {
   # Make a temp directory for placing files
   # and make sure it's empty
   temp_dir <- fs::dir_create(tempdir())
-  fs::dir_walk(temp_dir, fs::file_delete)
 
 
   # Setup data
@@ -47,4 +46,7 @@ test_that("Rendering to HTML works", {
 
   # Also make sure the html output doesn't have the links section
   expect_false(has_link_section(readr::read_file(html_knit_res)))
+
+  # Clean up temp dir
+  fs::dir_walk(temp_dir, fs::file_delete)
 })
