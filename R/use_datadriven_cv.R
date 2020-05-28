@@ -35,27 +35,20 @@
 #'
 #' # Make a temp directory for placing files
 #' # This would be a real location for a typical situation
-#' temp_dir <- fs::dir_create(fs::path(tempdir(), "test_dir"))
+#' temp_dir <- fs::dir_create(fs::path(tempdir(), "my_cv"))
 #'
-#' datadrivencv::use_datadriven_cv(
-#'   full_name = "Testing McTester",
-#'   data_location = "here/be/my/data/",
+#' use_datadriven_cv(
+#'   full_name = "Nick Strayer",
+#'   data_location = "https://docs.google.com/spreadsheets/d/14MQICF2F8-vf8CKPF1m4lyGKO6_thG-4aSwat1e2TWc",
+#'   pdf_location = "https://github.com/nstrayer/cv/raw/master/strayer_cv.pdf",
+#'   html_location = "nickstrayer.me/cv/",
+#'   source_location = "https://github.com/nstrayer/cv",
 #'   output_dir = temp_dir,
 #'   open_files = FALSE
 #' )
 #'
 #' # Files should be where they were requested
-#' list.files(temp_dir))
-#'
-#' \dontrun{
-#'   use_datadriven_cv(
-#'     full_name = "Nick Strayer",
-#'     data_location = "https://docs.google.com/spreadsheets/d/14MQICF2F8-vf8CKPF1m4lyGKO6_thG-4aSwat1e2TWc",
-#'     pdf_location = "https://github.com/nstrayer/cv/raw/master/strayer_cv.pdf",
-#'     html_location = "nickstrayer.me/cv/",
-#'     source_location = "https://github.com/nstrayer/cv"
-#'   )
-#' }
+#' list.files(temp_dir)
 #'
 #' @export
 use_datadriven_cv <- function(full_name = "Sarah Arcos",

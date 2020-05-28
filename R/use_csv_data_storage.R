@@ -13,7 +13,7 @@
 #'
 #' # Make a temp directory for placing files
 #' # This would be a real location for a typical situation
-#' temp_dir <- fs::dir_create(fs::path(tempdir(), "test_dir"))
+#' temp_dir <- fs::dir_create(fs::path(tempdir(), "cv_w_csvs"))
 #'
 #' datadrivencv::use_csv_data_storage(
 #'   folder_name = fs::path(temp_dir, "csv_data"),
