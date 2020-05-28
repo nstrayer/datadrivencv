@@ -1,7 +1,7 @@
 test_that("Rendering to HTML works", {
   # Make a temp directory for placing files
   # and make sure it's empty
-  temp_dir <- fs::dir_create(tempdir())
+  temp_dir <- fs::dir_create(fs::path(tempdir(), "test_dir"))
 
 
   # Setup data
@@ -17,7 +17,7 @@ test_that("Rendering to HTML works", {
     data_location = paste0(data_loc, "/"),
     output_dir = temp_dir,
     open_files = FALSE,
-    use_network_logo = FALSE
+    use_network_logo = TRUE
   )
 
   # Knit the HTML version
