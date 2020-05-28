@@ -24,11 +24,13 @@ build_network_logo <- function(position_data){
       b = purrr::flatten_int( purrr::map(rep_counts, ~{tail(1:n, .x)}) )
     )
   }
-
+  current_year <- lubridate::year(lubridate::ymd(Sys.Date()))
   edges <- positions %>%
     dplyr::select(id, start, end) %>%
     dplyr::mutate(
-      end = ifelse(end == "Current", lubridate::year(lubridate::ymd(Sys.Date())), end),
+      end = ifelse(
+        tolower(end) == "Current" | is.na(end) | end == "N/A", current_year,
+        end),
       start = ifelse(start == "N/A", end, start)
     ) %>%
     purrr::pmap_dfr(function(id, start, end){
