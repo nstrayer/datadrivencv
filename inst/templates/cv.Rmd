@@ -18,7 +18,7 @@ knitr::opts_chunk$set(
 )
 
 library(magrittr) # For the pipe
-source("CV_printing_functions.R")
+source("cv_printing_functions.r")
 
 # Read in all data and initialize a CV printer object
 CV <- create_CV_object(

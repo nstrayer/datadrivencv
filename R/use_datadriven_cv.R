@@ -17,16 +17,18 @@
 #' @param source_location Where is the code to build your CV hosted?
 #' @param open_files Should the added files be opened after creation?
 #' @param which_files What files should be placed? Takes a vector of possible
-#'   values `c("cv.Rmd", "dd_cv.css", "render_cv.R", "CV_printing_functions.R")`
+#'   values `c("cv.rmd", "dd_cv.css", "render_cv.r", "cv_printing_functions.r")`
 #'   or `"all"` for everything. This can be used to incrementally update the
 #'   printing functions or CSS without loosing customizations you've made to
 #'   other files.
+#' @param output_dir Where should the files be placed?
 #' @param use_network_logo Should logo be an interactive network based on your
 #'   CV data? Note that this uses the function
 #'   \code{\link{build_network_logo()}} so will introduce a dependency on this
 #'   package.
+#' @inheritParams use_ddcv_template
 #'
-#' @return `cv.Rmd`, `dd_cv.css`, `render_cv.R`, and `CV_printing_functions.R`
+#' @return `cv.rmd`, `dd_cv.css`, `render_cv.r`, and `cv_printing_functions.r`
 #'   written to the current working directory.
 #'
 #' @examples
@@ -48,19 +50,22 @@ use_datadriven_cv <- function(full_name = "Sarah Arcos",
                               html_location = "nickstrayer.me/datadrivencv/",
                               source_location = "https://github.com/nstrayer/datadrivencv",
                               which_files = "all",
+                              output_dir = getwd(),
+                              create_output_dir = FALSE,
                               use_network_logo = TRUE,
                               open_files = TRUE){
 
-  if(which_files == "all"){
-    which_files <- c("cv.Rmd", "dd_cv.css", "render_cv.R", "CV_printing_functions.R")
+  if(is.character(which_files) && which_files == "all"){
+    which_files <- c("cv.rmd", "dd_cv.css", "render_cv.r", "cv_printing_functions.r")
   }
+  # Make case-insensitive
+  which_files <- tolower(which_files)
 
-  if("cv.Rmd" %in% which_files){
+  if("cv.rmd" %in% which_files){
     # Sets the main Rmd template
-    usethis::use_template(
-      template = "cv.Rmd",
-      package = "datadrivencv",
-      data = list(
+    use_ddcv_template(
+      file_name = "cv.rmd",
+      params = list(
         full_name = full_name,
         data_location = data_location,
         pdf_location = pdf_location,
@@ -68,31 +73,35 @@ use_datadriven_cv <- function(full_name = "Sarah Arcos",
         source_location = source_location,
         use_network_logo = use_network_logo
       ),
-      open = open_files
+      output_dir = output_dir,
+      create_output_dir = create_output_dir,
+      open_after_making = open_files
     )
   }
 
   if("dd_cv.css" %in% which_files){
     # Place the css as well
-    usethis::use_template(
-      template = "dd_cv.css",
-      package = "datadrivencv",
-      open = open_files
+    use_ddcv_template(
+      file_name = "dd_cv.css",
+      output_dir = output_dir,
+      create_output_dir
     )
   }
 
-  if("render_cv.R" %in% which_files){
-    usethis::use_template(
-      template = "render_cv.R",
-      package = "datadrivencv",
-      open = open_files
+  if("render_cv.r" %in% which_files){
+    use_ddcv_template(
+      file_name = "render_cv.r",
+      output_dir = output_dir,
+      create_output_dir,
+      open_after_making = open_files
     )
   }
 
-  if("CV_printing_functions.R" %in% which_files){
-    usethis::use_template(
-      template = "CV_printing_functions.R",
-      package = "datadrivencv"
+  if("cv_printing_functions.r" %in% which_files){
+    use_ddcv_template(
+      file_name = "cv_printing_functions.r",
+      output_dir = output_dir,
+      create_output_dir
     )
   }
 

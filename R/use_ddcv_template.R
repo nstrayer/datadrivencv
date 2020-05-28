@@ -1,6 +1,6 @@
 #' Use template file from package
 #'
-#' @param file_name Name of file from templates to use: e.g. `cv.Rmd`.
+#' @param file_name Name of file from templates to use: e.g. `cv.rmd`.
 #' @param params Parameters used to fill in `whisker` template
 #' @param output_file_name Name of file after being placed.
 #' @param output_dir Directory location for output to be placed in.
@@ -17,7 +17,6 @@ use_ddcv_template <- function(
   create_output_dir = FALSE,
   warn_about_no_change = TRUE,
   open_after_making = FALSE){
-
   output_dir_missing <- !fs::dir_exists(output_dir)
 
   if(output_dir_missing & create_output_dir){
@@ -51,9 +50,11 @@ use_ddcv_template <- function(
   readr::write_file(template_text, output_loc)
 
   # Open the file if requested
-  if (rstudioapi::isAvailable() && rstudioapi::hasFun("navigateToFile")) {
-    rstudioapi::navigateToFile(output_loc)
-  } else {
-    utils::file.edit(output_loc)
+  if(open_after_making){
+    if (rstudioapi::isAvailable() && rstudioapi::hasFun("navigateToFile")) {
+      rstudioapi::navigateToFile(output_loc)
+    } else {
+      utils::file.edit(output_loc)
+    }
   }
 }

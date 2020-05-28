@@ -11,6 +11,8 @@ use_datadriven_cv(
   html_location = "nickstrayer.me/datadrivencv/",
   source_location = "https://github.com/nstrayer/datadrivencv",
   which_files = "all",
+  output_dir = getwd(),
+  create_output_dir = FALSE,
   use_network_logo = TRUE,
   open_files = TRUE
 )
@@ -32,10 +34,14 @@ at?}
 \item{source_location}{Where is the code to build your CV hosted?}
 
 \item{which_files}{What files should be placed? Takes a vector of possible
-values \code{c("cv.Rmd", "dd_cv.css", "render_cv.R", "CV_printing_functions.R")}
+values \code{c("cv.rmd", "dd_cv.css", "render_cv.r", "cv_printing_functions.r")}
 or \code{"all"} for everything. This can be used to incrementally update the
 printing functions or CSS without loosing customizations you've made to
 other files.}
+
+\item{output_dir}{Where should the files be placed?}
+
+\item{create_output_dir}{If the requested output directory is missing should it be created?}
 
 \item{use_network_logo}{Should logo be an interactive network based on your
 CV data? Note that this uses the function
@@ -45,7 +51,7 @@ package.}
 \item{open_files}{Should the added files be opened after creation?}
 }
 \value{
-\code{cv.Rmd}, \code{dd_cv.css}, \code{render_cv.R}, and \code{CV_printing_functions.R}
+\code{cv.rmd}, \code{dd_cv.css}, \code{render_cv.r}, and \code{cv_printing_functions.r}
 written to the current working directory.
 }
 \description{
