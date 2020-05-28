@@ -39,7 +39,7 @@ or \code{"all"} for everything. This can be used to incrementally update the
 printing functions or CSS without loosing customizations you've made to
 other files.}
 
-\item{output_dir}{Where should the files be placed?}
+\item{output_dir}{Where should the files be placed? Defaults to your current working directory}
 
 \item{create_output_dir}{If the requested output directory is missing should it be created?}
 
@@ -59,6 +59,20 @@ Sets up the \code{.Rmd} file for a data-driven cv in current working directory.
 Also adds css file for current CV so style can be custommized.
 }
 \examples{
+
+# Make a temp directory for placing files
+# This would be a real location for a typical situation
+temp_dir <- fs::dir_create(fs::path(tempdir(), "test_dir"))
+
+datadrivencv::use_datadriven_cv(
+  full_name = "Testing McTester",
+  data_location = "here/be/my/data/",
+  output_dir = temp_dir,
+  open_files = FALSE
+)
+
+# Files should be where they were requested
+list.files(temp_dir))
 
 \dontrun{
   use_datadriven_cv(

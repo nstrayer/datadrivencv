@@ -4,10 +4,12 @@
 \alias{use_csv_data_storage}
 \title{Use CSVs for storing data}
 \usage{
-use_csv_data_storage(folder_name = "data")
+use_csv_data_storage(folder_name = "data", create_output_dir = TRUE)
 }
 \arguments{
-\item{folder_name}{Name of the folder you want csvs stored in}
+\item{folder_name}{Name of the folder you want csvs stored in relative to current working directory}
+
+\item{create_output_dir}{If the requested output directory is missing should it be created?}
 }
 \value{
 A new folder \verb{<folder_name>/} with \code{entries.csv}, \code{text_blocks.csv}, \code{language_skills.csv}, and \code{contact_info.csv} in it.
@@ -18,8 +20,15 @@ Sets up examples of the four CSVs needed for building CV
 }
 \examples{
 
-\dontrun{
-  use_csv_data_storage(folder_name = "my_data")
-}
+# Make a temp directory for placing files
+# This would be a real location for a typical situation
+temp_dir <- fs::dir_create(fs::path(tempdir(), "test_dir"))
+
+datadrivencv::use_csv_data_storage(
+  folder_name = fs::path(temp_dir, "csv_data"),
+  create_output_dir = TRUE
+)
+
+list.files(fs::path(temp_dir, "csv_data"))
 
 }
