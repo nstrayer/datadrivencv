@@ -85,3 +85,36 @@ test_that("Warns when trying to update a file with no change", {
     )
   )
 })
+
+
+test_that("Addition of all data csvs works", {
+
+  # Make a temp directory for placing files
+  # and make sure it's empty
+  temp_dir <- fs::dir_create(tempdir())
+  fs::dir_walk(temp_dir, fs::file_delete)
+
+  # Wont make a new directory for you if you dont want it to
+  expect_error(
+    datadrivencv::use_csv_data_storage(
+      folder_name = fs::path(temp_dir, "csv_data"),
+      create_output_dir = FALSE
+    ),
+    paste(
+      "The requested output directory:",
+      fs::path(temp_dir, "csv_data"),
+      "doesn't exist. Either set create_output_dir = TRUE or manually make directory."
+    ),
+    fixed = TRUE
+  )
+
+  # Will make directory for you if you want it to
+  datadrivencv::use_csv_data_storage(
+    folder_name = fs::path(temp_dir, "csv_data"),
+    create_output_dir = TRUE
+  )
+
+  expect_true(
+    all(c("entries.csv", "text_blocks.csv", "language_skills.csv","contact_info.csv" ) %in% list.files(fs::path(temp_dir, "csv_data")))
+  )
+})
