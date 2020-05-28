@@ -21,7 +21,7 @@
 #'   or `"all"` for everything. This can be used to incrementally update the
 #'   printing functions or CSS without loosing customizations you've made to
 #'   other files.
-#' @param output_dir Where should the files be placed?
+#' @param output_dir Where should the files be placed? Defaults to your current working directory
 #' @param use_network_logo Should logo be an interactive network based on your
 #'   CV data? Note that this uses the function
 #'   \code{\link{build_network_logo()}} so will introduce a dependency on this
@@ -32,6 +32,20 @@
 #'   written to the current working directory.
 #'
 #' @examples
+#'
+#' # Make a temp directory for placing files
+#' # This would be a real location for a typical situation
+#' temp_dir <- fs::dir_create(fs::path(tempdir(), "test_dir"))
+#'
+#' datadrivencv::use_datadriven_cv(
+#'   full_name = "Testing McTester",
+#'   data_location = "here/be/my/data/",
+#'   output_dir = temp_dir,
+#'   open_files = FALSE
+#' )
+#'
+#' # Files should be where they were requested
+#' list.files(temp_dir))
 #'
 #' \dontrun{
 #'   use_datadriven_cv(
