@@ -10,7 +10,8 @@ use_ddcv_template(
   output_file_name = file_name,
   output_dir = getwd(),
   create_output_dir = FALSE,
-  warn_about_no_change = TRUE
+  warn_about_no_change = TRUE,
+  open_after_making = FALSE
 )
 }
 \arguments{
@@ -25,6 +26,8 @@ use_ddcv_template(
 \item{create_output_dir}{If the requested output directory is missing should it be created?}
 
 \item{warn_about_no_change}{If there is no change between the new file and what was already there, should a warning be issued?}
+
+\item{open_after_making}{Should the file be opened after it has been written?}
 }
 \description{
 Use template file from package

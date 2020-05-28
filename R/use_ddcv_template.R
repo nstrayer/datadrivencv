@@ -6,6 +6,7 @@
 #' @param output_dir Directory location for output to be placed in.
 #' @param create_output_dir If the requested output directory is missing should it be created?
 #' @param warn_about_no_change If there is no change between the new file and what was already there, should a warning be issued?
+#' @param open_after_making Should the file be opened after it has been written?
 #'
 #' @return NULL
 use_ddcv_template <- function(
@@ -14,7 +15,8 @@ use_ddcv_template <- function(
   output_file_name = file_name,
   output_dir = getwd(),
   create_output_dir = FALSE,
-  warn_about_no_change = TRUE){
+  warn_about_no_change = TRUE,
+  open_after_making = FALSE){
 
   output_dir_missing <- !fs::dir_exists(output_dir)
 
@@ -47,4 +49,11 @@ use_ddcv_template <- function(
   }
 
   readr::write_file(template_text, output_loc)
+
+  # Open the file if requested
+  if (rstudioapi::isAvailable() && rstudioapi::hasFun("navigateToFile")) {
+    rstudioapi::navigateToFile(output_loc)
+  } else {
+    utils::file.edit(output_loc)
+  }
 }
