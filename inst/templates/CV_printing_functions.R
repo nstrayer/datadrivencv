@@ -39,7 +39,7 @@ create_CV_object <-  function(data_location,
 
     cv$entries_data <- googlesheets4::read_sheet(data_location, sheet = "entries", skip = 1) %>%
       # Google sheets loves to turn columns into list ones if there are different types
-      dplyr::mutate_if(is.list, purrr::map_chr, as.character)
+      dplyr::mutate_if(is.list, as.character)
 
     cv$skills        <- googlesheets4::read_sheet(data_location, sheet = "language_skills", skip = 1)
     cv$text_blocks   <- googlesheets4::read_sheet(data_location, sheet = "text_blocks", skip = 1)
