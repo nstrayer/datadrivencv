@@ -174,7 +174,7 @@
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td><code>cv.Rmd</code></td>
+<td><code>cv.rmd</code></td>
 <td>An RMarkdown file with various sections filled in. Edit this to fit your personal needs.</td>
 </tr>
 <tr class="even">
@@ -182,11 +182,11 @@
 <td>A custom set of CSS styles that build on the default <code>Pagedown</code> “resume” template. Again, edit these as desired.</td>
 </tr>
 <tr class="odd">
-<td><code>render_cv.R</code></td>
+<td><code>render_cv.r</code></td>
 <td>Use this script to build your CV in both PDF and HTML at the same time.</td>
 </tr>
 <tr class="even">
-<td><code>CV_printing_functions.R</code></td>
+<td><code>cv_printing_functions.r</code></td>
 <td>A series of functions that perform the dirty work of turning your spreadsheet data into markdown/html and making that output work for PDF printing. E.g. Replacing markdown links with superscripts and a links section, tweaking the CSS to account for chrome printing quirks, etc..</td>
 </tr>
 </tbody>
@@ -332,19 +332,19 @@
 <div id="rendering-your-cv" class="section level1">
 <h1 class="hasAnchor">
 <a href="#rendering-your-cv" class="anchor"></a>Rendering your CV</h1>
-<p>Now that you have the templates setup and you’ve configured your data, the last thing to do is render. The easiest way to do this is by opening <code>cv.Rmd</code> in RStudio and clicking the “Knit” button. This will render an HTML version of your CV. However, you most likely want a PDF version of your CV to go along with an HTML version. The easiest way to do this is to run the included script <code>render_cv.R</code>:</p>
+<p>Now that you have the templates setup and you’ve configured your data, the last thing to do is render. The easiest way to do this is by opening <code>cv.rmd</code> in RStudio and clicking the “Knit” button. This will render an HTML version of your CV. However, you most likely want a PDF version of your CV to go along with an HTML version. The easiest way to do this is to run the included script <code>render_cv.r</code>:</p>
 <div id="render_cvr" class="section level3">
 <h3 class="hasAnchor">
-<a href="#render_cvr" class="anchor"></a><code>render_cv.R</code>
+<a href="#render_cvr" class="anchor"></a><code>render_cv.r</code>
 </h3>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="co"># Knit the HTML version</span></span>
-<span id="cb3-2"><a href="#cb3-2"></a>rmarkdown<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/rmarkdown/man/render.html">render</a></span>(<span class="st">"cv.Rmd"</span>,</span>
+<span id="cb3-2"><a href="#cb3-2"></a>rmarkdown<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/rmarkdown/man/render.html">render</a></span>(<span class="st">"cv.rmd"</span>,</span>
 <span id="cb3-3"><a href="#cb3-3"></a>                  <span class="dt">params =</span> <span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="dt">pdf_mode =</span> <span class="ot">FALSE</span>),</span>
 <span id="cb3-4"><a href="#cb3-4"></a>                  <span class="dt">output_file =</span> <span class="st">"cv.html"</span>)</span>
 <span id="cb3-5"><a href="#cb3-5"></a></span>
 <span id="cb3-6"><a href="#cb3-6"></a><span class="co"># Knit the PDF version to temporary html location</span></span>
 <span id="cb3-7"><a href="#cb3-7"></a>tmp_html_cv_loc &lt;-<span class="st"> </span>fs<span class="op">::</span><span class="kw"><a href="http://fs.r-lib.org/reference/file_temp.html">file_temp</a></span>(<span class="dt">ext =</span> <span class="st">".html"</span>)</span>
-<span id="cb3-8"><a href="#cb3-8"></a>rmarkdown<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/rmarkdown/man/render.html">render</a></span>(<span class="st">"cv.Rmd"</span>,</span>
+<span id="cb3-8"><a href="#cb3-8"></a>rmarkdown<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/rmarkdown/man/render.html">render</a></span>(<span class="st">"cv.rmd"</span>,</span>
 <span id="cb3-9"><a href="#cb3-9"></a>                  <span class="dt">params =</span> <span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="dt">pdf_mode =</span> <span class="ot">TRUE</span>),</span>
 <span id="cb3-10"><a href="#cb3-10"></a>                  <span class="dt">output_file =</span> tmp_html_cv_loc)</span>
 <span id="cb3-11"><a href="#cb3-11"></a></span>
@@ -355,7 +355,7 @@
 
 <img src="reference/figures/html_vs_pdf_output.png" width="100%">
 </div>
-<p>This script will render your CV in HTML and output it as <code>cv.html</code>, it will also turn on the <code>pdf_mode</code> parameter in <code>cv.Rmd</code>, which will strip the links out and place them at the end linked by inline superscripts. Once the pdf version is rendered to HTML, it will then turn that HTML into a PDF using <code><a href="https://rdrr.io/pkg/pagedown/man/chrome_print.html">pagedown::chrome_print()</a></code>. By using this script you can easily make sure your get both versions rendered at the same time without having to manually go in and toggle the pdf mode parameter in the yaml header and then use the print dialog in your browser.</p>
+<p>This script will render your CV in HTML and output it as <code>cv.html</code>, it will also turn on the <code>pdf_mode</code> parameter in <code>cv.rmd</code>, which will strip the links out and place them at the end linked by inline superscripts. Once the pdf version is rendered to HTML, it will then turn that HTML into a PDF using <code><a href="https://rdrr.io/pkg/pagedown/man/chrome_print.html">pagedown::chrome_print()</a></code>. By using this script you can easily make sure your get both versions rendered at the same time without having to manually go in and toggle the pdf mode parameter in the yaml header and then use the print dialog in your browser.</p>
 </div>
 </div>
 <div id="questions" class="section level1">

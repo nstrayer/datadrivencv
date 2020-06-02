@@ -5,7 +5,7 @@
 
 .DS_Store
 
-cv.Rmd
+cv.rmd
 
 dd_cv.css
 
@@ -16,5 +16,5 @@ cv_files/
 cv.pdf
 
 *_cache/
-render_cv.R
+render_cv.r
 inst/doc

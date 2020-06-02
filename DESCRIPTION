@@ -19,15 +19,16 @@ Imports:
     purrr,
     stringr,
     magrittr,
-    usethis,
     pagedown,
     fs,
-    icon (>= 0.1.0)
+    icon (>= 0.1.0),
+    whisker
 RoxygenNote: 7.0.2
 Roxygen: list(markdown = TRUE)
 Suggests: 
     knitr,
-    rmarkdown
+    rmarkdown,
+    testthat (>= 2.1.0)
 VignetteBuilder: knitr
-Remotes:  
+Remotes: 
     ropenscilabs/icon

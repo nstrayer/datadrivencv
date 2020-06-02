@@ -10,6 +10,9 @@ use_datadriven_cv(
   pdf_location = "https://github.com/nstrayer/cv/raw/master/strayer_cv.pdf",
   html_location = "nickstrayer.me/datadrivencv/",
   source_location = "https://github.com/nstrayer/datadrivencv",
+  which_files = "all",
+  output_dir = getwd(),
+  create_output_dir = FALSE,
   use_network_logo = TRUE,
   open_files = TRUE
 )
@@ -20,7 +23,8 @@ use_datadriven_cv(
 \item{data_location}{Path of the spreadsheets holding all your data. This can
 be either a URL to a google sheet with multiple sheets containing the four
 data types or a path to a folder containing four \code{.csv}s with the neccesary
-data. See \code{\link{use_csv_data_storage()}} for help setting up these \code{.csv}s.}
+data. See \code{\link{use_csv_data_storage()}} for help setting up these
+\code{.csv}s.}
 
 \item{pdf_location}{What location will the PDF of this CV be hosted at?}
 
@@ -28,6 +32,16 @@ data. See \code{\link{use_csv_data_storage()}} for help setting up these \code{.
 at?}
 
 \item{source_location}{Where is the code to build your CV hosted?}
+
+\item{which_files}{What files should be placed? Takes a vector of possible
+values \code{c("cv.rmd", "dd_cv.css", "render_cv.r", "cv_printing_functions.r")}
+or \code{"all"} for everything. This can be used to incrementally update the
+printing functions or CSS without loosing customizations you've made to
+other files.}
+
+\item{output_dir}{Where should the files be placed? Defaults to your current working directory}
+
+\item{create_output_dir}{If the requested output directory is missing should it be created?}
 
 \item{use_network_logo}{Should logo be an interactive network based on your
 CV data? Note that this uses the function
@@ -37,8 +51,8 @@ package.}
 \item{open_files}{Should the added files be opened after creation?}
 }
 \value{
-\code{cv.Rmd}, \code{dd_cv.css}, \code{render_cv.R}, and \code{CV_printing_functions.R} written to the current
-working directory.
+\code{cv.rmd}, \code{dd_cv.css}, \code{render_cv.r}, and \code{cv_printing_functions.r}
+written to the current working directory.
 }
 \description{
 Sets up the \code{.Rmd} file for a data-driven cv in current working directory.
@@ -46,14 +60,21 @@ Also adds css file for current CV so style can be custommized.
 }
 \examples{
 
-\dontrun{
-  use_datadriven_cv(
-    full_name = "Nick Strayer",
-    data_location = "https://docs.google.com/spreadsheets/d/14MQICF2F8-vf8CKPF1m4lyGKO6_thG-4aSwat1e2TWc",
-    pdf_location = "https://github.com/nstrayer/cv/raw/master/strayer_cv.pdf",
-    html_location = "nickstrayer.me/cv/",
-    source_location = "https://github.com/nstrayer/cv"
-  )
-}
+# Make a temp directory for placing files
+# This would be a real location for a typical situation
+temp_dir <- fs::dir_create(fs::path(tempdir(), "my_cv"))
+
+use_datadriven_cv(
+  full_name = "Nick Strayer",
+  data_location = "https://docs.google.com/spreadsheets/d/14MQICF2F8-vf8CKPF1m4lyGKO6_thG-4aSwat1e2TWc",
+  pdf_location = "https://github.com/nstrayer/cv/raw/master/strayer_cv.pdf",
+  html_location = "nickstrayer.me/cv/",
+  source_location = "https://github.com/nstrayer/cv",
+  output_dir = temp_dir,
+  open_files = FALSE
+)
+
+# Files should be where they were requested
+list.files(temp_dir)
 
 }

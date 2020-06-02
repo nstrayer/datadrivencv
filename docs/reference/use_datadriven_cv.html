@@ -130,6 +130,9 @@ Also adds css file for current CV so style can be custommized.</p>
   <span class='kw'>pdf_location</span> <span class='kw'>=</span> <span class='st'>"https://github.com/nstrayer/cv/raw/master/strayer_cv.pdf"</span>,
   <span class='kw'>html_location</span> <span class='kw'>=</span> <span class='st'>"nickstrayer.me/datadrivencv/"</span>,
   <span class='kw'>source_location</span> <span class='kw'>=</span> <span class='st'>"https://github.com/nstrayer/datadrivencv"</span>,
+  <span class='kw'>which_files</span> <span class='kw'>=</span> <span class='st'>"all"</span>,
+  <span class='kw'>output_dir</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/getwd.html'>getwd</a></span>(),
+  <span class='kw'>create_output_dir</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>use_network_logo</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>open_files</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
 )</pre>
@@ -146,7 +149,8 @@ Also adds css file for current CV so style can be custommized.</p>
       <td><p>Path of the spreadsheets holding all your data. This can
 be either a URL to a google sheet with multiple sheets containing the four
 data types or a path to a folder containing four <code>.csv</code>s with the neccesary
-data. See <code><a href='use_csv_data_storage.html'>use_csv_data_storage()</a></code> for help setting up these <code>.csv</code>s.</p></td>
+data. See <code><a href='use_csv_data_storage.html'>use_csv_data_storage()</a></code> for help setting up these
+<code>.csv</code>s.</p></td>
     </tr>
     <tr>
       <th>pdf_location</th>
@@ -160,6 +164,22 @@ at?</p></td>
     <tr>
       <th>source_location</th>
       <td><p>Where is the code to build your CV hosted?</p></td>
+    </tr>
+    <tr>
+      <th>which_files</th>
+      <td><p>What files should be placed? Takes a vector of possible
+values <code><a href='https://rdrr.io/r/base/c.html'>c("cv.rmd", "dd_cv.css", "render_cv.r", "cv_printing_functions.r")</a></code>
+or <code>"all"</code> for everything. This can be used to incrementally update the
+printing functions or CSS without loosing customizations you've made to
+other files.</p></td>
+    </tr>
+    <tr>
+      <th>output_dir</th>
+      <td><p>Where should the files be placed? Defaults to your current working directory</p></td>
+    </tr>
+    <tr>
+      <th>create_output_dir</th>
+      <td><p>If the requested output directory is missing should it be created?</p></td>
     </tr>
     <tr>
       <th>use_network_logo</th>
@@ -176,20 +196,29 @@ package.</p></td>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code>cv.Rmd</code>, <code>dd_cv.css</code>, <code>render_cv.R</code>, and <code>CV_printing_functions.R</code> written to the current
-working directory.</p>
+    <p><code>cv.rmd</code>, <code>dd_cv.css</code>, <code>render_cv.r</code>, and <code>cv_printing_functions.r</code>
+written to the current working directory.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
-<span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
-  <span class='fu'>use_datadriven_cv</span>(
-    <span class='kw'>full_name</span> <span class='kw'>=</span> <span class='st'>"Nick Strayer"</span>,
-    <span class='kw'>data_location</span> <span class='kw'>=</span> <span class='st'>"https://docs.google.com/spreadsheets/d/14MQICF2F8-vf8CKPF1m4lyGKO6_thG-4aSwat1e2TWc"</span>,
-    <span class='kw'>pdf_location</span> <span class='kw'>=</span> <span class='st'>"https://github.com/nstrayer/cv/raw/master/strayer_cv.pdf"</span>,
-    <span class='kw'>html_location</span> <span class='kw'>=</span> <span class='st'>"nickstrayer.me/cv/"</span>,
-    <span class='kw'>source_location</span> <span class='kw'>=</span> <span class='st'>"https://github.com/nstrayer/cv"</span>
-  )
-}</div></pre>
+<span class='co'># Make a temp directory for placing files</span>
+<span class='co'># This would be a real location for a typical situation</span>
+<span class='no'>temp_dir</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>fs</span><span class='kw ns'>::</span><span class='fu'><a href='http://fs.r-lib.org/reference/create.html'>dir_create</a></span>(<span class='kw pkg'>fs</span><span class='kw ns'>::</span><span class='fu'><a href='http://fs.r-lib.org/reference/path.html'>path</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span>(), <span class='st'>"my_cv"</span>))
+
+<span class='fu'>use_datadriven_cv</span>(
+  <span class='kw'>full_name</span> <span class='kw'>=</span> <span class='st'>"Nick Strayer"</span>,
+  <span class='kw'>data_location</span> <span class='kw'>=</span> <span class='st'>"https://docs.google.com/spreadsheets/d/14MQICF2F8-vf8CKPF1m4lyGKO6_thG-4aSwat1e2TWc"</span>,
+  <span class='kw'>pdf_location</span> <span class='kw'>=</span> <span class='st'>"https://github.com/nstrayer/cv/raw/master/strayer_cv.pdf"</span>,
+  <span class='kw'>html_location</span> <span class='kw'>=</span> <span class='st'>"nickstrayer.me/cv/"</span>,
+  <span class='kw'>source_location</span> <span class='kw'>=</span> <span class='st'>"https://github.com/nstrayer/cv"</span>,
+  <span class='kw'>output_dir</span> <span class='kw'>=</span> <span class='no'>temp_dir</span>,
+  <span class='kw'>open_files</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
+)
+
+<span class='co'># Files should be where they were requested</span>
+<span class='fu'><a href='https://rdrr.io/r/base/list.files.html'>list.files</a></span>(<span class='no'>temp_dir</span>)</div><div class='output co'>#&gt; [1] "cv_printing_functions.r" "cv.rmd"                 
+#&gt; [3] "dd_cv.css"               "render_cv.r"            </div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

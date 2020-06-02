@@ -87,10 +87,10 @@ files:
 
 | File                      | Description                                                                                                                                                                                                                                                                            |
 | ------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `cv.Rmd`                  | An RMarkdown file with various sections filled in. Edit this to fit your personal needs.                                                                                                                                                                                               |
+| `cv.rmd`                  | An RMarkdown file with various sections filled in. Edit this to fit your personal needs.                                                                                                                                                                                               |
 | `dd_cv.css`               | A custom set of CSS styles that build on the default `Pagedown` “resume” template. Again, edit these as desired.                                                                                                                                                                       |
-| `render_cv.R`             | Use this script to build your CV in both PDF and HTML at the same time.                                                                                                                                                                                                                |
-| `CV_printing_functions.R` | A series of functions that perform the dirty work of turning your spreadsheet data into markdown/html and making that output work for PDF printing. E.g. Replacing markdown links with superscripts and a links section, tweaking the CSS to account for chrome printing quirks, etc.. |
+| `render_cv.r`             | Use this script to build your CV in both PDF and HTML at the same time.                                                                                                                                                                                                                |
+| `cv_printing_functions.r` | A series of functions that perform the dirty work of turning your spreadsheet data into markdown/html and making that output work for PDF printing. E.g. Replacing markdown links with superscripts and a links section, tweaking the CSS to account for chrome printing quirks, etc.. |
 
 # Storing your data in spreadsheets
 
@@ -167,22 +167,22 @@ The function `use_csv_data_storage()` will set these up for you.
 
 Now that you have the templates setup and you’ve configured your data,
 the last thing to do is render. The easiest way to do this is by opening
-`cv.Rmd` in RStudio and clicking the “Knit” button. This will render an
+`cv.rmd` in RStudio and clicking the “Knit” button. This will render an
 HTML version of your CV. However, you most likely want a PDF version of
 your CV to go along with an HTML version. The easiest way to do this is
-to run the included script `render_cv.R`:
+to run the included script `render_cv.r`:
 
-### `render_cv.R`
+### `render_cv.r`
 
 ``` r
 # Knit the HTML version
-rmarkdown::render("cv.Rmd",
+rmarkdown::render("cv.rmd",
                   params = list(pdf_mode = FALSE),
                   output_file = "cv.html")
 
 # Knit the PDF version to temporary html location
 tmp_html_cv_loc <- fs::file_temp(ext = ".html")
-rmarkdown::render("cv.Rmd",
+rmarkdown::render("cv.rmd",
                   params = list(pdf_mode = TRUE),
                   output_file = tmp_html_cv_loc)
 
@@ -198,7 +198,7 @@ pagedown::chrome_print(input = tmp_html_cv_loc,
 </div>
 
 This script will render your CV in HTML and output it as `cv.html`, it
-will also turn on the `pdf_mode` parameter in `cv.Rmd`, which will strip
+will also turn on the `pdf_mode` parameter in `cv.rmd`, which will strip
 the links out and place them at the end linked by inline superscripts.
 Once the pdf version is rendered to HTML, it will then turn that HTML
 into a PDF using `pagedown::chrome_print()`. By using this script you

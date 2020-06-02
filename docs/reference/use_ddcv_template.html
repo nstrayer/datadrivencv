@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Use CSVs for storing data — use_csv_data_storage • datadrivencv</title>
+<title>Use template file from package — use_ddcv_template • datadrivencv</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -42,8 +42,8 @@
 
 
 
-<meta property="og:title" content="Use CSVs for storing data — use_csv_data_storage" />
-<meta property="og:description" content="Sets up examples of the four CSVs needed for building CV" />
+<meta property="og:title" content="Use template file from package — use_ddcv_template" />
+<meta property="og:description" content="Use template file from package" />
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
 
@@ -113,55 +113,64 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Use CSVs for storing data</h1>
-    <small class="dont-index">Source: <a href='https://github.com/nstrayer/datadrivencv/blob/master/R/use_csv_data_storage.R'><code>R/use_csv_data_storage.R</code></a></small>
-    <div class="hidden name"><code>use_csv_data_storage.Rd</code></div>
+    <h1>Use template file from package</h1>
+    <small class="dont-index">Source: <a href='https://github.com/nstrayer/datadrivencv/blob/master/R/use_ddcv_template.R'><code>R/use_ddcv_template.R</code></a></small>
+    <div class="hidden name"><code>use_ddcv_template.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Sets up examples of the four CSVs needed for building CV</p>
+    <p>Use template file from package</p>
     </div>
 
-    <pre class="usage"><span class='fu'>use_csv_data_storage</span>(<span class='kw'>folder_name</span> <span class='kw'>=</span> <span class='st'>"data"</span>, <span class='kw'>create_output_dir</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+    <pre class="usage"><span class='fu'>use_ddcv_template</span>(
+  <span class='no'>file_name</span>,
+  <span class='kw'>params</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>output_file_name</span> <span class='kw'>=</span> <span class='no'>file_name</span>,
+  <span class='kw'>output_dir</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/getwd.html'>getwd</a></span>(),
+  <span class='kw'>create_output_dir</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>warn_about_no_change</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>open_after_making</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>folder_name</th>
-      <td><p>Name of the folder you want csvs stored in relative to current working directory</p></td>
+      <th>file_name</th>
+      <td><p>Name of file from templates to use: e.g. <code>cv.rmd</code>.</p></td>
+    </tr>
+    <tr>
+      <th>params</th>
+      <td><p>Parameters used to fill in <code>whisker</code> template</p></td>
+    </tr>
+    <tr>
+      <th>output_file_name</th>
+      <td><p>Name of file after being placed.</p></td>
+    </tr>
+    <tr>
+      <th>output_dir</th>
+      <td><p>Directory location for output to be placed in.</p></td>
     </tr>
     <tr>
       <th>create_output_dir</th>
       <td><p>If the requested output directory is missing should it be created?</p></td>
     </tr>
+    <tr>
+      <th>warn_about_no_change</th>
+      <td><p>If there is no change between the new file and what was already there, should a warning be issued?</p></td>
+    </tr>
+    <tr>
+      <th>open_after_making</th>
+      <td><p>Should the file be opened after it has been written?</p></td>
+    </tr>
     </table>
 
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A new folder <code>&lt;folder_name&gt;/</code> with <code>entries.csv</code>, <code>text_blocks.csv</code>, <code>language_skills.csv</code>, and <code>contact_info.csv</code> in it.
-working directory.</p>
-
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>
-<span class='co'># Make a temp directory for placing files</span>
-<span class='co'># This would be a real location for a typical situation</span>
-<span class='no'>temp_dir</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>fs</span><span class='kw ns'>::</span><span class='fu'><a href='http://fs.r-lib.org/reference/create.html'>dir_create</a></span>(<span class='kw pkg'>fs</span><span class='kw ns'>::</span><span class='fu'><a href='http://fs.r-lib.org/reference/path.html'>path</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span>(), <span class='st'>"cv_w_csvs"</span>))
-
-<span class='kw pkg'>datadrivencv</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/datadrivencv/man/use_csv_data_storage.html'>use_csv_data_storage</a></span>(
-  <span class='kw'>folder_name</span> <span class='kw'>=</span> <span class='kw pkg'>fs</span><span class='kw ns'>::</span><span class='fu'><a href='http://fs.r-lib.org/reference/path.html'>path</a></span>(<span class='no'>temp_dir</span>, <span class='st'>"csv_data"</span>),
-  <span class='kw'>create_output_dir</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
-)</div><div class='output co'>#&gt; [1] "Copied CSVs to  /var/folders/d4/cbr0wtz50gb69vd8pqt65w0m0000gn/T/RtmpQEX7dq/cv_w_csvs/csv_data"</div><div class='input'>
-<span class='fu'><a href='https://rdrr.io/r/base/list.files.html'>list.files</a></span>(<span class='kw pkg'>fs</span><span class='kw ns'>::</span><span class='fu'><a href='http://fs.r-lib.org/reference/path.html'>path</a></span>(<span class='no'>temp_dir</span>, <span class='st'>"csv_data"</span>))</div><div class='output co'>#&gt; [1] "contact_info.csv"    "entries.csv"         "language_skills.csv"
-#&gt; [4] "text_blocks.csv"    </div><div class='input'>
-</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#value">Value</a></li>
-      <li><a href="#examples">Examples</a></li>
     </ul>
 
   </div>
