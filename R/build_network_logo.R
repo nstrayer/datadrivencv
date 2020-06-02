@@ -26,16 +26,14 @@ build_network_logo <- function(position_data){
   }
   current_year <- lubridate::year(lubridate::ymd(Sys.Date()))
   edges <- positions %>%
-    dplyr::select(id, start, end) %>%
+    dplyr::select(id, start_year, end_year) %>%
     dplyr::mutate(
-      end = ifelse(
-        tolower(end) == "Current" | is.na(end) | end == "N/A", current_year,
-        end),
-      start = ifelse(start == "N/A", end, start)
+      end_year = ifelse(end_year > current_year, current_year, end_year),
+      start_year = ifelse(start_year > current_year, current_year, start_year)
     ) %>%
-    purrr::pmap_dfr(function(id, start, end){
+    purrr::pmap_dfr(function(id, start_year, end_year){
       dplyr::tibble(
-        year = start:end,
+        year = start_year:end_year,
         id = id
       )
     }) %>%
@@ -51,7 +49,7 @@ build_network_logo <- function(position_data){
         )
     })
 
-  network_data <- list(nodes = dplyr::select(positions, -in_resume,-end_num,-timeline),
+  network_data <- list(nodes = dplyr::select(positions, -in_resume,-timeline),
                        edges = edges) %>%
     jsonlite::toJSON()
 
