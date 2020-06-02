@@ -37,13 +37,13 @@ create_CV_object <-  function(data_location,
       options(gargle_oauth_cache = ".secrets")
     }
 
-    cv$entries_data <- googlesheets4::read_sheet(data_location, sheet = "entries", skip = 1) %>%
-      # Google sheets loves to turn columns into list ones if there are different types
-      dplyr::mutate_if(is.list, as.character)
-
-    cv$skills        <- googlesheets4::read_sheet(data_location, sheet = "language_skills", skip = 1)
-    cv$text_blocks   <- googlesheets4::read_sheet(data_location, sheet = "text_blocks", skip = 1)
-    cv$contact_info  <- googlesheets4::read_sheet(data_location, sheet = "contact_info", skip = 1)
+    read_gsheet <- function(sheet_id){
+      googlesheets4::read_sheet(data_location, sheet = sheet_id, skip = 1, col_types = "c")
+    }
+    cv$entries_data  <- read_gsheet(sheet_id = "entries")
+    cv$skills        <- read_gsheet(sheet_id = "language_skills")
+    cv$text_blocks   <- read_gsheet(sheet_id = "text_blocks")
+    cv$contact_info  <- read_gsheet(sheet_id = "contact_info")
   } else {
     # Want to go old-school with csvs?
     cv$entries_data <- readr::read_csv(paste0(data_location, "entries.csv"), skip = 1)
@@ -53,9 +53,17 @@ create_CV_object <-  function(data_location,
   }
 
 
-  # This year is assigned to the end date of "current" events to make sure they get sorted later.
-  future_year <- lubridate::year(lubridate::ymd(Sys.Date())) + 10
+  parse_dates <- function(dates){
 
+    date_year <- stringr::str_extract(dates, "(20|19)[0-9]{2}")
+    date_year[is.na(date_year)] <- lubridate::year(lubridate::ymd(Sys.Date())) + 10
+
+    date_month <- stringr::str_extract(dates, "(\\w+|\\d+)(?=(\\s|\\/|-)(20|19)[0-9]{2})")
+    date_month[is.na(date_month)] <- "1"
+
+    paste("1", date_month, date_year, sep = "-") %>%
+      lubridate::dmy()
+  }
   # Clean up entries dataframe to format we need it for printing
   cv$entries_data %<>%
     tidyr::unite(
@@ -66,21 +74,22 @@ create_CV_object <-  function(data_location,
     ) %>%
     dplyr::mutate(
       description_bullets = paste0("- ", description_bullets),
+      start = ifelse(start == "NULL", NA, start),
+      end = ifelse(end == "NULL", NA, end),
+      start_parsed = parse_dates(start),
+      end_parsed = parse_dates(end),
       no_start = is.na(start),
       has_start = !no_start,
       no_end = is.na(end),
       has_end = !no_end,
-      cur_end = tolower(end) %in% c("current", "now", ""),
-      end_num = ifelse (cur_end | no_end, future_year, end),
       timeline = dplyr::case_when(
         no_start  & no_end  ~ "N/A",
         no_start  & has_end ~ as.character(end),
-        has_start & no_end  ~ paste(start, "-", "Current"),
+        has_start & no_end  ~ paste("Current", "-", start),
         TRUE                ~ paste(end, "-", start)
       )
     ) %>%
-    dplyr::select(-no_start, -has_start, -no_end, -has_end, -cur_end) %>%
-    dplyr::arrange(desc(end_num)) %>%
+    dplyr::arrange(desc(end_parsed)) %>%
     dplyr::mutate_all(~ ifelse(is.na(.), 'N/A', .))
 
   cv
@@ -183,7 +192,7 @@ print_skill_bars <- function(cv, out_of = 5, bar_color = "#969696", bar_backgrou
 >{skill}</div>"
   }
   cv$skills %>%
-    dplyr::mutate(width_percent = round(100*level/out_of)) %>%
+    dplyr::mutate(width_percent = round(100*as.numeric(level)/out_of)) %>%
     glue::glue_data(glue_template) %>%
     print()
 
