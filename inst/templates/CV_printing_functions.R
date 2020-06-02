@@ -78,7 +78,7 @@ create_CV_object <-  function(data_location,
       na.rm = TRUE
     ) %>%
     dplyr::mutate(
-      description_bullets = paste0("- ", description_bullets),
+      description_bullets = ifelse(description_bullets != "", paste0("- ", description_bullets), ""),
       start = ifelse(start == "NULL", NA, start),
       end = ifelse(end == "NULL", NA, end),
       start_year = extract_year(start),
