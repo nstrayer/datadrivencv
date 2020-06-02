@@ -53,17 +53,22 @@ create_CV_object <-  function(data_location,
   }
 
 
-  parse_dates <- function(dates){
-
+  extract_year <- function(dates){
     date_year <- stringr::str_extract(dates, "(20|19)[0-9]{2}")
     date_year[is.na(date_year)] <- lubridate::year(lubridate::ymd(Sys.Date())) + 10
+
+    date_year
+  }
+
+  parse_dates <- function(dates){
 
     date_month <- stringr::str_extract(dates, "(\\w+|\\d+)(?=(\\s|\\/|-)(20|19)[0-9]{2})")
     date_month[is.na(date_month)] <- "1"
 
-    paste("1", date_month, date_year, sep = "-") %>%
+    paste("1", date_month, extract_year(dates), sep = "-") %>%
       lubridate::dmy()
   }
+
   # Clean up entries dataframe to format we need it for printing
   cv$entries_data %<>%
     tidyr::unite(
@@ -76,8 +81,8 @@ create_CV_object <-  function(data_location,
       description_bullets = paste0("- ", description_bullets),
       start = ifelse(start == "NULL", NA, start),
       end = ifelse(end == "NULL", NA, end),
-      start_parsed = parse_dates(start),
-      end_parsed = parse_dates(end),
+      start_year = extract_year(start),
+      end_year = extract_year(end),
       no_start = is.na(start),
       has_start = !no_start,
       no_end = is.na(end),
@@ -89,7 +94,7 @@ create_CV_object <-  function(data_location,
         TRUE                ~ paste(end, "-", start)
       )
     ) %>%
-    dplyr::arrange(desc(end_parsed)) %>%
+    dplyr::arrange(desc(parse_dates(end))) %>%
     dplyr::mutate_all(~ ifelse(is.na(.), 'N/A', .))
 
   cv
