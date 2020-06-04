@@ -41,7 +41,7 @@ rendering engine like was done with kniting to pdf vs knitting to html.
 
 ## No lock-in
 
-Inspired heavily the the `usethis` package, `datadrivencv` strives to
+Inspired heavily by the `usethis` package, `datadrivencv` strives to
 make itself unnecessary. The main function is `use_data_driven_cv`,
 which sets up the files you need to build your CV. These files are
 self-contained meaning if you uninstall `datadrivencv` your CV will
@@ -56,8 +56,8 @@ it fresh. You have all the code, so you can\!
 # Using it
 
 The first step to using the package is the `use_data_driven_cv()`
-function. This function takes a few input parameters and when when run,
-sets up a series of files in your current working directory. E.g.
+function. This function takes a few input parameters and when run, sets
+up a series of files in your current working directory. E.g.
 
 ``` r
 # run ?datadrivencv::use_datadriven_cv to see more details
@@ -202,7 +202,7 @@ will also turn on the `pdf_mode` parameter in `cv.rmd`, which will strip
 the links out and place them at the end linked by inline superscripts.
 Once the pdf version is rendered to HTML, it will then turn that HTML
 into a PDF using `pagedown::chrome_print()`. By using this script you
-can easily make sure your get both versions rendered at the same time
+can easily make sure you get both versions rendered at the same time
 without having to manually go in and toggle the pdf mode parameter in
 the yaml header and then use the print dialog in your browser.
 
