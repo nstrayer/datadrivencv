@@ -136,8 +136,8 @@ load_data <- function(cv, data_location, sheet_is_publicly_readable){
 # Remove links from a text block and add to internal list
 sanitize_links <- function(cv, text){
   if(cv$pdf_mode){
-    link_titles <- stringr::str_extract_all(text, '(?<=\\[).+?(?=\\])')[[1]]
-    link_destinations <- stringr::str_extract_all(text, '(?<=\\().+?(?=\\))')[[1]]
+    link_titles <- stringr::str_extract_all(text, '(?<=\\[).+?(?=\\]\\()')[[1]]
+    link_destinations <- stringr::str_extract_all(text, '(?<=\\]\\().+?(?=\\))')[[1]]
 
     n_links <- length(cv$links)
     n_new_links <- length(link_titles)
