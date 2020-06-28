@@ -206,6 +206,46 @@ can easily make sure your get both versions rendered at the same time
 without having to manually go in and toggle the pdf mode parameter in
 the yaml header and then use the print dialog in your browser.
 
+### Caching your data
+
+Google Sheets is great for keeping and editing data but it has two
+problems:
+
+1.  It can be a pain to authenticate for access (especially in
+    non-interactive modes)
+2.  It’s slow if youre rapidly iterating on your CV.
+
+To deal with this, the default state of rendering will be to cache your
+data from google sheets (or your CSVs).
+
+Caching works like so:
+
+  - If `cache_data` is set to `TRUE` in the RMarkdown parameters (it
+    defaults to `TRUE`)
+      - The function `create_CV_object()` that is stored in
+        `cv_printing_functions.r` will look for a file `ddcv_cache.rds`.
+          - If it cant find this, it downloads your data normally and
+            then saves it to the file `ddcv_cache.rds`
+          - If it *can* find it, it uses the `.rds` file instead of
+            downloading data from google sheets (or CSVs).
+  - Otherwise, each time `create_CV_object()` is run (whenever your CV
+    is knit) the data is fetched from its source.
+
+The easiest way to use caching is to uncomment commented-out set of
+lines in `render_cv.r`:
+
+Non-public sheets benefit a lot from this approach as setting up
+authentication for non-interactive access (e.g. knitting an RMD) is a
+pain. This way you can handle all the authentication in an interactive
+runtime.
+
+You can also just render normally and the first time the kniting runs it
+will cache automatically.
+
+If you need to refresh the data either set `cache_data <- FALSE` in the
+`render_cv.R` script or delete `ddcv_cache.rds` and rerun the
+`create_CV_object()` function.
+
 # Questions?
 
 Confused by anything (there’s a lot to be confused by)? [Open an issue

@@ -184,6 +184,41 @@ embed_png("html_vs_pdf_output.png")
 
 This script will render your CV in HTML and output it as `cv.html`, it will also turn on the `pdf_mode` parameter in `cv.rmd`, which will strip the links out and place them at the end linked by inline superscripts. Once the pdf version is rendered to HTML, it will then turn that HTML into a PDF using `pagedown::chrome_print()`. By using this script you can easily make sure your get both versions rendered at the same time without having to manually go in and toggle the pdf mode parameter in the yaml header and then use the print dialog in your browser. 
 
+
+### Caching your data
+
+Google Sheets is great for keeping and editing data but it has two problems: 
+
+1. It can be a pain to authenticate for access (especially in non-interactive modes)
+2. It's slow if youre rapidly iterating on your CV. 
+
+
+To deal with this, the default state of rendering will be to cache your data from google sheets (or your CSVs). 
+
+Caching works like so: 
+
+- If `cache_data` is set to `TRUE` in the RMarkdown parameters (it defaults to `TRUE`)
+  - The function `create_CV_object()` that is stored in `cv_printing_functions.r` will look for a file `ddcv_cache.rds`.
+      - If it cant find this, it downloads your data normally and then saves it to the file `ddcv_cache.rds`
+      - If it _can_ find it, it uses the `.rds` file instead of downloading data from google sheets (or CSVs).
+- Otherwise, each time `create_CV_object()` is run (whenever your CV is knit) the data is fetched from its source. 
+
+The easiest way to use caching is to uncomment commented-out set of lines in `render_cv.r`:
+
+```{r, eval = FALSE}
+# source("CV_printing_functions.R")
+# create_CV_object(
+#   data_location = "<your data loc>",
+#   cache_data = TRUE
+# )
+```
+
+Non-public sheets benefit a lot from this approach as setting up authentication for non-interactive access (e.g. knitting an RMD) is a pain. This way you can handle all the authentication in an interactive runtime. 
+
+You can also just render normally and the first time the kniting runs it will cache automatically.
+
+If you need to refresh the data either set `cache_data <- FALSE` in the `render_cv.R` script or delete `ddcv_cache.rds` and rerun the `create_CV_object()` function. 
+
 # Questions?
 
 Confused by anything (there's a lot to be confused by)? [Open an issue on github](https://github.com/nstrayer/datadrivencv/issues/new) and let me know. Not comfortable with github issues? Tweet the question at me on Twitter: [\@nicholasstrayer](https://twitter.com/NicholasStrayer).
