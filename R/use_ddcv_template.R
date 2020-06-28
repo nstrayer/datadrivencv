@@ -12,7 +12,7 @@
 use_ddcv_template <- function(
   file_name,
   params = NULL,
-  output_file_name = file_name,
+  output_file_name,
   output_dir = getwd(),
   create_output_dir = FALSE,
   warn_about_no_change = TRUE,
@@ -25,7 +25,9 @@ use_ddcv_template <- function(
   if(output_dir_missing & !create_output_dir) {
     stop(glue::glue("The requested output directory: {output_dir} doesn't exist. Either set create_output_dir = TRUE or manually make directory."))
   }
-
+  if(missing(output_file_name)){
+    output_file_name <- file_name
+  }
 
   template_loc <- fs::path(system.file("templates/", package = "datadrivencv"), file_name)
   output_loc <- fs::path(output_dir, output_file_name)
