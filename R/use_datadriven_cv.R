@@ -56,13 +56,13 @@ use_datadriven_cv <- function(full_name = "Sarah Arcos",
                               pdf_location = "https://github.com/nstrayer/cv/raw/master/strayer_cv.pdf",
                               html_location = "nickstrayer.me/datadrivencv/",
                               source_location = "https://github.com/nstrayer/datadrivencv",
-                              which_files = "all",
+                              which_files,
                               output_dir = getwd(),
                               create_output_dir = FALSE,
                               use_network_logo = TRUE,
                               open_files = TRUE){
 
-  if(is.character(which_files) && which_files == "all"){
+  if(missing(which_files)){
     which_files <- c("cv.rmd", "dd_cv.css", "render_cv.r", "cv_printing_functions.r")
   }
   # Make case-insensitive
@@ -91,7 +91,7 @@ use_datadriven_cv <- function(full_name = "Sarah Arcos",
     use_ddcv_template(
       file_name = "dd_cv.css",
       output_dir = output_dir,
-      create_output_dir
+      create_output_dir = create_output_dir
     )
   }
 
@@ -99,7 +99,10 @@ use_datadriven_cv <- function(full_name = "Sarah Arcos",
     use_ddcv_template(
       file_name = "render_cv.r",
       output_dir = output_dir,
-      create_output_dir,
+      params = list(
+        data_location = data_location
+      ),
+      create_output_dir = create_output_dir,
       open_after_making = open_files
     )
   }
@@ -108,7 +111,7 @@ use_datadriven_cv <- function(full_name = "Sarah Arcos",
     use_ddcv_template(
       file_name = "cv_printing_functions.r",
       output_dir = output_dir,
-      create_output_dir
+      create_output_dir = create_output_dir
     )
   }
 
