@@ -5,6 +5,8 @@ date: "`r Sys.Date()`"
 params:
   pdf_mode:
     value: true
+  cache_data:
+    value: true
 output:
   pagedown::html_resume:
     css: ['dd_cv.css', 'resume']
@@ -23,7 +25,8 @@ source("cv_printing_functions.r")
 # Read in all data and initialize a CV printer object
 CV <- create_CV_object(
   data_location = "{{{data_location}}}",  
-  pdf_mode = params$pdf_mode
+  pdf_mode = params$pdf_mode,
+  cache_data = params$cache_data
 )
 
 ```
