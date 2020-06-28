@@ -129,7 +129,7 @@ load_data <- function(cv, data_location, sheet_is_publicly_readable){
     cat(glue::glue("CV data is cached at {cache_loc}.\n"))
   }
 
-  cv
+  invisible(cv)
 }
 
 
