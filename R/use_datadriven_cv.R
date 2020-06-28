@@ -61,8 +61,7 @@ use_datadriven_cv <- function(full_name = "Sarah Arcos",
                               create_output_dir = FALSE,
                               use_network_logo = TRUE,
                               open_files = TRUE){
-
-  if(missing(which_files)){
+  if(missing(which_files) || tolower(which_files) == "all"){
     which_files <- c("cv.rmd", "dd_cv.css", "render_cv.r", "cv_printing_functions.r")
   }
   # Make case-insensitive
