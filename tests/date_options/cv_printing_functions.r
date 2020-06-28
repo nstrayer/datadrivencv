@@ -4,31 +4,53 @@
 
 #' Create a CV_Printer object.
 #'
-#' @param data_location Path of the spreadsheets holding all your data. This can
-#'   be either a URL to a google sheet with multiple sheets containing the four
+#' @param data_location Path of the spreadsheets holding all your data. This can be
+#'   either a URL to a google sheet with multiple sheets containing the four
 #'   data types or a path to a folder containing four `.csv`s with the neccesary
 #'   data.
 #' @param source_location Where is the code to build your CV hosted?
-#' @param pdf_mode Is the output being rendered into a pdf? Aka do links need to
-#'   be stripped?
-#' @param sheet_is_publicly_readable If you're using google sheets for data, is
-#'   the sheet publicly available? (Makes authorization easier.)
-#' @param cache_data If set to true when data is read in it will be saved to an
-#'   `.rds` object so it doesn't need to be repeatedly pulled from google
-#'   sheets. This is also nice when you have non-public sheets that don't play
-#'   nice with authentication during the knit process.
+#' @param pdf_mode Is the output being rendered into a pdf? Aka do links need
+#'   to be stripped?
+#' @param sheet_is_publicly_readable If you're using google sheets for data,
+#'   is the sheet publicly available? (Makes authorization easier.)
 #' @return A new `CV_Printer` object.
 create_CV_object <-  function(data_location,
                               pdf_mode = FALSE,
-                              sheet_is_publicly_readable = TRUE,
-                              cache_data = TRUE) {
+                              sheet_is_publicly_readable = TRUE) {
 
   cv <- list(
     pdf_mode = pdf_mode,
-    links = c(),
-    cache_data = cache_data
-  ) %>%
-    load_data(data_location, sheet_is_publicly_readable)
+    links = c()
+  )
+
+  is_google_sheets_location <- stringr::str_detect(data_location, "docs\\.google\\.com")
+
+  if(is_google_sheets_location){
+    if(sheet_is_publicly_readable){
+      # This tells google sheets to not try and authenticate. Note that this will only
+      # work if your sheet has sharing set to "anyone with link can view"
+      googlesheets4::sheets_deauth()
+    } else {
+      # My info is in a public sheet so there's no need to do authentication but if you want
+      # to use a private sheet, then this is the way you need to do it.
+      # designate project-specific cache so we can render Rmd without problems
+      options(gargle_oauth_cache = ".secrets")
+    }
+
+    read_gsheet <- function(sheet_id){
+      googlesheets4::read_sheet(data_location, sheet = sheet_id, skip = 1, col_types = "c")
+    }
+    cv$entries_data  <- read_gsheet(sheet_id = "entries")
+    cv$skills        <- read_gsheet(sheet_id = "language_skills")
+    cv$text_blocks   <- read_gsheet(sheet_id = "text_blocks")
+    cv$contact_info  <- read_gsheet(sheet_id = "contact_info")
+  } else {
+    # Want to go old-school with csvs?
+    cv$entries_data <- readr::read_csv(paste0(data_location, "entries.csv"), skip = 1)
+    cv$skills       <- readr::read_csv(paste0(data_location, "language_skills.csv"), skip = 1)
+    cv$text_blocks  <- readr::read_csv(paste0(data_location, "text_blocks.csv"), skip = 1)
+    cv$contact_info <- readr::read_csv(paste0(data_location, "contact_info.csv"), skip = 1)
+  }
 
 
   extract_year <- function(dates){
@@ -37,6 +59,7 @@ create_CV_object <-  function(data_location,
 
     date_year
   }
+
 
   parse_dates <- function(dates){
 
@@ -74,60 +97,6 @@ create_CV_object <-  function(data_location,
     ) %>%
     dplyr::arrange(desc(parse_dates(end))) %>%
     dplyr::mutate_all(~ ifelse(is.na(.), 'N/A', .))
-
-  cv
-}
-
-# Load data for CV
-load_data <- function(cv, data_location, sheet_is_publicly_readable){
-  cache_loc <- "ddcv_cache.rds"
-  has_cached_data <- fs::file_exists(cache_loc)
-  is_google_sheets_location <- stringr::str_detect(data_location, "docs\\.google\\.com")
-
-  if(has_cached_data & cv$cache_data){
-
-    cv <- c(cv, readr::read_rds(cache_loc))
-  } else if(is_google_sheets_location){
-    if(sheet_is_publicly_readable){
-      # This tells google sheets to not try and authenticate. Note that this will only
-      # work if your sheet has sharing set to "anyone with link can view"
-      googlesheets4::sheets_deauth()
-    } else {
-      # My info is in a public sheet so there's no need to do authentication but if you want
-      # to use a private sheet, then this is the way you need to do it.
-      # designate project-specific cache so we can render Rmd without problems
-      options(gargle_oauth_cache = ".secrets")
-    }
-
-    read_gsheet <- function(sheet_id){
-      googlesheets4::read_sheet(data_location, sheet = sheet_id, skip = 1, col_types = "c")
-    }
-    cv$entries_data  <- read_gsheet(sheet_id = "entries")
-    cv$skills        <- read_gsheet(sheet_id = "language_skills")
-    cv$text_blocks   <- read_gsheet(sheet_id = "text_blocks")
-    cv$contact_info  <- read_gsheet(sheet_id = "contact_info")
-  } else {
-    # Want to go old-school with csvs?
-    cv$entries_data <- readr::read_csv(paste0(data_location, "entries.csv"))
-    cv$skills       <- readr::read_csv(paste0(data_location, "language_skills.csv"))
-    cv$text_blocks  <- readr::read_csv(paste0(data_location, "text_blocks.csv"))
-    cv$contact_info <- readr::read_csv(paste0(data_location, "contact_info.csv"), skip = 1)
-  }
-
-  if(cv$cache_data & !has_cached_data){
-    # Make sure we only cache the data and not settings etc.
-    readr::write_rds(
-      list(
-        entries_data = cv$entries_data,
-        skills = cv$skills,
-        text_blocks = cv$text_blocks,
-        contact_info = cv$contact_info
-      ),
-      cache_loc
-    )
-
-    cat(glue::glue("CV data is cached at {cache_loc}.\n"))
-  }
 
   cv
 }
