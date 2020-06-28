@@ -10,7 +10,7 @@ use_datadriven_cv(
   pdf_location = "https://github.com/nstrayer/cv/raw/master/strayer_cv.pdf",
   html_location = "nickstrayer.me/datadrivencv/",
   source_location = "https://github.com/nstrayer/datadrivencv",
-  which_files = "all",
+  which_files,
   output_dir = getwd(),
   create_output_dir = FALSE,
   use_network_logo = TRUE,

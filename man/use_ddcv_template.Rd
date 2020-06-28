@@ -7,7 +7,7 @@
 use_ddcv_template(
   file_name,
   params = NULL,
-  output_file_name = file_name,
+  output_file_name,
   output_dir = getwd(),
   create_output_dir = FALSE,
   warn_about_no_change = TRUE,
