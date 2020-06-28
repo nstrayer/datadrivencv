@@ -155,7 +155,7 @@ sanitize_links <- function(cv, text){
       # Replace the link destination and remove square brackets for title
       text <- text %>%
         stringr::str_replace_all(stringr::fixed(link_superscript_mappings)) %>%
-        stringr::str_replace_all('\\[(.+?)\\]', "\\1")
+        stringr::str_replace_all('\\[(.+?)\\](?=<sup>)', "\\1")
     }
   }
 
