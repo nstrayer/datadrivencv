@@ -53,13 +53,13 @@ embed_png("csv_to_cv.png")
 
 ## No lock-in
 
-Inspired heavily the the `usethis` package, `datadrivencv` strives to make itself unnecessary. The main function is `use_data_driven_cv`, which sets up the files you need to build your CV. These files are self-contained meaning if you uninstall `datadrivencv` your CV will still knit fine. All the R code logic is contained in a sourced script so if you want to change it you can do so. 
+Inspired heavily by the `usethis` package, `datadrivencv` strives to make itself unnecessary. The main function is `use_data_driven_cv`, which sets up the files you need to build your CV. These files are self-contained meaning if you uninstall `datadrivencv` your CV will still knit fine. All the R code logic is contained in a sourced script so if you want to change it you can do so. 
 
 The package aims to bootstrap you to a working data-driven CV pipeline. Serving as a jumping off point for you to build your own custom CV, you may at first want to leave it as is and then slowly tweak things to keep it fresh. You have all the code, so you can!
 
 # Using it
 
-The first step to using the package is the `use_data_driven_cv()` function. This function takes a few input parameters and when when run, sets up a series of files in your current working directory. E.g. 
+The first step to using the package is the `use_data_driven_cv()` function. This function takes a few input parameters and when run, sets up a series of files in your current working directory. E.g. 
 
 ```{r, eval = FALSE, echo = TRUE}
 # run ?datadrivencv::use_datadriven_cv to see more details
