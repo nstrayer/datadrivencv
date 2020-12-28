@@ -26,8 +26,8 @@ use_ddcv_template <- function(
     stop(glue::glue("The requested output directory: {output_dir} doesn't exist. Either set create_output_dir = TRUE or manually make directory."))
   }
 
-
-  template_loc <- fs::path(system.file("templates/", package = "datadrivencv"), file_name)
+  all_templates <- fs::dir_ls(system.file("templates/", package = "datadrivencv"))
+  template_loc <- all_templates[grepl(file_name, all_templates, ignore.case = TRUE)]
   output_loc <- fs::path(output_dir, output_file_name)
 
   template_text <- readr::read_file(template_loc)
