@@ -265,7 +265,7 @@ Links {data-icon=link}
 print_contact_info <- function(cv){
   glue::glue_data(
     cv$contact_info,
-    "- <i class='fa fa-{icon}'></i> {contact}"
+    "- <i class='fa fa-{icon} fa-fw'></i> {contact}"
   ) %>% print()
 
   invisible(cv)
