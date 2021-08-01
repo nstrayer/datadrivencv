@@ -31,4 +31,4 @@ Suggests:
     testthat (>= 2.1.0)
 VignetteBuilder: knitr
 Remotes: 
-    remotes::install_github('mitchelloharawild/icons@v0.1.0')
+    mitchelloharawild/icons@v0.1.0
