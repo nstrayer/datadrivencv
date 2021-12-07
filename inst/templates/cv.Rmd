@@ -60,7 +60,7 @@ datadrivencv::build_network_logo(CV$entries_data)
 
 ```{r}
 if(params$pdf_mode){
-  cat("View this CV online with links at _{{{html_location}}}_")
+  cat("View this CV online with links at *{{{html_location}}}*")
 } else {
   cat("[<i class='fas fa-download'></i> Download a PDF of this CV]({{pdf_location}})")
 }
