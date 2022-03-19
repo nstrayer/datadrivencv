@@ -34,7 +34,7 @@ at?}
 \item{source_location}{Where is the code to build your CV hosted?}
 
 \item{which_files}{What files should be placed? Takes a vector of possible
-values \code{c("cv.rmd", "dd_cv.css", "render_cv.r", "cv_printing_functions.r")}
+values \code{c("cv.Rmd", "dd_cv.css", "render_cv.R", "CV_printing_functions.R")}
 or \code{"all"} for everything. This can be used to incrementally update the
 printing functions or CSS without loosing customizations you've made to
 other files.}
@@ -51,7 +51,7 @@ package.}
 \item{open_files}{Should the added files be opened after creation?}
 }
 \value{
-\code{cv.rmd}, \code{dd_cv.css}, \code{render_cv.r}, and \code{cv_printing_functions.r}
+\code{cv.Rmd}, \code{dd_cv.css}, \code{render_cv.R}, and \code{CV_printing_functions.R}
 written to the current working directory.
 }
 \description{

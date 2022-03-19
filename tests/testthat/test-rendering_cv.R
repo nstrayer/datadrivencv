@@ -21,7 +21,7 @@ test_that("Rendering to HTML works", {
   )
 
   # Knit the HTML version
-  html_knit_res <- rmarkdown::render(fs::path(temp_dir, "cv.rmd"),
+  html_knit_res <- rmarkdown::render(fs::path(temp_dir, "cv.Rmd"),
                                      params = list(pdf_mode = FALSE),
                                      output_file = fs::path(temp_dir, "cv.html"),
                                      quiet = TRUE)
@@ -29,7 +29,7 @@ test_that("Rendering to HTML works", {
   expect_true(fs::file_exists(html_knit_res))
 
   # Knit version for PDF
-  pdf_knit_res <-rmarkdown::render(fs::path(temp_dir, "cv.rmd"),
+  pdf_knit_res <-rmarkdown::render(fs::path(temp_dir, "cv.Rmd"),
                                    params = list(pdf_mode = TRUE),
                                    output_file = fs::path(temp_dir, "cv_4_pdf.html"),
                                    quiet = TRUE)

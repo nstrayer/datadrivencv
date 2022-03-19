@@ -1,7 +1,7 @@
 Package: datadrivencv
 Type: Package
 Title: Templates and helper functions for building a CV with spreadsheets
-Version: 0.1.0
+Version: 0.1.1
 URL: http://nickstrayer.me/datadrivencv, https://github.com/nstrayer/datadrivencv
 Author: Nick Strayer
 Maintainer: Nick Strayer <nick.strayer@gmail.com>
@@ -14,16 +14,16 @@ Imports:
     tidyr,
     glue,
     readr,
-    googlesheets4,
+    googlesheets4 (>= 1.0.0),
     lubridate,
     purrr,
     stringr,
     magrittr,
     pagedown,
     fs,
-    icon (>= 0.1.0),
+    icons (>= 0.1.0),
     whisker
-RoxygenNote: 7.0.2
+RoxygenNote: 7.1.2
 Roxygen: list(markdown = TRUE)
 Suggests: 
     knitr,
@@ -32,3 +32,4 @@ Suggests:
 VignetteBuilder: knitr
 Remotes: 
     ropenscilabs/icon
+    mitchelloharawild/icons

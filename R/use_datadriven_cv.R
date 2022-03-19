@@ -17,7 +17,7 @@
 #' @param source_location Where is the code to build your CV hosted?
 #' @param open_files Should the added files be opened after creation?
 #' @param which_files What files should be placed? Takes a vector of possible
-#'   values `c("cv.rmd", "dd_cv.css", "render_cv.r", "cv_printing_functions.r")`
+#'   values `c("cv.Rmd", "dd_cv.css", "render_cv.R", "CV_printing_functions.R")`
 #'   or `"all"` for everything. This can be used to incrementally update the
 #'   printing functions or CSS without loosing customizations you've made to
 #'   other files.
@@ -28,7 +28,7 @@
 #'   package.
 #' @inheritParams use_ddcv_template
 #'
-#' @return `cv.rmd`, `dd_cv.css`, `render_cv.r`, and `cv_printing_functions.r`
+#' @return `cv.Rmd`, `dd_cv.css`, `render_cv.R`, and `CV_printing_functions.R`
 #'   written to the current working directory.
 #'
 #' @examples
@@ -63,15 +63,13 @@ use_datadriven_cv <- function(full_name = "Sarah Arcos",
                               open_files = TRUE){
 
   if(is.character(which_files) && which_files == "all"){
-    which_files <- c("cv.rmd", "dd_cv.css", "render_cv.r", "cv_printing_functions.r")
+    which_files <- c("cv.Rmd", "dd_cv.css", "render_cv.R", "CV_printing_functions.R")
   }
-  # Make case-insensitive
-  which_files <- tolower(which_files)
 
-  if("cv.rmd" %in% which_files){
+  if("cv.Rmd" %in% which_files){
     # Sets the main Rmd template
     use_ddcv_template(
-      file_name = "cv.rmd",
+      file_name = "cv.Rmd",
       params = list(
         full_name = full_name,
         data_location = data_location,
@@ -95,18 +93,18 @@ use_datadriven_cv <- function(full_name = "Sarah Arcos",
     )
   }
 
-  if("render_cv.r" %in% which_files){
+  if("render_cv.R" %in% which_files){
     use_ddcv_template(
-      file_name = "render_cv.r",
+      file_name = "render_cv.R",
       output_dir = output_dir,
       create_output_dir,
       open_after_making = open_files
     )
   }
 
-  if("cv_printing_functions.r" %in% which_files){
+  if("CV_printing_functions.R" %in% which_files){
     use_ddcv_template(
-      file_name = "cv_printing_functions.r",
+      file_name = "CV_printing_functions.R",
       output_dir = output_dir,
       create_output_dir
     )

@@ -88,10 +88,10 @@ This code is all that's needed to setup a full CV. It outputs five files:
 
 |  File    |  Description |
 | ----     | ----         |
-|`cv.rmd`    | An RMarkdown file with various sections filled in. Edit this to fit your personal needs. |
+|`cv.Rmd`    | An RMarkdown file with various sections filled in. Edit this to fit your personal needs. |
 |`dd_cv.css` | A custom set of CSS styles that build on the default `Pagedown` "resume" template. Again, edit these as desired.|
-| `render_cv.r` | Use this script to build your CV in both PDF and HTML at the same time. |
-| `cv_printing_functions.r` | A series of functions that perform the dirty work of turning your spreadsheet data into markdown/html and making that output work for PDF printing. E.g. Replacing markdown links with superscripts and a links section, tweaking the CSS to account for chrome printing quirks, etc.. |
+| `render_cv.R` | Use this script to build your CV in both PDF and HTML at the same time. |
+| `CV_printing_functions.r` | A series of functions that perform the dirty work of turning your spreadsheet data into markdown/html and making that output work for PDF printing. E.g. Replacing markdown links with superscripts and a links section, tweaking the CSS to account for chrome printing quirks, etc.. |
 
 # Storing your data in spreadsheets
 

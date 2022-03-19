@@ -1,6 +1,6 @@
 #' Use template file from package
 #'
-#' @param file_name Name of file from templates to use: e.g. `cv.rmd`.
+#' @param file_name Name of file from templates to use: e.g. `cv.Rmd`.
 #' @param params Parameters used to fill in `whisker` template
 #' @param output_file_name Name of file after being placed.
 #' @param output_dir Directory location for output to be placed in.

@@ -15,7 +15,7 @@ use_ddcv_template(
 )
 }
 \arguments{
-\item{file_name}{Name of file from templates to use: e.g. \code{cv.rmd}.}
+\item{file_name}{Name of file from templates to use: e.g. \code{cv.Rmd}.}
 
 \item{params}{Parameters used to fill in \code{whisker} template}
 

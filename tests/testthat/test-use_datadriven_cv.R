@@ -10,7 +10,7 @@ test_that("Addition of all files works", {
     open_files = FALSE
   )
   expect_true(
-    all(c("cv.rmd", "dd_cv.css", "render_cv.r", "cv_printing_functions.r") %in% list.files(temp_dir))
+    all(c("cv.Rmd", "dd_cv.css", "render_cv.R", "CV_printing_functions.R") %in% list.files(temp_dir))
   )
 
   # Clean up temp dir
@@ -27,15 +27,15 @@ test_that("Addition of subset of files", {
     full_name = "Testing McTester",
     data_location = "here/be/my/data/",
     output_dir = temp_dir,
-    which_files = c("render_cv.r", "cv_printing_functions.r"),
+    which_files = c("render_cv.R", "CV_printing_functions.R"),
     open_files = FALSE
   )
 
   expect_true(
-    all(c("render_cv.r", "cv_printing_functions.r") %in% list.files(temp_dir))
+    all(c("render_cv.R", "CV_printing_functions.R") %in% list.files(temp_dir))
   )
 
-  expect_false("cv.rmd" %in% list.files(temp_dir))
+  expect_false("cv.Rmd" %in% list.files(temp_dir))
   expect_false("dd_cv.css" %in% list.files(temp_dir))
   # Clean up temp dir
   fs::dir_walk(temp_dir, fs::file_delete)
@@ -63,10 +63,10 @@ test_that("Warns when trying to update a file with no change", {
       full_name = "Testing McTester",
       data_location = "here/be/my/data/",
       output_dir = temp_dir,
-      which_files = c("cv.rmd"),
+      which_files = c("cv.Rmd"),
       open_files = FALSE
     ),
-    "cv.rmd already exists and there are no differences with the current version.",
+    "cv.Rmd already exists and there are no differences with the current version.",
     fixed = TRUE
   )
 
@@ -76,7 +76,7 @@ test_that("Warns when trying to update a file with no change", {
       full_name = "Testing McTester the second",
       data_location = "here/be/my/data/",
       output_dir = temp_dir,
-      which_files = c("cv.rmd"),
+      which_files = c("cv.Rmd"),
       open_files = FALSE
     )
   )
