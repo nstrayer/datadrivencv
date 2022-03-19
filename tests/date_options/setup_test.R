@@ -8,5 +8,5 @@ datadrivencv::use_datadriven_cv(
   output_dir = here("tests/date_options"),
   open_files = FALSE,
   which_files = "all"
-  # which_files = c("cv_printing_functions.r")
+  # which_files = c("cv_printing_functions.R")
 )

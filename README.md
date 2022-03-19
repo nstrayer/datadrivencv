@@ -2,7 +2,6 @@
 # datadrivencv <img src="man/figures/logo.svg" width="185px" align="right" style="border:1px solid black;">
 
 <!-- badges: start -->
-
 <!-- badges: end -->
 
 The goal of datadrivencv is to ease the burden of maintaining a CV by
@@ -51,7 +50,7 @@ so if you want to change it you can do so.
 The package aims to bootstrap you to a working data-driven CV pipeline.
 Serving as a jumping off point for you to build your own custom CV, you
 may at first want to leave it as is and then slowly tweak things to keep
-it fresh. You have all the code, so you can\!
+it fresh. You have all the code, so you can!
 
 # Using it
 
@@ -73,7 +72,7 @@ datadrivencv::use_datadriven_cv(
 The available arguments are:
 
 | Argument           | Description                                                                                                                                                                                                           |
-| ------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+|--------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `full_name`        | Your full name, used in title of document and header                                                                                                                                                                  |
 | `data_location`    | Path of the spreadsheets holding all your data. This can be either a URL to a google sheet with multiple sheets containing the four data types or a path to a folder containing four `.csv`s with the neccesary data. |
 | `pdf_location`     | What location will the PDF of this CV be hosted at?                                                                                                                                                                   |
@@ -86,11 +85,11 @@ This code is all that’s needed to setup a full CV. It outputs five
 files:
 
 | File                      | Description                                                                                                                                                                                                                                                                            |
-| ------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `cv.rmd`                  | An RMarkdown file with various sections filled in. Edit this to fit your personal needs.                                                                                                                                                                                               |
+|---------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `cv.Rmd`                  | An RMarkdown file with various sections filled in. Edit this to fit your personal needs.                                                                                                                                                                                               |
 | `dd_cv.css`               | A custom set of CSS styles that build on the default `Pagedown` “resume” template. Again, edit these as desired.                                                                                                                                                                       |
-| `render_cv.r`             | Use this script to build your CV in both PDF and HTML at the same time.                                                                                                                                                                                                                |
-| `cv_printing_functions.r` | A series of functions that perform the dirty work of turning your spreadsheet data into markdown/html and making that output work for PDF printing. E.g. Replacing markdown links with superscripts and a links section, tweaking the CSS to account for chrome printing quirks, etc.. |
+| `render_cv.R`             | Use this script to build your CV in both PDF and HTML at the same time.                                                                                                                                                                                                                |
+| `CV_printing_functions.R` | A series of functions that perform the dirty work of turning your spreadsheet data into markdown/html and making that output work for PDF printing. E.g. Replacing markdown links with superscripts and a links section, tweaking the CSS to account for chrome printing quirks, etc.. |
 
 # Storing your data in spreadsheets
 
@@ -122,7 +121,7 @@ The four spreadsheets that are needed and their columns are:
 ### `entries`
 
 | Column          | Description                                                                                                                                                             |
-| --------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+|-----------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `section`       | Where in your CV this entry belongs                                                                                                                                     |
 | `title`         | Main title of the entry                                                                                                                                                 |
 | `loc`           | Location the entry occured                                                                                                                                              |
@@ -134,21 +133,21 @@ The four spreadsheets that are needed and their columns are:
 ### `language_skills`
 
 | Column  | Description                     |
-| ------- | ------------------------------- |
+|---------|---------------------------------|
 | `skill` | Name of language                |
 | `level` | Relative numeric level of skill |
 
 ### `text_blocks`
 
 | Column | Description                                           |
-| ------ | ----------------------------------------------------- |
+|--------|-------------------------------------------------------|
 | `loc`  | Id used for finding text block                        |
 | `text` | Contents of text block. Supports markdown formatting. |
 
 ### `contact info`
 
 | Column    | Description                                                 |
-| --------- | ----------------------------------------------------------- |
+|-----------|-------------------------------------------------------------|
 | `loc`     | Id of contact section                                       |
 | `icon`    | Icon used from font-awesome 4 to label this contact section |
 | `contact` | The actual value written for the contact entry              |
@@ -156,10 +155,11 @@ The four spreadsheets that are needed and their columns are:
 ## Using `.csv`s instead of google sheets
 
 Don’t want to use google sheets to store your data? Not a problem. Just
-make four `.csvs` (`entries.csv, language_skills.csv, text_blocks.csv,
-contact_info.csv`) that have the same matching format as above and pass
-the folder containing those as your `data_location` when initializing
-with `use_datadriven_cv()`.
+make four `.csvs`
+(`entries.csv, language_skills.csv, text_blocks.csv, contact_info.csv`)
+that have the same matching format as above and pass the folder
+containing those as your `data_location` when initializing with
+`use_datadriven_cv()`.
 
 The function `use_csv_data_storage()` will set these up for you.
 
@@ -170,19 +170,19 @@ the last thing to do is render. The easiest way to do this is by opening
 `cv.rmd` in RStudio and clicking the “Knit” button. This will render an
 HTML version of your CV. However, you most likely want a PDF version of
 your CV to go along with an HTML version. The easiest way to do this is
-to run the included script `render_cv.r`:
+to run the included script `render_cv.R`:
 
-### `render_cv.r`
+### `render_cv.R`
 
 ``` r
 # Knit the HTML version
-rmarkdown::render("cv.rmd",
+rmarkdown::render("cv.Rmd",
                   params = list(pdf_mode = FALSE),
                   output_file = "cv.html")
 
 # Knit the PDF version to temporary html location
 tmp_html_cv_loc <- fs::file_temp(ext = ".html")
-rmarkdown::render("cv.rmd",
+rmarkdown::render("cv.Rmd",
                   params = list(pdf_mode = TRUE),
                   output_file = tmp_html_cv_loc)
 
@@ -198,7 +198,7 @@ pagedown::chrome_print(input = tmp_html_cv_loc,
 </div>
 
 This script will render your CV in HTML and output it as `cv.html`, it
-will also turn on the `pdf_mode` parameter in `cv.rmd`, which will strip
+will also turn on the `pdf_mode` parameter in `cv.Rmd`, which will strip
 the links out and place them at the end linked by inline superscripts.
 Once the pdf version is rendered to HTML, it will then turn that HTML
 into a PDF using `pagedown::chrome_print()`. By using this script you
@@ -214,17 +214,10 @@ me know. Not comfortable with github issues? Tweet the question at me on
 Twitter: [@nicholasstrayer](https://twitter.com/NicholasStrayer).
 
 <!-- Twitter Card data -->
-
 <meta name="twitter:card" content="summary">
-
 <meta name="twitter:site" content="@nicholasstrayer">
-
 <meta name="twitter:title" content="datadrivencv">
-
 <meta name="twitter:description" content="n R package for building your CV with data">
-
 <meta name="twitter:creator" content="@nicholasstrayer">
-
 <!-- Twitter Summary card images must be at least 120x120px -->
-
 <meta name="twitter:image" content="https://github.com/nstrayer/datadrivencv/blob/master/man/figures/logo.svg">
