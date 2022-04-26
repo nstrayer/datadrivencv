@@ -226,6 +226,7 @@ Links {data-icon=link}
   invisible(cv)
 }
 
+#' @description Create linkedin url instead of full url text for better display
 create_linkedin_url <- function(linkedin_url){
   return (glue::glue("<a href='https://linkedin.com/in/{linkedin_url}'>linkedin</a>"))
 }
