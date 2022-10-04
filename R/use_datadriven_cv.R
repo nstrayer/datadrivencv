@@ -19,7 +19,7 @@
 #' @param which_files What files should be placed? Takes a vector of possible
 #'   values `c("cv.rmd", "dd_cv.css", "render_cv.r", "cv_printing_functions.r")`
 #'   or `"all"` for everything. This can be used to incrementally update the
-#'   printing functions or CSS without loosing customizations you've made to
+#'   printing functions or CSS without losing customizations you've made to
 #'   other files.
 #' @param output_dir Where should the files be placed? Defaults to your current working directory
 #' @param use_network_logo Should logo be an interactive network based on your
