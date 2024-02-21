@@ -5,6 +5,8 @@
 #' colored by section and connected if they occurred in the same year
 #'
 #' @param position_data position data from your `CV_Printer` class.
+#' @importFrom graphics title
+#' @importFrom utils data
 #'
 #' @return Interactive force-directed layout network of your CV data
 #' @export
