@@ -5,3 +5,4 @@
 ^pkgdown$
 ^LICENSE\.md$
 ^README\.Rmd$
+^\.secrets$
