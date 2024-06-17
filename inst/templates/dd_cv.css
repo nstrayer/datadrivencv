@@ -22,7 +22,7 @@
 }
 
 
-/* Main text is monserrat*/
+/* Update main body text */
 body {
   font-family: var(--main-text-family);
   font-weight: 300;
@@ -30,7 +30,7 @@ body {
   color: var(--main-text-color);
 }
 
-/* Give headers playfair font */
+/* Update header text */
 h1,
 h2,
 h3 {
