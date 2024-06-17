@@ -18,7 +18,6 @@ Imports:
     lubridate,
     purrr,
     stringr,
-    magrittr,
     pagedown,
     fs,
     whisker
