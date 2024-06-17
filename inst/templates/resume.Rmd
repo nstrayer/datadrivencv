@@ -1,87 +1,81 @@
 ---
-title: Nick Strayer's Resume"
-author: Nick Strayer
+title: "{{{full_name}}}'s Resume"
+author: {{{full_name}}}
 date: "`r Sys.Date()`"
+params:
+  pdf_mode:
+    value: true
 output:
   pagedown::html_resume:
-    css: ['css/custom_resume.css', 'css/styles.css', 'resume']
-    # set it to true for a self-contained HTML page but it'll take longer to render
-    self_contained: true
+    css: ['dd_cv.css', 'dd_resume.css', 'resume']
 ---
-
 
 ```{r, include=FALSE}
 knitr::opts_chunk$set(
   results='asis', 
   echo = FALSE
 )
-library(tidyverse)
-library(glue)
 
-# ======================================================================
-# These variables determine how the the data is loaded and how the exports are
-# done.
-
-# Is data stored in google sheets? If no data will be gather from the csvs/
-# folder in project
-using_googlesheets <- TRUE
-
-# Just the copied URL from the sheet
-positions_sheet_location <- "https://docs.google.com/spreadsheets/d/14MQICF2F8-vf8CKPF1m4lyGKO6_thG-4aSwat1e2TWc"
-
-# Is this sheet available for anyone to read? If you're using a private sheet
-# set this to false and go to gather_data.R and run the data loading manually
-# once to cache authentication
-sheet_is_publicly_readable <- TRUE
-
-# Is the goal of this knit to build a document that is exported to PDF? If so
-# set this to true to have links turned into footnotes at the end of the
-# document
-PDF_EXPORT <- FALSE
+source("cv_printing_functions.r")
 
 
-# A global (gasp) variable that holds all the links that were inserted for
-# placement at the end
-links <- c()
+# Read in all data and initialize a CV printer object
+CV <- create_CV_object(
+  data_location = "{{{data_location}}}",
+  pdf_mode = params$pdf_mode,
+  resume_mode = TRUE
+)
 
-# ======================================================================
-# Now we source two external scripts. One contains functions for building the
-# text output and the other loads up our data from either googlesheets or csvs
-
-# Functions for building sections from CSV data
-source('parsing_functions.R') 
-
-# Load data for CV/Resume
-source('gather_data.R')
-
-# Now we just need to filter down the position data to include less verbose
-# categories and only the entries we have designated for the resume
-position_data <- position_data |> 
-  filter(in_resume) |> 
-  mutate(
-    # Build some custom sections by collapsing others
-    section = case_when(
-      section %in% c('research_positions', 'industry_positions') ~ 'positions', 
-      section %in% c('data_science_writings', 'by_me_press') ~ 'writings',
-      TRUE ~ section
-    )
-  ) 
 ```
 
+
+```{r}
+# When in pdf export mode the little dots are unaligned, so fix that with some conditional CSS.
+if(params$pdf_mode) {
+    cat("
+<style>
+:root{
+  --decorator-outer-offset-left: -6.5px;
+}
+</style>")
+}
+```
 
 
 Aside
 ================================================================================
 
 
-![logo](logo.png){width=100%}
+{{#use_network_logo}}
+```{r}
+# Build interactive network of positions colored by section
+# and connected if they occurred in the same year
+datadrivencv::build_network_logo(CV$entries_data)
+```
+{{/use_network_logo}}
+{{^use_network_logo}}
+<!-- Swap image with your preferred logo -->
+![logo](https://cran.r-project.org/Rlogo.svg){width=100%}
+{{/use_network_logo}}
+
+
+
+```{r}
+if(params$pdf_mode){
+  cat("View this resume online with links at _{{{html_location}}}_")
+} else {
+  cat("[<i class='fas fa-download'></i> Download a PDF of this CV]({{pdf_location}})")
+}
+```
+
+
+For a longer form version, see my [CV](nickstrayer.me/cv/).
 
 Contact {#contact}
 --------------------------------------------------------------------------------
 
 ```{r}
-contact_info |> 
-  glue_data("- <i class='fa fa-{icon}'></i> {contact}")
+CV |> print_contact_info()
 ```
 
 
@@ -90,34 +84,17 @@ Language Skills {#skills}
 --------------------------------------------------------------------------------
 
 ```{r}
-build_skill_bars(skills)
+CV |> print_skill_bars()
 ```
 
-
-
-Open Source Contributions {#open-source}
---------------------------------------------------------------------------------
-
-All projects available at `github.com/nstrayer/<name>`
-
-
-- `shinysense`: R package to use sensor data in Shiny apps
-- `tuftesque`: Hugo theme (behind LiveFreeOrDichotomize.com)
-- `sbmR`: R package for fitting stochasitic block models
-
-
-More info {#more-info}
---------------------------------------------------------------------------------
-
-See full CV at nickstrayer.me/cv for more complete list of positions and publications.
 
 
 Disclaimer {#disclaimer}
 --------------------------------------------------------------------------------
 
-Made w/ [**pagedown**](https://github.com/rstudio/pagedown). 
+Made with the R package [**pagedown**](https://github.com/rstudio/pagedown). 
 
-Source code: [github.com/nstrayer/cv](https://github.com/nstrayer/cv).
+The source code is available at [{{{source_location}}}]({{{source_location}}}).
 
 Last updated on `r Sys.Date()`.
 
@@ -126,11 +103,12 @@ Last updated on `r Sys.Date()`.
 Main
 ================================================================================
 
-Nick Strayer {#title}
+{{{full_name}}} {#title}
 --------------------------------------------------------------------------------
 
 ```{r}
-print_text_block(text_blocks, 'intro')
+# Note the special double pipe so we modify the CV object in place
+CV <- print_text_block(CV, "intro") 
 ```
 
 
@@ -139,25 +117,33 @@ Education {data-icon=graduation-cap data-concise=true}
 --------------------------------------------------------------------------------
 
 ```{r}
-position_data |> print_section('education')
+CV <- print_section(CV, 'education')
 ```
 
 
+Selected Industry Experience {data-icon=suitcase data-concise=true}
+--------------------------------------------------------------------------------
 
-Selected Positions {data-icon=suitcase}
+
+```{r}
+CV <- print_section(CV, 'industry_positions')
+```
+
+
+Selected Data Science Writing {data-icon=chart-line data-concise=true}
 --------------------------------------------------------------------------------
 
 ```{r}
-position_data |> print_section('positions')
+CV <- print_section(CV, 'by_me_press')
 ```
 
-
-
-Selected Writing {data-icon=newspaper}
---------------------------------------------------------------------------------
 
 ```{r}
-position_data |> print_section('writings')
+CV <- print_section(CV, 'data_science_writings')
 ```
 
+
+```{r}
+print_links(CV)
+```
 

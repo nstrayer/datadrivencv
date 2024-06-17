@@ -12,8 +12,10 @@
 #'   data. See \code{\link{use_csv_data_storage()}} for help setting up these
 #'   `.csv`s.
 #' @param pdf_location What location will the PDF of this CV be hosted at?
+#' @param pdf_location_resume What location will the PDF of this CV be hosted at? Not neccesary if you don't plan on using resume mode.
 #' @param html_location What location will the HTML version of this CV be hosted
 #'   at?
+#' @param html_location_resume What location will the HTML version of the resume version be hosted?
 #' @param source_location Where is the code to build your CV hosted?
 #' @param open_files Should the added files be opened after creation?
 #' @param which_files What files should be placed? Takes a vector of possible
@@ -54,7 +56,9 @@
 use_datadriven_cv <- function(full_name = "Sarah Arcos",
                               data_location = system.file("sample_data/", package = "datadrivencv"),
                               pdf_location = "https://github.com/nstrayer/cv/raw/master/strayer_cv.pdf",
+                              pdf_location_resume = "https://github.com/nstrayer/cv/raw/master/strayer_resume.pdf",
                               html_location = "nickstrayer.me/datadrivencv/",
+                              html_location_resume = "nickstrayer.me/datadrivencv/resume",
                               source_location = "https://github.com/nstrayer/datadrivencv",
                               which_files = "all",
                               output_dir = getwd(),
@@ -63,7 +67,7 @@ use_datadriven_cv <- function(full_name = "Sarah Arcos",
                               open_files = TRUE){
 
   if(is.character(which_files) && which_files == "all"){
-    which_files <- c("cv.rmd", "dd_cv.css", "render_cv.r", "cv_printing_functions.r")
+    which_files <- c("cv.rmd", "dd_cv.css", "resume.rmd", "dd_resume.css", "render_cv.r", "cv_printing_functions.r")
   }
   # Make case-insensitive
   which_files <- tolower(which_files)
@@ -90,6 +94,33 @@ use_datadriven_cv <- function(full_name = "Sarah Arcos",
     # Place the css as well
     use_ddcv_template(
       file_name = "dd_cv.css",
+      output_dir = output_dir,
+      create_output_dir
+    )
+  }
+
+  if("resume.rmd" %in% which_files){
+    # Sets the main Rmd template
+    use_ddcv_template(
+      file_name = "resume.rmd",
+      params = list(
+        full_name = full_name,
+        data_location = data_location,
+        pdf_location = pdf_location_resume,
+        html_location = html_location_resume,
+        source_location = source_location,
+        use_network_logo = use_network_logo
+      ),
+      output_dir = output_dir,
+      create_output_dir = create_output_dir,
+      open_after_making = open_files
+    )
+  }
+
+  if("dd_resume.css" %in% which_files){
+    # Place the css as well
+    use_ddcv_template(
+      file_name = "dd_resume.css",
       output_dir = output_dir,
       create_output_dir
     )

@@ -2,7 +2,7 @@
 * {
   /* Override default right margin for sidebar*/
   --pagedjs-margin-right: 0.2in !important;
-  --pagedjs-margin-left: 0;
+  --pagedjs-margin-left: 0.2in;
   --pagedjs-margin-top: 0.2in;
   --pagedjs-margin-bottom: 0.2in;
 }
@@ -59,4 +59,15 @@
 [data-id="disclaimer"] p {
   margin-block-start: 0.15em;
   margin-block-end: 0.15em;
+}
+
+/* Update the header to put everything on one line for space savings.  */
+.details header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 5pt;
+}
+.details .place {
+  margin-right: auto;
 }
