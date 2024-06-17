@@ -10,11 +10,11 @@
 #' @export
 build_network_logo <- function(position_data){
 
-  positions <- position_data %>%
+  positions <- position_data |>
     dplyr::mutate(
       id = dplyr::row_number(),
       title = stringr::str_remove_all(title, '(\\(.+?\\))|(\\[)|(\\])'),
-      section = stringr::str_replace_all(section, "_", " ") %>% stringr::str_to_title()
+      section = stringr::str_replace_all(section, "_", " ") |> stringr::str_to_title()
     )
 
   combination_indices <- function(n){
@@ -25,23 +25,23 @@ build_network_logo <- function(position_data){
     )
   }
   current_year <- lubridate::year(lubridate::ymd(Sys.Date()))
-  edges <- positions %>%
-    dplyr::select(id, start_year, end_year) %>%
+  edges <- positions |>
+    dplyr::select(id, start_year, end_year) |>
     dplyr::mutate(
       end_year = ifelse(end_year > current_year, current_year, end_year),
       start_year = ifelse(start_year > current_year, current_year, start_year)
-    ) %>%
+    ) |>
     purrr::pmap_dfr(function(id, start_year, end_year){
       dplyr::tibble(
         year = start_year:end_year,
         id = id
       )
-    }) %>%
-    dplyr::group_by(year) %>%
-    tidyr::nest() %>%
-    dplyr::rename(ids_for_year = data) %>%
+    }) |>
+    dplyr::group_by(year) |>
+    tidyr::nest() |>
+    dplyr::rename(ids_for_year = data) |>
     purrr::pmap_dfr(function(year, ids_for_year){
-      combination_indices(nrow(ids_for_year)) %>%
+      combination_indices(nrow(ids_for_year)) |>
         dplyr::transmute(
           year = year,
           source = ids_for_year$id[a],
@@ -50,7 +50,7 @@ build_network_logo <- function(position_data){
     })
 
   network_data <- list(nodes = dplyr::select(positions, -in_resume,-timeline),
-                       edges = edges) %>%
+                       edges = edges) |>
     jsonlite::toJSON()
 
   viz_script <- readr::read_file(system.file("js/cv_network.js", package = "datadrivencv"))

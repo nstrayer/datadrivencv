@@ -70,7 +70,7 @@ Contact {#contact}
 --------------------------------------------------------------------------------
 
 ```{r}
-CV %>% print_contact_info()
+CV |> print_contact_info()
 ```
 
 
@@ -79,7 +79,7 @@ Language Skills {#skills}
 --------------------------------------------------------------------------------
 
 ```{r}
-CV %>% print_skill_bars()
+CV |> print_skill_bars()
 ```
 
 

@@ -56,8 +56,8 @@ source('gather_data.R')
 
 # Now we just need to filter down the position data to include less verbose
 # categories and only the entries we have designated for the resume
-position_data <- position_data %>% 
-  filter(in_resume) %>% 
+position_data <- position_data |> 
+  filter(in_resume) |> 
   mutate(
     # Build some custom sections by collapsing others
     section = case_when(
@@ -80,7 +80,7 @@ Contact {#contact}
 --------------------------------------------------------------------------------
 
 ```{r}
-contact_info %>% 
+contact_info |> 
   glue_data("- <i class='fa fa-{icon}'></i> {contact}")
 ```
 
@@ -139,7 +139,7 @@ Education {data-icon=graduation-cap data-concise=true}
 --------------------------------------------------------------------------------
 
 ```{r}
-position_data %>% print_section('education')
+position_data |> print_section('education')
 ```
 
 
@@ -148,7 +148,7 @@ Selected Positions {data-icon=suitcase}
 --------------------------------------------------------------------------------
 
 ```{r}
-position_data %>% print_section('positions')
+position_data |> print_section('positions')
 ```
 
 
@@ -157,7 +157,7 @@ Selected Writing {data-icon=newspaper}
 --------------------------------------------------------------------------------
 
 ```{r}
-position_data %>% print_section('writings')
+position_data |> print_section('writings')
 ```
 
 

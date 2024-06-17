@@ -64,13 +64,13 @@ create_CV_object <- function(data_location,
     date_month <- stringr::str_extract(dates, "(\\w+|\\d+)(?=(\\s|\\/|-)(20|19)[0-9]{2})")
     date_month[is.na(date_month)] <- "1"
 
-    paste("1", date_month, extract_year(dates), sep = "-") %>%
+    paste("1", date_month, extract_year(dates), sep = "-") |>
       lubridate::dmy()
   }
 
 
   # Clean up entries dataframe to format we need it for printing
-  cv$entries_data <- cv$entries_data %>%
+  cv$entries_data <- cv$entries_data |>
     dplyr::filter(
       !resume_mode | in_resume == "TRUE"
     ) |>
@@ -79,7 +79,7 @@ create_CV_object <- function(data_location,
       col = "description_bullets",
       sep = "\n- ",
       na.rm = TRUE
-    ) %>%
+    ) |>
     dplyr::mutate(
       description_bullets = ifelse(description_bullets != "", paste0("- ", description_bullets), ""),
       start = ifelse(start == "NULL", NA, start),
@@ -98,8 +98,8 @@ create_CV_object <- function(data_location,
         has_start & no_end ~ paste("Current", "-", start),
         TRUE ~ paste(end, "-", start)
       )
-    ) %>%
-    dplyr::arrange(desc(parse_dates(end))) %>%
+    ) |>
+    dplyr::arrange(desc(parse_dates(end))) |>
     dplyr::mutate_all(~ ifelse(is.na(.), "N/A", .))
 
   cv
@@ -126,8 +126,8 @@ sanitize_links <- function(cv, text) {
       )
 
       # Replace the link destination and remove square brackets for title
-      text <- text %>%
-        stringr::str_replace_all(stringr::fixed(link_superscript_mappings)) %>%
+      text <- text |>
+        stringr::str_replace_all(stringr::fixed(link_superscript_mappings)) |>
         stringr::str_replace_all("\\[(.+?)\\]", "\\1")
     }
   }
@@ -179,7 +179,7 @@ print_section <- function(cv, section_id, glue_template = "default") {
 #' @description Prints out text block identified by a given label.
 #' @param label ID of the text block to print as encoded in `label` column of `text_blocks` table.
 print_text_block <- function(cv, label) {
-  text_block <- dplyr::filter(cv$text_blocks, loc == label) %>%
+  text_block <- dplyr::filter(cv$text_blocks, loc == label) |>
     dplyr::pull(text)
 
   strip_res <- sanitize_links(cv, text_block)
@@ -203,9 +203,9 @@ style = \"background:linear-gradient(to right,
           {bar_background} {width_percent}% 100%)\"
 >{skill}</div>"
   }
-  cv$skills %>%
-    dplyr::mutate(width_percent = round(100 * as.numeric(level) / out_of)) %>%
-    glue::glue_data(glue_template) %>%
+  cv$skills |>
+    dplyr::mutate(width_percent = round(100 * as.numeric(level) / out_of)) |>
+    glue::glue_data(glue_template) |>
     print()
 
   invisible(cv)
@@ -241,7 +241,7 @@ print_contact_info <- function(cv) {
   glue::glue_data(
     cv$contact_info,
     "- <i class='fa fa-{icon}'></i> {contact}"
-  ) %>% print()
+  ) |> print()
 
   invisible(cv)
 }
