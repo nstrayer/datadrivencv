@@ -57,7 +57,7 @@ create_CV_object <-  function(data_location,
   future_year <- lubridate::year(lubridate::ymd(Sys.Date())) + 10
 
   # Clean up entries dataframe to format we need it for printing
-  cv$entries_data %<>%
+  cv$entries_data <- cv$entries_data |>
     tidyr::unite(
       tidyr::starts_with('description'),
       col = "description_bullets",
