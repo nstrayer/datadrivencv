@@ -69,19 +69,32 @@ create_CV_object <- function(data_location,
   }
 
 
-  # Clean up entries dataframe to format we need it for printing
   cv$entries_data <- cv$entries_data |>
     dplyr::filter(
       !resume_mode | in_resume == "TRUE"
-    ) |>
-    tidyr::unite(
-      tidyr::starts_with("description"),
-      col = "description_bullets",
-      sep = "\n- ",
-      na.rm = TRUE
-    ) |>
+    )
+
+  # Check if the column "description_md" exists in the entries_data dataframe
+  if ("description_md" %in% colnames(cv$entries_data)) {
+    cv$entries_data <- cv$entries_data |>
+      dplyr::rename(description_bullets = description_md)
+  } else {
+    # Assume we're using old bullet_1, bullet_2, etc. columns
+    cv$entries_data <- cv$entries_data |>
+      tidyr::unite(
+        tidyr::starts_with("description"),
+        col = "description_bullets",
+        sep = "\n- ",
+        na.rm = TRUE
+      ) |>
+      dplyr::mutate(
+        description_bullets = ifelse(description_bullets != "", paste0("- ", description_bullets), "")
+      )
+  }
+
+  # Clean up entries dataframe to format we need it for printing
+  cv$entries_data <- cv$entries_data |>
     dplyr::mutate(
-      description_bullets = ifelse(description_bullets != "", paste0("- ", description_bullets), ""),
       start = ifelse(start == "NULL", NA, start),
       end = ifelse(end == "NULL", NA, end),
       start_year = extract_year(start),
@@ -199,8 +212,8 @@ print_skill_bars <- function(cv, out_of = 5, bar_color = "#969696", bar_backgrou
 <div
 class = 'skill-bar'
 style = \"background:linear-gradient(to right,
-          {bar_color} {width_percent}%,
-          {bar_background} {width_percent}% 100%)\"
+           {bar_color} {width_percent}%,
+           {bar_background} {width_percent}% 100%)\"
 >{skill}</div>"
   }
   cv$skills |>
