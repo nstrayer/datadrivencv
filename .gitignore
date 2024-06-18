@@ -9,6 +9,7 @@ cv.html
 cv_files/
 cv.pdf
 myCV/
+var/
 *_cache/
 render_cv.r
 inst/doc
