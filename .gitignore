@@ -13,3 +13,5 @@ myCV/
 render_cv.r
 inst/doc
 .secrets
+
+/.quarto/

@@ -2,7 +2,6 @@
 # datadrivencv <img src="man/figures/logo.svg" width="185px" align="right" style="border:1px solid black;">
 
 <!-- badges: start -->
-
 <!-- badges: end -->
 
 The goal of datadrivencv is to ease the burden of maintaining a CV by
@@ -51,7 +50,7 @@ so if you want to change it you can do so.
 The package aims to bootstrap you to a working data-driven CV pipeline.
 Serving as a jumping off point for you to build your own custom CV, you
 may at first want to leave it as is and then slowly tweak things to keep
-it fresh. You have all the code, so you can\!
+it fresh. You have all the code, so you can!
 
 # Using it
 
@@ -65,31 +64,37 @@ datadrivencv::use_datadriven_cv(
   full_name = "Nick Strayer",
   data_location = "https://docs.google.com/spreadsheets/d/14MQICF2F8-vf8CKPF1m4lyGKO6_thG-4aSwat1e2TWc",
   pdf_location = "https://github.com/nstrayer/cv/raw/master/strayer_cv.pdf",
+  pdf_location_resume = "https:///github.com/nstrayer/cv/raw/master/strayer_resume.pdf"
   html_location = "nickstrayer.me/cv/",
+  html_location_resume = "nickstrayer.me/cv/resume/",
   source_location = "https://github.com/nstrayer/cv"
 )
 ```
 
 The available arguments are:
 
-| Argument           | Description                                                                                                                                                                                                           |
-| ------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `full_name`        | Your full name, used in title of document and header                                                                                                                                                                  |
-| `data_location`    | Path of the spreadsheets holding all your data. This can be either a URL to a google sheet with multiple sheets containing the four data types or a path to a folder containing four `.csv`s with the neccesary data. |
-| `pdf_location`     | What location will the PDF of this CV be hosted at?                                                                                                                                                                   |
-| `html_location`    | What location will the HTML version of this CV be hosted at?                                                                                                                                                          |
-| `source_location`  | Where is the code to build your CV hosted?                                                                                                                                                                            |
-| `open_files`       | Should the added files be opened after creation?                                                                                                                                                                      |
-| `use_network_logo` | Should logo be an interactive network based on your CV data? Note that this uses the function `build_network_logo()` so will introduce a dependency on this package.                                                  |
+| Argument | Description |
+|----|----|
+| `full_name` | Your full name, used in title of document and header |
+| `data_location` | Path of the spreadsheets holding all your data. This can be either a URL to a google sheet with multiple sheets containing the four data types or a path to a folder containing four `.csv`s with the neccesary data. |
+| `pdf_location` | What location will the PDF of this CV be hosted at? |
+| `pdf_location_resume` | What location will the PDF of this CV be hosted at? |
+| `html_location` | What location will the HTML version of this CV be hosted at? |
+| `html_location_resume` | What location will the HTML version of this CV be hosted at? |
+| `source_location` | Where is the code to build your CV hosted? |
+| `open_files` | Should the added files be opened after creation? |
+| `use_network_logo` | Should logo be an interactive network based on your CV data? Note that this uses the function `build_network_logo()` so will introduce a dependency on this package. |
 
 This code is all that’s needed to setup a full CV. It outputs five
 files:
 
-| File                      | Description                                                                                                                                                                                                                                                                            |
-| ------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `cv.rmd`                  | An RMarkdown file with various sections filled in. Edit this to fit your personal needs.                                                                                                                                                                                               |
-| `dd_cv.css`               | A custom set of CSS styles that build on the default `Pagedown` “resume” template. Again, edit these as desired.                                                                                                                                                                       |
-| `render_cv.r`             | Use this script to build your CV in both PDF and HTML at the same time.                                                                                                                                                                                                                |
+| File | Description |
+|----|----|
+| `cv.rmd` | An RMarkdown file with various sections filled in. Edit this to fit your personal needs. |
+| `dd_cv.css` | A custom set of CSS styles that build on the default `Pagedown` “resume” template. Again, edit these as desired. |
+| `resume.rmd` | An RMarkdown for a shorter resume. Edit this to fit your personal needs. |
+| `dd_resume.css` | A custom set of CSS styles that build on the default `Pagedown` “resume” template. Again, edit these as desired. |
+| `render_cv.r` | Use this script to build your CV in both PDF and HTML at the same time. |
 | `cv_printing_functions.r` | A series of functions that perform the dirty work of turning your spreadsheet data into markdown/html and making that output work for PDF printing. E.g. Replacing markdown links with superscripts and a links section, tweaking the CSS to account for chrome printing quirks, etc.. |
 
 # Storing your data in spreadsheets
@@ -121,34 +126,35 @@ The four spreadsheets that are needed and their columns are:
 
 ### `entries`
 
-| Column          | Description                                                                                                                                                             |
-| --------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `section`       | Where in your CV this entry belongs                                                                                                                                     |
-| `title`         | Main title of the entry                                                                                                                                                 |
-| `loc`           | Location the entry occured                                                                                                                                              |
-| `institution`   | Primary institution affiliation for entry                                                                                                                               |
-| `start`         | Start date of entry (year). Can be left blank for single point events like a manuscript.                                                                                |
-| `end`           | End year of entry. Set to “current” if entry is still ongoing.                                                                                                          |
+| Column | Description |
+|----|----|
+| `section` | Where in your CV this entry belongs |
+| `title` | Main title of the entry |
+| `loc` | Location the entry occured |
+| `institution` | Primary institution affiliation for entry |
+| `start` | Start date of entry (year). Can be left blank for single point events like a manuscript. |
+| `end` | End year of entry. Set to “current” if entry is still ongoing. |
 | `description_*` | Each description column is a separate bullet point for the entry. If you need more description bullet points simply add a new column with title “description\_{4,5,..}” |
+| `description_md` | A markdown formatted description of the entry. If this is supplied any `description_*` columns will be ignored. |
 
 ### `language_skills`
 
 | Column  | Description                     |
-| ------- | ------------------------------- |
+|---------|---------------------------------|
 | `skill` | Name of language                |
 | `level` | Relative numeric level of skill |
 
 ### `text_blocks`
 
 | Column | Description                                           |
-| ------ | ----------------------------------------------------- |
+|--------|-------------------------------------------------------|
 | `loc`  | Id used for finding text block                        |
 | `text` | Contents of text block. Supports markdown formatting. |
 
 ### `contact info`
 
 | Column    | Description                                                 |
-| --------- | ----------------------------------------------------------- |
+|-----------|-------------------------------------------------------------|
 | `loc`     | Id of contact section                                       |
 | `icon`    | Icon used from font-awesome 4 to label this contact section |
 | `contact` | The actual value written for the contact entry              |
@@ -156,10 +162,11 @@ The four spreadsheets that are needed and their columns are:
 ## Using `.csv`s instead of google sheets
 
 Don’t want to use google sheets to store your data? Not a problem. Just
-make four `.csvs` (`entries.csv, language_skills.csv, text_blocks.csv,
-contact_info.csv`) that have the same matching format as above and pass
-the folder containing those as your `data_location` when initializing
-with `use_datadriven_cv()`.
+make four `.csvs`
+(`entries.csv, language_skills.csv, text_blocks.csv, contact_info.csv`)
+that have the same matching format as above and pass the folder
+containing those as your `data_location` when initializing with
+`use_datadriven_cv()`.
 
 The function `use_csv_data_storage()` will set these up for you.
 
@@ -214,17 +221,10 @@ me know. Not comfortable with github issues? Tweet the question at me on
 Twitter: [@nicholasstrayer](https://twitter.com/NicholasStrayer).
 
 <!-- Twitter Card data -->
-
 <meta name="twitter:card" content="summary">
-
 <meta name="twitter:site" content="@nicholasstrayer">
-
 <meta name="twitter:title" content="datadrivencv">
-
 <meta name="twitter:description" content="n R package for building your CV with data">
-
 <meta name="twitter:creator" content="@nicholasstrayer">
-
 <!-- Twitter Summary card images must be at least 120x120px -->
-
 <meta name="twitter:image" content="https://github.com/nstrayer/datadrivencv/blob/master/man/figures/logo.svg">
