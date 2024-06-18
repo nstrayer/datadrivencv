@@ -18,10 +18,8 @@ Imports:
     lubridate,
     purrr,
     stringr,
-    magrittr,
     pagedown,
     fs,
-    icon (>= 0.1.0),
     whisker
 RoxygenNote: 7.0.2
 Roxygen: list(markdown = TRUE)
@@ -30,5 +28,4 @@ Suggests:
     rmarkdown,
     testthat (>= 2.1.0)
 VignetteBuilder: knitr
-Remotes: 
-    ropenscilabs/icon
+

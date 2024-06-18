@@ -17,7 +17,6 @@ knitr::opts_chunk$set(
   echo = FALSE
 )
 
-library(magrittr) # For the pipe
 source("cv_printing_functions.r")
 
 # Read in all data and initialize a CV printer object
@@ -70,7 +69,7 @@ Contact {#contact}
 --------------------------------------------------------------------------------
 
 ```{r}
-CV %>% print_contact_info()
+CV |> print_contact_info()
 ```
 
 
@@ -79,7 +78,7 @@ Language Skills {#skills}
 --------------------------------------------------------------------------------
 
 ```{r}
-CV %>% print_skill_bars()
+CV |> print_skill_bars()
 ```
 
 
@@ -102,8 +101,8 @@ Main
 --------------------------------------------------------------------------------
 
 ```{r}
-# Note the special double pipe so we modify the CV object in place
-CV %<>% print_text_block("intro") 
+# Note the assignment back to CV. This is so the link stripping works properly in PDF mode
+CV <- print_text_block(CV, "intro") 
 ```
 
 
@@ -112,7 +111,7 @@ Education {data-icon=graduation-cap data-concise=true}
 --------------------------------------------------------------------------------
 
 ```{r}
-CV %<>% print_section('education')
+CV <- print_section(CV, 'education')
 ```
 
 
@@ -121,7 +120,7 @@ Research Experience {data-icon=laptop}
 --------------------------------------------------------------------------------
 
 ```{r}
-CV %<>% print_section('research_positions')
+CV <- print_section(CV, 'research_positions')
 ```
 
 
@@ -131,12 +130,12 @@ Industry Experience {data-icon=suitcase}
 
 ::: aside
 ```{r}
-CV %<>% print_text_block('industy_experience_aside')
+CV <- print_text_block(CV, 'industy_experience_aside')
 ```
 :::
 
 ```{r}
-CV %<>% print_section('industry_positions')
+CV <- print_section(CV, 'industry_positions')
 ```
 
 <!-- These breaks just force a new page so section doesnt get cut off -->
@@ -149,12 +148,12 @@ Teaching Experience {data-icon=chalkboard-teacher}
 
 ::: aside
 ```{r}
-CV %<>% print_text_block('teaching_experience_aside')
+CV <- print_text_block(CV, 'teaching_experience_aside')
 ```
 :::
 
 ```{r}
-CV %<>% print_section('teaching_positions')
+CV <- print_section(CV, 'teaching_positions')
 ```
 
 
@@ -164,12 +163,12 @@ Selected Data Science Writing {data-icon=chart-line}
 
 ::: aside
 ```{r}
-CV %<>% print_text_block('data_science_writing_aside')
+CV <- print_text_block(CV, 'data_science_writing_aside')
 ```
 :::
 
 ```{r}
-CV %<>% print_section('data_science_writings')
+CV <- print_section(CV, 'data_science_writings')
 ```
 
 
@@ -178,7 +177,7 @@ Selected Press (About)  {data-icon=newspaper}
 --------------------------------------------------------------------------------
 
 ```{r}
-CV %<>% print_section('about_me_press')
+CV <- print_section(CV, 'about_me_press')
 ```
 
 
@@ -190,7 +189,7 @@ Selected Press (By)  {data-icon=newspaper}
 --------------------------------------------------------------------------------
 
 ```{r}
-CV %<>% print_section('by_me_press')
+CV <- print_section(CV, 'by_me_press')
 ```
 
 
@@ -199,12 +198,12 @@ Selected Publications, Posters, and Talks {data-icon=book}
 --------------------------------------------------------------------------------
 
 ```{r}
-CV %<>% print_section('academic_articles')
+CV <- print_section(CV, 'academic_articles')
 ```
 
 
 
 ```{r}
-CV %<>% print_links()
+print_links(CV)
 ```
 

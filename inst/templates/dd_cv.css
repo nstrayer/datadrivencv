@@ -1,19 +1,41 @@
-@import url("https://fonts.googleapis.com/css?family=Montserrat|Playfair+Display&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&family=Raleway:ital,wght@0,100..900;1,100..900&display=swap');
 
-/* Main text is monserrat*/
-body {
-  font-family: "Montserrat", sans-serif;
-  font-weight: 300;
-  line-height: 1.3;
-  color: #444;
+* {
+  /* Override default right margin for sidebar*/
+  --pagedjs-margin-right: 0.2in;
+  --pagedjs-margin-left: 0.2in;
 }
 
-/* Give headers playfair font */
+/* Customize some of the sizing variables */
+:root {
+  --main-text-family: "Raleway", sans-serif;
+  --header-text-family: "Lora", serif;
+  --main-text-color: #444;
+  --header-text-color: #000;
+  --sidebar-width: 12rem; /* Shrink sidebar width  */
+  --sidebar-background-color: hsl(210, 100%, 98%); /* Make sidebar blue */
+  --sidebar-horizontal-padding: 0.01in; /* Reduce sidebar padding */
+  --decorator-outer-dim: 8px; /* Make position deliniating circles larger */
+  --decorator-color: hsl(210, 100%, 35%);
+  --point-circle-color: hsl(210, 100%, 25%);
+  --decorator-line-width: 1pt;
+}
+
+
+/* Update main body text */
+body {
+  font-family: var(--main-text-family);
+  font-weight: 300;
+  line-height: 1.3;
+  color: var(--main-text-color);
+}
+
+/* Update header text */
 h1,
 h2,
 h3 {
-  font-family: "Playfair Display", serif;
-  color: #000;
+  font-family: var(--header-text-family);
+  color: var(--header-text-color);
 }
 
 /* When in PDF export mode make sure superscripts are nice and small and italic */
@@ -27,20 +49,6 @@ sup {
   break-inside: avoid;
 }
 
-* {
-  /* Override default right margin for sidebar*/
-  --pagedjs-margin-right: 0.2in;
-  --pagedjs-margin-left: 0.2in;
-}
-
-/* Customize some of the sizing variables */
-:root {
-  --sidebar-width: 12rem; /* Shrink sidebar width  */
-  --sidebar-background-color: #f7fbff; /* Make sidebar blue */
-  --sidebar-horizontal-padding: 0.01in; /* Reduce sidebar padding */
-  --decorator-outer-dim: 10px; /* Make position deliniating circles larger */
-  --decorator-border: 2px solid #bdd7e7; /* Make timeline a blue as well*/
-}
 
 .details .place {
   margin-top: 0.25rem;
@@ -76,7 +84,7 @@ sup {
   content: "• ";
 }
 
-/* Make sure elements in asside are centered and have a nice small text */
+/* Make sure elements in aside are centered and have a nice small text */
 .aside {
   width: calc(var(--sidebar-width) + 9px);
   line-height: 1.2;
@@ -85,7 +93,7 @@ sup {
 
 /* Make little circle outline be a light blue */
 .decorator::after {
-  background-color: #08306b;
+  background-color: var(--point-circle-color);
 }
 
 /* Remove the fake bullets from lists */
@@ -115,10 +123,35 @@ sup {
 }
 
 /* Add styles for little cards  */
-.info-card{
+.info-card {
   width: 220px;    
   float: left;    
   padding: 0.5rem;
   margin: 0.5rem;
   box-shadow: 1px 1px 4px black;
+}
+
+/* Use background of the decorator for lines instead of the border. Seems to be crisper. */
+div.decorator {
+  min-width: var(--decorator-line-width);
+  border: none;
+  background-color: var(--decorator-color);
+}
+
+[data-id="main"] h2::after {
+  border: none;
+  width: var(--decorator-line-width);
+  background-color: var(--decorator-color);
+}
+
+/* Make sure the point is placed correctly */
+div.decorator::after {
+  left: calc(var(--decorator-line-width) / 2);
+  translate: -50% 50%;
+  outline: 1px solid white;
+}
+
+/* Hide before circle because we use our own outline instead */
+div.decorator::before {
+  content: none;
 }
