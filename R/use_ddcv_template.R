@@ -28,6 +28,20 @@ use_ddcv_template <- function(
 
 
   template_loc <- fs::path(system.file("templates/", package = "datadrivencv"), file_name)
+
+  # Templates in inst/templates/ have historically had inconsistent file-name
+  # casing (e.g. cv.Rmd vs cv.rmd, render_cv.R vs render_cv.r — see #35), so
+  # fall back to a case-insensitive match by basename when the literal path
+  # does not exist.
+  if (!fs::file_exists(template_loc)) {
+    templates_dir <- system.file("templates/", package = "datadrivencv")
+    all_templates <- fs::dir_ls(templates_dir)
+    matches <- all_templates[tolower(fs::path_file(all_templates)) == tolower(file_name)]
+    if (length(matches) == 1L) {
+      template_loc <- matches
+    }
+  }
+
   output_loc <- fs::path(output_dir, output_file_name)
 
   template_text <- readr::read_file(template_loc)
